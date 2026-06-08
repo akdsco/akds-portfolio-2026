@@ -2,7 +2,19 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-Also read `@AGENTS.md` — Next.js 16 has breaking changes from your training data; consult `node_modules/next/dist/docs/` before writing non-trivial Next-specific code.
+## ⚠ Next.js 16 — likely newer than your training data
+
+This project uses **Next.js 16** (released May 2026). APIs, conventions, and file structure may differ from what you were trained on. Before writing any non-trivial Next-specific code (caching, routing, params, middleware/proxy, fonts, metadata, data fetching, Server Actions), **read the relevant guide in `node_modules/next/dist/docs/`** and heed deprecation notices. Don't guess.
+
+Key v16 changes likely outside training data:
+- **Turbopack is the default** for `next dev` and `next build`
+- **`params` and `searchParams` are `Promise`** — must be `await`ed in layouts, pages, route handlers, etc.
+- **`middleware.ts` is renamed to `proxy.ts`** (Node runtime only; edge runtime requires keeping the old `middleware.ts`)
+- **`fetch()` is no longer cached by default** — opt in with `'use cache'`
+- **`next lint` removed** — this repo runs `eslint` directly via `npm run lint`
+- **React Compiler** is stable but not enabled here
+
+The same warning lives in `AGENTS.md` for non-Claude tooling (Copilot, Cursor, etc.).
 
 ## Project goal
 
