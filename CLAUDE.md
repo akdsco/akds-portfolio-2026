@@ -14,8 +14,6 @@ Key v16 changes likely outside training data:
 - **`next lint` removed** — this repo runs `eslint` directly via `npm run lint`
 - **React Compiler** is stable but not enabled here
 
-The same warning lives in `AGENTS.md` for non-Claude tooling (Copilot, Cursor, etc.).
-
 ## Project goal
 
 Personal portfolio for Arkadiusz ("akds"), optimized for software engineering recruiters and hiring managers scanning quickly. The landing page is a **showcase**, not a lead-gen funnel — no contact form, no mailto CTA. Social links (GitHub, LinkedIn) in the nav are the only contact path.
