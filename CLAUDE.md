@@ -59,10 +59,18 @@ File naming: kebab-case for files, PascalCase for component exports. Imports use
 ## Theming
 
 - next-themes wraps the app in `app/layout.tsx` with `attribute="class"` and `defaultTheme="system"`.
-- `<html suppressHydrationWarning>` is required to avoid the class-toggling hydration warning.
+- `<html suppressHydrationWarning>` is required to avoid the class-toggling hydration warning. `<body suppressHydrationWarning>` is also set to absorb attributes injected by browser extensions (ColorZilla, Grammarly, etc.) — extension DOM mutation is out of our control.
 - Dark variant is handled by Tailwind v4's `@custom-variant dark (&:is(.dark *))` in `app/globals.css` — this matches the class strategy.
 - Theme tokens (background, foreground, primary, etc.) live in `app/globals.css` as CSS variables (`oklch` values), exposed to Tailwind via `@theme inline`.
-- `ModeToggle` toggles between explicit `"light"` / `"dark"` and reads `resolvedTheme` so the initial `"system"` state renders correctly.
+
+### Hydration rule for theme-dependent components
+
+**Never let rendered output depend on `resolvedTheme` (or `theme`).** At SSR `resolvedTheme` is `undefined` — it lives in `localStorage` + `matchMedia`, both browser-only — so any markup keyed off it (`aria-label`, conditional classes, conditional children) will mismatch on hydration. `suppressHydrationWarning` only hides the warning; the actual DOM still differs for a frame.
+
+Two patterns that work, in order of preference:
+
+1. **Render-stable markup, CSS-driven theme branching.** Make the output identical for both themes; let Tailwind's `dark:` variant flip what's visible. next-themes sets the `class` on `<html>` via an inline script that runs before React hydrates, so the correct branch is already painted on first frame. `ModeToggle` uses this — generic `aria-label="Toggle theme"`, Sun/Moon swap via `dark:scale-0` / `dark:scale-100`, and the click handler reads `resolvedTheme` at invocation time (post-hydration).
+2. **Mount gate** — only when the markup *must* differ. Render a stable placeholder until a `useSyncExternalStore` "am I on the client?" hook flips. Don't use the `useState`+`useEffect` mount pattern: React 19's `react-hooks/set-state-in-effect` rule flags it.
 
 ## Notes for future work
 
