@@ -79,6 +79,15 @@ Two patterns that work, in order of preference:
 - **Bio copy is owner-supplied.** Never invent professional history, job titles, or project descriptions — ask for them.
 - **Data layer (`data/`) is deferred.** When added, it will be typed TS objects only — no MDX, no Contentlayer, no CMS.
 
+## Pending TODO (track these; don't lose them)
+
+- [ ] **Favicon** — currently the default Next.js favicon at `app/favicon.ico`. Owner is sourcing an image and will derive a favicon + apple-touch-icon from it. Replace `app/favicon.ico` and add `app/icon.tsx` / `app/apple-icon.tsx` as needed.
+- [ ] **Metadata** — only generic `title` + `description` in `app/layout.tsx`. Pending owner's resume/data work. When done: set `metadataBase`, OG title/description, OG image, Twitter card, `robots`, canonical. Per-page metadata via `generateMetadata` where dynamic.
+- [ ] **Data layer (`data/`)** — owner is producing typed content for resume, projects, about. Once delivered, scaffold `data/` with one typed module per surface (e.g. `data/projects.ts`, `data/work.ts`, `data/profile.ts`). Strict types, no `any`.
+- [ ] **Design direction** — owner is collecting references / mood. Visual direction (type scale, color beyond shadcn defaults, rhythm, hero treatment) blocks page design. Tokens land in `app/globals.css` via `@theme inline` (oklch).
+- [ ] **Pages** — `/about`, `/resume`, `/projects`. Build after data layer + design direction land. Each page consumes a typed module from `data/`.
+- [ ] **Real copy** — owner-supplied (see "Bio copy" rule above). Do not stub plausible-sounding placeholder text in committed code; use obvious lorem (`Lorem ipsum…`) so it can't accidentally ship.
+
 ## History context
 
 - `BOOTSTRAP_PROMPT.md` is the original setup spec, kept as historical record. Two of its locks (Next 15, Tailwind v3) were superseded because the ecosystem moved on between when the spec was written and when it was executed. Commits document the reasoning.
