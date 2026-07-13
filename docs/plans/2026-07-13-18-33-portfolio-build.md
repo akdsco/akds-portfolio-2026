@@ -5,62 +5,62 @@
 
 ## Problem / Context
 
-The content + design foundation is merged (data/portfolio.ts, case-study drafts,
-v1 design artifact, CI). Now build the real Next.js 16 site from the artifact,
-consuming data/portfolio.ts, across the three surfaces + command palette. Full
-context in docs/implementation-plan.md. Owner chisels exact copy on the rendered
-site afterwards, so build for correct structure/data, not final wording.
+Foundation is merged (data/portfolio.ts, case-study drafts, v1 design artifact, CI).
+Build the real Next.js 16 site from the artifact, consuming data/portfolio.ts, across
+the three surfaces + command palette, in ONE PR. Owner chisels exact copy on the
+rendered site afterwards, so build for correct structure/data, not final wording.
 
-Locked decisions: cool accent scheme; site lands on `/` (= About/home, no separate
-Home); routes `/projects` + `/projects/[slug]`; nav displays GitHub + LinkedIn only;
-no contact form; tokens in one swap-a-file source; "tasteful dev-coded".
+Locked: cool accent scheme; lands on `/` (= About/home, no separate Home); routes
+`/projects` + `/projects/[slug]`; nav shows GitHub + LinkedIn only; no contact form;
+NO CV download (site is the CV expansion); palette baked into this PR; "tasteful
+dev-coded". Landing follows the design: hero + skills + experience + testimonials
+(projects live on /projects, not teased on the landing).
 
-## Plan (build order; each step a meaningful commit, CI green throughout)
+## Plan (build order; each step a commit, CI green throughout)
 
-### Phase B — data (do first; unblocks pages)
-1. Narrow `CaseStudy` to `Omit<PortfolioCard,'role'|'focus'> & {...}` (review finding #7)
-   so hook/sections are the single source of truth.
-2. Promote the 4 rough drafts (docs/case-studies/*.md) into typed `CaseStudy`
-   objects: `export const caseStudies: CaseStudy[]`. Wire `testimonialId`
-   (Proof Library -> Ben Ritchie, id 1).
-3. GrowthNation naming sweep (findings #1/#6): hero.paragraphs[0], portfolio card
-   company, experience[0].company.
-4. Film-production-tracking (finding #2): move to the earlier-work toggle so all 4
-   top cards link to a detail page and nothing 404s. (Pending owner confirm.)
-5. Add a card `blurb`/`hook` for non-case-study cards so the index renders cleanly.
+### Phase B — clean data model (do first)
+1. Replace `PortfolioCard` + `CaseStudy` with ONE clean `Project` type (no Omit, no
+   legacy role/focus). Shape: slug, title, company, stack, hook, featured, role?,
+   period?, caseStudy?({ sections, testimonialId?, status? }). One `projects` array.
+2. Populate `projects`: the 4 kept case studies (Proof Library, SlateIQ, AI research
+   assistant, Routes Wallet) get `caseStudy`; film-tracking, Connect4, Wutzu are
+   earlier-work cards (featured:false, no caseStudy). Fill more case studies later.
+   Wire testimonialId (Proof Library -> Ben Ritchie, id 1).
+3. GrowthNation naming sweep: hero.paragraphs[0], project company, experience[0].company.
+4. Remove CV: drop `profile.cvFile` and any /resume + download references.
 
 ### Theming foundation
-6. `app/tokens.css` — the single swap-a-file palette: named oklch vars for cool
-   light (`:root`) + dark (`.dark`). Import into globals.css; map via `@theme inline`.
-   Fonts (Geist + Geist Mono), keyframes (blink cursor, pulse), scanline utility.
+5. `app/theme.css` — single swap-a-file palette: named oklch vars, cool light (`:root`)
+   + dark (`.dark`). Import into globals.css; map via `@theme inline`. Fonts (Geist +
+   Geist Mono), keyframes (blink cursor, pulse), scanline utility.
 
 ### Shared + layout
-7. SiteNav to the design (akds logo, About/Projects, GitHub+LinkedIn+theme). Footer.
-8. Primitives: `Kicker` (diamond // LABEL), `StackChips`.
+6. SiteNav to the design (akds logo, About/Projects, GitHub+LinkedIn+theme). Footer
+   (no CV download).
+7. Primitives: `Kicker` (diamond // LABEL), `StackChips`.
 
-### Pages (static; no palette yet)
-9. Landing `/` — hero (static prompt), featured projects, about/bio, skills,
-   experience timeline, testimonials (clamp+expand).
-10. Projects `/projects` — card grid + earlier-work toggle.
-11. Case study `/projects/[slug]` — generateStaticParams over 4 slugs, sections,
+### Pages
+8. Landing `/` — hero (static prompt for now), skills grid, experience timeline,
+   testimonials (clamp + expand). No featured-projects section (per design).
+9. Projects `/projects` — top cards (4, linking) + earlier-work toggle (3).
+10. Case study `/projects/[slug]` — generateStaticParams over the 4 slugs, sections,
     sticky meta.json card, on-this-page TOC, endorsement.
 
-### Enhancement (separate follow-up PR)
-12. Command palette — dialog/combobox, keyboard, fuzzy filter, real actions,
-    /whoami, a11y, reduced-motion, progressive enhancement (docs/command-palette-brief.md).
+### Enhancement (same PR)
+11. Command palette — dialog/combobox, `/` + Cmd/Ctrl+K, fuzzy filter, real actions
+    (go/external/theme + /whoami), a11y, reduced-motion, progressive enhancement.
+    Commands: /projects /skills /experience /testimonials /github /linkedin /theme
+    /top /whoami. NO /resume. One Vitest keyboard test for this piece.
 
 ### Housekeeping
-13. Update CLAUDE.md TODOs (data layer delivered, design direction locked, pages built).
-    Metadata + CV pdf deferred until owner supplies the CV.
+12. Basic metadata (title, description, OG using brand image). Update CLAUDE.md TODOs.
 
-## Increments (test-first)
+## Verification
 
-No unit surface for most of this; verification per increment = CI suite green
-(prettier/eslint/tsc/build) + visual check against the artifact via dev server.
-The command palette (step 12) is the one piece worth a Vitest keyboard test.
+Per step: CI suite green (prettier/eslint/tsc/build) + visual check against the
+artifact via dev server. Palette gets a Vitest keyboard/filter test.
 
-## Notes / open decisions for green light
-- Accent: cool (confirm).
-- Film-tracking: fold into earlier-work toggle (confirm).
-- Palette: core site first, palette as its own PR (confirm).
-- One `portfolio-build` PR for steps 1-11 + 13; palette PR separate.
+## Open (confirm at green light)
+- Landing has no featured-projects strip (follows design) — OK, or add a teaser?
+- Otherwise all decisions locked: cool accent, 4 case studies, fold film, no CV,
+  palette in this PR, clean Project type, theme.css.
