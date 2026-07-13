@@ -31,7 +31,6 @@ export type Profile = {
   publicEmail: string; // for the website contact form
   cvEmail: string; // kept off the public site, for CV / direct outreach
   brandImage: string;
-  aboutImage: string;
   cvFile: string;
   socials: SocialLink[];
 };
@@ -154,7 +153,6 @@ export const profile: Profile = {
   publicEmail: "hire-arkadiusz@pm.me",
   cvEmail: "arkadiusz.ostrowski@protonmail.com",
   brandImage: "/images/brand-image.webp",
-  aboutImage: "/images/about-image.jpg",
   cvFile: "",
   socials: [
     { label: "LinkedIn", url: "https://www.linkedin.com/in/akds/" },
