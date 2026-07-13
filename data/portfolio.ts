@@ -66,6 +66,40 @@ export type PortfolioCard = {
   url?: string;
 };
 
+/**
+ * A case study extends a PortfolioCard with long-form, section-based content.
+ * The card fields (title, company, role, stack) still drive the index summary;
+ * `hook` and `sections` drive the detail page at /work/[slug].
+ *
+ * Section bodies are arrays of plain-text paragraphs (no markdown), matching the
+ * rest of this file. The render layer decides presentation.
+ *
+ * Proposed shape, not yet populated with data. Draft prose lives in
+ * docs/case-studies/*.md until each study is promoted into a typed object here.
+ */
+export type CaseStudy = PortfolioCard & {
+  /**
+   * The one line under the project title on the detail page. Its only job is to
+   * earn the next 30 seconds of reading. Keep every hook to these rules:
+   *  1. One sentence, one idea. Push setup and context (stealth, dates, company
+   *     stage) into the meta row and the `problem` section, not here.
+   *  2. Lead with the verb or the outcome ("Owned...", "Cut...", "Shipped...").
+   *  3. Be specific enough that a generic engineer could not have written the
+   *     same sentence about themselves. Name the concrete, interesting thing.
+   *  4. No marketing fluff. If it reads like a landing-page tagline, rewrite it.
+   */
+  hook: string;
+  sections: {
+    problem: string[];
+    constraints: string[];
+    approach: string[];
+    contribution: string[];
+    outcome: string[];
+    reflection?: string[]; // optional, only when there is a real lesson to tell
+  };
+  testimonialId?: number; // optional: pull a relevant testimonial inline, by id
+};
+
 export type WorkExperience = {
   id: number;
   period: string;

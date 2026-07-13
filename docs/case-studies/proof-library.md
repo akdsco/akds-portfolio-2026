@@ -11,7 +11,7 @@ This draft exists to FIND the CaseStudy shape (section set, length, voice), not 
 
 # Proof Library
 
-**Hook:** At GrowthNation, a stealth startup still hunting for product-market fit, I owned the proof store: how evidence got in, the dashboard the CEO worked from, and a tagging layer that kept each customer's library organized on its own.
+**Hook:** Owned the proof store behind a sales-AI product: ingestion, a CEO-facing dashboard, and a tagging layer that kept every customer's library organized on its own.
 
 - **Company:** GrowthNation (stealth, pre-product-market-fit) · **Role:** Senior Software Engineer / Product Engineer (contract)
 - **Period:** Jul 2025 to Jun 2026
