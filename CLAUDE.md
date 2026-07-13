@@ -81,7 +81,7 @@ Two patterns that work, in order of preference:
 
 ## Pending TODO (track these; don't lose them)
 
-- [ ] **Favicon** — currently the default Next.js favicon at `app/favicon.ico`. Owner is sourcing an image and will derive a favicon + apple-touch-icon from it. Replace `app/favicon.ico` and add `app/icon.tsx` / `app/apple-icon.tsx` as needed.
+- [x] **Favicon** — done. Owner-supplied `public/images/brand-image.webp` (500x500); derived `app/icon.png` (256px) + `app/apple-icon.png` (180px); removed the default `app/favicon.ico`. Next 16 auto-serves these. (Note: it's a portrait photo, so it reads soft at 16px; a mono "akds"/glyph icon is an easy swap later if wanted.)
 - [ ] **Metadata** — only generic `title` + `description` in `app/layout.tsx`. Pending owner's resume/data work. When done: set `metadataBase`, OG title/description, OG image, Twitter card, `robots`, canonical. Per-page metadata via `generateMetadata` where dynamic.
 - [ ] **Data layer (`data/`)** — owner is producing typed content for resume, projects, about. Once delivered, scaffold `data/` with one typed module per surface (e.g. `data/projects.ts`, `data/work.ts`, `data/profile.ts`). Strict types, no `any`.
 - [ ] **Design direction** — owner is collecting references / mood. Visual direction (type scale, color beyond shadcn defaults, rhythm, hero treatment) blocks page design. Tokens land in `app/globals.css` via `@theme inline` (oklch).
