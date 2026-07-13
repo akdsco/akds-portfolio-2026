@@ -1,4 +1,4 @@
-# Command palette (AI slash-commands) — design brief + implementation reference
+# Command palette (AI slash-commands): design brief + implementation reference
 
 A "nice to have" enhancement for the landing hero. This file is both the prompt to
 paste into the Claude design session and our own reference for building it later.
@@ -35,15 +35,15 @@ that actually works, in both light and dark, on desktop and mobile.
 
 ### Commands (all real actions, no joke commands)
 
-- `/projects` — go to the Projects index (`/projects`)
-- `/skills` — scroll to the Skills section
-- `/experience` — scroll to the Experience timeline
-- `/testimonials` — scroll to Testimonials
-- `/resume` — download the CV PDF  (download)
-- `/github` — open GitHub  (external)
-- `/linkedin` — open LinkedIn  (external)
-- `/theme` — toggle light / dark
-- `/top` — back to top
+- `/projects` : go to the Projects index (`/projects`)
+- `/skills` : scroll to the Skills section
+- `/experience` : scroll to the Experience timeline
+- `/testimonials` : scroll to Testimonials
+- `/resume` : download the CV PDF  (download)
+- `/github` : open GitHub  (external)
+- `/linkedin` : open LinkedIn  (external)
+- `/theme` : toggle light / dark
+- `/top` : back to top
 - Optional single tasteful easter egg (discoverable, not slapstick), e.g.
   `/whoami` echoing a one-line identity. No `/jiggle`-style gimmicks that do nothing.
 
@@ -75,7 +75,7 @@ Next.js + Tailwind v4 + Base UI (shadcn). Keep it implementable in plain CSS/JS.
   no prebuilt command menu; consider building on its Dialog/Popover + a listbox, or
   a small headless combobox. Reduced-motion via CSS `@media (prefers-reduced-motion)`.
 - Actions map to: in-page scroll (Skills/Experience/Testimonials/top), route push
-  (`/projects`), file download (`profile.cvFile`, currently empty — gate `/resume`
+  (`/projects`), file download (`profile.cvFile`, currently empty, gate `/resume`
   until the PDF exists), external links (`profile.socials`), theme toggle (next-themes
   `setTheme`, read at click time per the hydration rule in CLAUDE.md).
 - This is Phase D polish: build the core landing + pages first, add the palette after.
