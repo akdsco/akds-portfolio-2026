@@ -20,8 +20,15 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Arkadiusz — Software Engineer",
-  description: "Portfolio of Arkadiusz, software engineer.",
+  title: "Arkadiusz Ostrowski — Software Engineer",
+  description:
+    "London-based software engineer building production AI-native software end-to-end. Selected work, experience, and case studies.",
+  openGraph: {
+    title: "Arkadiusz Ostrowski — Software Engineer",
+    description:
+      "London-based software engineer building production AI-native software end-to-end.",
+    type: "website",
+  },
 };
 
 export default function RootLayout({
@@ -48,7 +55,8 @@ export default function RootLayout({
             <SiteFooter />
           </PaletteProvider>
         </ThemeProvider>
-        <Analytics />
+        {/* Analytics only in production — keeps local dev console quiet. */}
+        {process.env.NODE_ENV === "production" && <Analytics />}
       </body>
     </html>
   );
