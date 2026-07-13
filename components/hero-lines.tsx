@@ -26,17 +26,17 @@ export function HeroLines() {
       const hi = Math.random() < 0.55;
       const len =
         Math.random() < 0.5 ? 9 + Math.random() * 12 : 22 + Math.random() * 30;
-      const life = 1100 + Math.random() * 1600;
+      const life = 800 + Math.random() * 900;
       const step = 44;
       const rows = Math.max(1, Math.floor((host.clientHeight || 300) / step));
       const row = Math.floor(Math.random() * rows);
       const r = Math.random();
       const peak =
-        r < 0.8
-          ? 0.12 + Math.random() * 0.14
-          : r < 0.97
-            ? 0.38 + Math.random() * 0.22
-            : 0.85;
+        r < 0.7
+          ? 0.4 + Math.random() * 0.2
+          : r < 0.95
+            ? 0.6 + Math.random() * 0.25
+            : 0.9;
 
       Object.assign(s.style, {
         left: `${(Math.random() * 100).toFixed(2)}%`,
@@ -59,11 +59,8 @@ export function HeroLines() {
     const tick = () => {
       if (!alive) return;
       blip();
-      if (Math.random() < 0.06) {
-        const t = window.setTimeout(blip, 80 + Math.random() * 160);
-        pending.add(t);
-      }
-      tickTimer = window.setTimeout(tick, 720 + Math.random() * 1700);
+      blip();
+      tickTimer = window.setTimeout(tick, 180 + Math.random() * 320);
     };
     tick();
 
