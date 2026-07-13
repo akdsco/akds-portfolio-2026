@@ -11,7 +11,7 @@ Rough on purpose. Owner chisels on the rendered site. Voice: de-AI rules (no em 
 **Hook:** Solo-shipped an iOS app to test whether cyclists wanted one home for routes scattered across Garmin, Strava, Komoot, and club Google Docs, then killed it when the market said no.
 
 - **Company:** Self-initiated (iOS) · **Role:** Solo build
-- **Period:** (confirm dates) · **Stack:** React Native · iOS · TypeScript
+- **Period:** Mar to Jun 2025 · **Stack:** React Native · iOS · TypeScript
 
 ---
 
