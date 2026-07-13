@@ -69,7 +69,7 @@ export type PortfolioCard = {
 /**
  * A case study extends a PortfolioCard with long-form, section-based content.
  * The card fields (title, company, role, stack) still drive the index summary;
- * `hook` and `sections` drive the detail page at /work/[slug].
+ * `hook` and `sections` drive the detail page at /projects/[slug].
  *
  * Section bodies are arrays of plain-text paragraphs (no markdown), matching the
  * rest of this file. The render layer decides presentation.

@@ -59,7 +59,7 @@ are verbatim and must not be edited.
 
 ---
 
-## PROJECTS index (`/work`) · cards
+## PROJECTS index (`/projects`) · cards
 
 Each card: title, company, one-line hook, stack chips. The first four link to a
 case-study detail page. Film production tracking is a card only (no detail page).

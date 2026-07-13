@@ -39,7 +39,7 @@ and sweats the details," not costume.
 - One signal accent color, used sparingly.
 - Monospace as an **accent** type only (labels, metadata, section numbers, stack
   chips, breadcrumbs), never for body copy.
-- Code-block / terminal-adjacent cues used with restraint: a `~/work/proof-library`
+- Code-block / terminal-adjacent cues used with restraint: a `~/projects/proof-library`
   style breadcrumb, mono section numbers, a subtle prompt glyph. Suggestion, not theme-park.
 - Generous, confident typographic hierarchy. Real information density handled gracefully.
 - Precise spacing and alignment. The craft signal lives in the details.
@@ -72,7 +72,7 @@ as accent: linear.app, vercel.com.
   the color tokens (as hex or oklch), spacing rhythm, and radii. This matters more
   than pixel perfection.
 
-## The anchor screen: case-study detail (`/work/[slug]`)
+## The anchor screen: case-study detail (`/projects/[slug]`)
 
 Design the page for the real case study below. It must gracefully render every
 element present here. Components this screen establishes (and the rest of the site reuses):
@@ -164,7 +164,7 @@ just do not paint the anchor into a corner that cannot extend to them.
 
 - **Home / showcase:** hero (name, one-line tagline, a 2–3 sentence bio), then a
   grid of work cards, a skills section, testimonials. GitHub + LinkedIn in the nav.
-- **`/work` index:** 4 case-study cards (Proof Library, SlateIQ, AI research
+- **`/projects` index:** 4 case-study cards (Proof Library, SlateIQ, AI research
   assistant, Routes Wallet) plus an "earlier work" toggle revealing 2 more.
 - **Skills section:** 9 categories, each a heading plus a list of tags. Item counts
   are uneven, from 4 up to 14. No progress bars, no star ratings, no levels.
