@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 
 import { ThemeProvider } from "@/components/theme-provider";
+import { PaletteProvider } from "@/components/command-palette";
 import { SiteNav } from "@/components/site-nav";
 import { SiteFooter } from "@/components/site-footer";
 
@@ -41,9 +42,11 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <SiteNav />
-          <main className="flex-1">{children}</main>
-          <SiteFooter />
+          <PaletteProvider>
+            <SiteNav />
+            <main className="flex-1">{children}</main>
+            <SiteFooter />
+          </PaletteProvider>
         </ThemeProvider>
         <Analytics />
       </body>

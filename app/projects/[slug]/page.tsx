@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 
+import { HeroPrompt } from "@/components/command-palette";
 import { MetaCard } from "@/components/case-study/meta-card";
 import { Toc } from "@/components/case-study/toc";
 import { Kicker } from "@/components/kicker";
@@ -64,12 +64,9 @@ export default async function CaseStudyPage({
       <section className="border-line relative border-b">
         <div className="scanline pointer-events-none absolute inset-0" />
         <div className="relative mx-auto max-w-[900px] px-6 py-10 md:px-11">
-          <Link
-            href="/projects"
-            className="text-faint hover:text-ink mb-6 inline-flex items-center gap-2 font-mono text-[12.5px] transition-colors"
-          >
-            <span className="text-brand">$</span> cd ~/projects
-          </Link>
+          <div className="mb-6">
+            <HeroPrompt command={`cat ~/projects/${slug}.md`} />
+          </div>
           <h1 className="text-ink mb-4 text-4xl font-semibold tracking-tight sm:text-[46px]">
             {project.title}
           </h1>

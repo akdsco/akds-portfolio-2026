@@ -1,5 +1,6 @@
 import Image from "next/image";
 
+import { HeroPrompt } from "@/components/command-palette";
 import { about, hero, profile } from "@/data/portfolio";
 
 const HIGHLIGHT = "AI-native software";
@@ -30,11 +31,9 @@ export function Hero() {
           </div>
         </div>
 
-        {/* Terminal prompt (static; wired to the command palette later). */}
-        <div className="text-dim mb-6 flex items-center gap-2 font-mono text-[12.5px]">
-          <span className="text-brand">$</span>
-          <span>cat ~/about.md</span>
-          <span className="bg-brand animate-blink inline-block h-[15px] w-2 translate-y-0.5" />
+        {/* Terminal prompt: opens the command palette. */}
+        <div className="mb-6">
+          <HeroPrompt command="cat ~/about.md" />
         </div>
 
         <h1 className="text-ink mb-2 text-4xl font-semibold tracking-tight sm:text-[44px]">

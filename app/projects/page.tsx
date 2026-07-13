@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 
+import { HeroPrompt } from "@/components/command-palette";
 import { EarlierWork } from "@/components/projects/earlier-work";
 import { ProjectCard } from "@/components/projects/project-card";
 import { projects } from "@/data/portfolio";
@@ -18,10 +19,8 @@ export default function ProjectsPage() {
       <section className="border-line relative border-b">
         <div className="scanline pointer-events-none absolute inset-0" />
         <div className="relative mx-auto max-w-[880px] px-6 py-11 md:px-10">
-          <div className="text-dim mb-6 flex items-center gap-2 font-mono text-[12.5px]">
-            <span className="text-brand">$</span>
-            <span>ls ~/projects</span>
-            <span className="bg-brand animate-blink inline-block h-[15px] w-2 translate-y-0.5" />
+          <div className="mb-6">
+            <HeroPrompt command="ls ~/projects" />
           </div>
           <h1 className="text-ink mb-3 text-4xl font-semibold tracking-tight sm:text-[40px]">
             Projects
