@@ -17,9 +17,11 @@ are verbatim and must not be edited.
 - **Title:** Software Engineer · Full-Stack · TypeScript · React · Node
 - **Location:** London, UK
 - **Availability:** Open to senior / staff / founding-engineer roles. Hybrid or remote.
-- **Social links (nav):** GitHub (github.com/akdsco), LinkedIn (linkedin.com/in/akds),
-  Stack Overflow, Pluralsight
-- **No contact form, no email field.** GitHub + LinkedIn only.
+- **Social links displayed in nav:** GitHub (github.com/akdsco) + LinkedIn
+  (linkedin.com/in/akds) ONLY. Stack Overflow and Pluralsight exist in the profile
+  data but are intentionally not shown.
+- **No contact form, no email field, no mailto.** The owner does not want inbound
+  contact via the site; GitHub + LinkedIn are the only surfaced links.
 - **Résumé/CV:** a downloadable PDF (link only; file supplied later).
 
 ---

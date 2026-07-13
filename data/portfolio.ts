@@ -28,7 +28,7 @@ export type Profile = {
   title: string;
   location: string;
   availability: string;
-  publicEmail: string; // for the website contact form
+  publicEmail: string; // hire contact; kept in data, intentionally NOT surfaced on the site (no contact form, no mailto)
   cvEmail: string; // kept off the public site, for CV / direct outreach
   brandImage: string;
   cvFile: string;
@@ -154,6 +154,8 @@ export const profile: Profile = {
   cvEmail: "arkadiusz.ostrowski@protonmail.com",
   brandImage: "/images/brand-image.webp",
   cvFile: "",
+  // Full set of profile links (data). The nav DISPLAYS only GitHub + LinkedIn;
+  // Stack Overflow + Pluralsight are kept here for reference / future use, not shown.
   socials: [
     { label: "LinkedIn", url: "https://www.linkedin.com/in/akds/" },
     { label: "GitHub", url: "https://github.com/akdsco" },
