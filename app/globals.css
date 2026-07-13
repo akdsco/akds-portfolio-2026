@@ -189,6 +189,17 @@
     transform: translateX(14px) scaleX(1);
   }
 }
+/* Static reference so the fx-blip/fx-wipe keyframes are not tree-shaken by
+ * Lightning CSS (JS sets only duration + position). hero-lines.tsx spawns these. */
+.fx-line {
+  position: absolute;
+  border-radius: 1px;
+  transform-origin: left center;
+  animation-name: fx-blip, fx-wipe;
+  animation-timing-function: ease-in-out, ease-out;
+  animation-fill-mode: forwards;
+  animation-iteration-count: 1;
+}
 
 @layer utilities {
   /* Subtle CRT scanline overlay for hero bands. */

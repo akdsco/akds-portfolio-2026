@@ -22,6 +22,7 @@ export function HeroLines() {
     const blip = () => {
       if (host.childElementCount > 26) host.firstChild?.remove();
       const s = document.createElement("span");
+      s.className = "fx-line";
       const hi = Math.random() < 0.55;
       const len =
         Math.random() < 0.5 ? 9 + Math.random() * 12 : 22 + Math.random() * 30;
@@ -38,15 +39,12 @@ export function HeroLines() {
             : 0.85;
 
       Object.assign(s.style, {
-        position: "absolute",
         left: `${(Math.random() * 100).toFixed(2)}%`,
         top: `${row * step + step - 4}px`,
         width: `${Math.round(len)}px`,
         height: `${Math.random() < 0.25 ? 2 : 1.5}px`,
-        borderRadius: "1px",
         background: hi ? "var(--hi)" : "var(--fg)",
-        transformOrigin: "left center",
-        animation: `fx-blip ${Math.round(life)}ms ease-in-out forwards, fx-wipe ${Math.round(life)}ms ease-out forwards`,
+        animationDuration: `${Math.round(life)}ms`,
       } satisfies Partial<CSSStyleDeclaration>);
       s.style.setProperty("--pk", peak.toFixed(3));
       host.appendChild(s);
