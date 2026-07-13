@@ -1,0 +1,46 @@
+name: CI
+
+# Guard every PR (and pushes to main) so broken code never lands.
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+# Read-only CI: least-privilege token so a compromised step can't write to the repo.
+permissions:
+  contents: read
+
+# Cancel superseded PR runs to save minutes; never cancel a main run (keep its record).
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  verify:
+    name: format · lint · typecheck · build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      NEXT_TELEMETRY_DISABLED: "1"
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Prettier check
+        run: npm run format:check
+
+      - name: ESLint
+        run: npm run lint
+
+      - name: TypeScript typecheck
+        run: npm run typecheck
+
+      - name: Production build
+        run: npm run build
