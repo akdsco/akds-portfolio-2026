@@ -1,0 +1,42 @@
+/*
+ * THEME PALETTE — the one file to edit to recolour the site.
+ *
+ * "Tasteful dev-coded", cool scheme. Every colour is a semantic role, not a
+ * component. Swap the oklch values here and the whole site follows; nothing
+ * else references raw colours. `:root` is light, `.dark` is dark (next-themes
+ * toggles the `.dark` class on <html>).
+ *
+ * Roles:
+ *   base     page background        panel    cards / surfaces
+ *   ink      primary text           dim      secondary text
+ *   faint    tertiary / labels      line     borders / dividers
+ *   chip     chip / tag background  brand    the cyan `$` prompt + accents
+ *   hi       coral highlight (kickers, arrows, pulses, emphasis)
+ *   hi-soft  translucent hi (glows / focus rings)
+ */
+
+:root {
+  --base: oklch(0.98 0.006 240);
+  --panel: oklch(1 0 0);
+  --ink: oklch(0.2 0.01 248);
+  --dim: oklch(0.44 0.01 248);
+  --faint: oklch(0.57 0.01 248);
+  --line: oklch(0.2 0.02 248 / 0.13);
+  --chip: oklch(0.2 0.02 248 / 0.045);
+  --brand: oklch(0.5 0.11 195);
+  --hi: oklch(0.52 0.21 31);
+  --hi-soft: oklch(0.52 0.21 31 / 0.22);
+}
+
+.dark {
+  --base: oklch(0.155 0.012 248);
+  --panel: oklch(0.198 0.014 248);
+  --ink: oklch(0.96 0.004 248);
+  --dim: oklch(0.73 0.012 248);
+  --faint: oklch(0.54 0.012 248);
+  --line: oklch(1 0 0 / 0.1);
+  --chip: oklch(1 0 0 / 0.05);
+  --brand: oklch(0.8 0.12 178);
+  --hi: oklch(0.6 0.2 33);
+  --hi-soft: oklch(0.6 0.2 33 / 0.2);
+}
