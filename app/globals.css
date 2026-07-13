@@ -162,6 +162,24 @@
     transform: scale(0.8);
   }
 }
+/* Decorative hero "line-blip": a thin line wipes in, holds, fades out. */
+@keyframes line-blip {
+  0% {
+    opacity: 0;
+    transform: translateX(-10px) scaleX(0);
+  }
+  24% {
+    opacity: var(--pk, 0.3);
+    transform: translateX(0) scaleX(1);
+  }
+  65% {
+    opacity: var(--pk, 0.3);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(14px) scaleX(1);
+  }
+}
 
 @layer utilities {
   /* Subtle CRT scanline overlay for hero bands. */

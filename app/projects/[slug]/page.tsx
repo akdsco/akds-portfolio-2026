@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { HeroPrompt } from "@/components/command-palette";
+import { HeroLines } from "@/components/hero-lines";
 import { MetaCard } from "@/components/case-study/meta-card";
 import { Toc } from "@/components/case-study/toc";
 import { Kicker } from "@/components/kicker";
@@ -63,6 +64,7 @@ export default async function CaseStudyPage({
     <>
       <section className="border-line relative border-b">
         <div className="scanline pointer-events-none absolute inset-0" />
+        <HeroLines />
         <div className="relative mx-auto max-w-[900px] px-6 py-10 md:px-11">
           <div className="mb-6">
             <HeroPrompt command={`cat ~/projects/${slug}.md`} />

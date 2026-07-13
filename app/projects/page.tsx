@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 import { HeroPrompt } from "@/components/command-palette";
+import { HeroLines } from "@/components/hero-lines";
 import { EarlierWork } from "@/components/projects/earlier-work";
 import { ProjectCard } from "@/components/projects/project-card";
 import { projects } from "@/data/portfolio";
@@ -18,6 +19,7 @@ export default function ProjectsPage() {
     <>
       <section className="border-line relative border-b">
         <div className="scanline pointer-events-none absolute inset-0" />
+        <HeroLines />
         <div className="relative mx-auto max-w-[880px] px-6 py-11 md:px-10">
           <div className="mb-6">
             <HeroPrompt command="ls ~/projects" />

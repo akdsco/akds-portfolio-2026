@@ -1,6 +1,7 @@
 import Image from "next/image";
 
 import { HeroPrompt } from "@/components/command-palette";
+import { HeroLines } from "@/components/hero-lines";
 import { about, hero, profile } from "@/data/portfolio";
 
 const HIGHLIGHT = "AI-native software";
@@ -10,6 +11,7 @@ export function Hero() {
   return (
     <section className="border-line relative border-b">
       <div className="scanline pointer-events-none absolute inset-0" />
+      <HeroLines />
       <div className="relative mx-auto max-w-3xl px-6 py-14 md:px-10">
         {/* Brand photo, pinned top-right with corner ticks. */}
         <div className="absolute top-12 right-6 hidden -rotate-2 md:block">
