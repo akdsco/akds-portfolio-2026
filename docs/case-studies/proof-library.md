@@ -11,7 +11,7 @@ This draft exists to FIND the CaseStudy shape (section set, length, voice), not 
 
 # Proof Library
 
-**Hook:** Owned the proof store behind a sales-AI product: ingestion, a CEO-facing dashboard, and a tagging layer that kept every customer's library organized on its own.
+**Hook:** Owned the proof store behind a sales-AI product: ingestion, a user-facing dashboard with search, and a tagging layer that kept every customer's library organized on its own.
 
 - **Company:** GrowthNation (stealth, pre-product-market-fit) · **Role:** Senior Software Engineer / Product Engineer (contract)
 - **Period:** Jul 2025 to Jun 2026
@@ -41,7 +41,7 @@ I split the store into three layers and built each one with AI assistance under 
 
 Ingestion came first. The public-scrape lane runs end to end: paste a URL, it extracts, you preview, you save, it appears in the dashboard. On top of that, uploads of any kind (docs, PDFs, plain text) plus screenshots run through AI vision to pull quotes and testimonials straight out of images.
 
-Presentation was the surface the CEO wanted, and it had to work for every workspace on real data. Coverage percentage, total items, gaps, and last contribution across the top. A coverage matrix broken down by ICP, with a bar per pain point. Rows you can expand to see the underlying quotes and stats with their source. A filter for consented-only proof, and a sidebar of live contributions.
+Presentation was a user-facing dashboard that had to work for every workspace on real data, and the CEO wanted it front and center. It ran as two tabs. The Dashboard tab gave the overview: coverage percentage, total items, gaps, and last contribution across the top, then a coverage matrix broken down by ICP with a bar per pain point, rows you can expand to the underlying quotes and stats with their source, a consented-only filter, and a sidebar of live contributions. The Explore tab was for digging into the store itself, so a user could find a specific piece of proof by filtering, sorting, and fuzzy-searching across the whole database.
 
 The tagging layer was the decision that mattered most. Every new quote, stat, or case study gets tagged against the workspace's ICPs and pain points before the save call even returns, and when a workspace edits its ICPs or pain points, everything already stored gets re-tagged. That is what let a brand-new customer have a useful library on day one, and what kept it accurate as their positioning shifted.
 
