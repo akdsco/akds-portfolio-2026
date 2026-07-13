@@ -1,17 +1,18 @@
 <!--
 CASE STUDY #1 — DRAFT for owner review.
 Source of every claim: data/portfolio.ts + docs/portfolio-research.md. Nothing invented.
-Stealth handling: company rendered as "a stealth sales-AI startup" in all public-facing
-prose. Real name (GrowthNation) appears in this comment only, for editor reference — do
-not surface it in the rendered page. Testimonial-style quotes, if used, stay verbatim.
+Naming: company named openly as GrowthNation (owner's call, 2026-07-13 — reverses the
+earlier stealth-framing in docs/portfolio-handoff.md). Framed as a stealth, pre-product-
+market-fit startup that pivoted repeatedly; that churn is used to show adaptability, not
+to disparage. Testimonial-style quotes, if used, stay verbatim.
 This draft exists to FIND the CaseStudy shape (section set, length, voice), not to ship.
 -->
 
 # Proof Library
 
-**Hook:** Owned the proof store end-to-end at a stealth sales-AI startup — ingestion, a CEO-facing dashboard, and a server-side LLM tagging layer that kept every customer's evidence library in sync automatically.
+**Hook:** Owned the proof store end-to-end at GrowthNation, a stealth pre-product-market-fit startup — ingestion, a CEO-facing dashboard, and a server-side LLM tagging layer that kept every customer's evidence library in sync automatically.
 
-- **Company:** Stealth sales-AI startup · **Role:** Senior Software Engineer / Product Engineer (contract)
+- **Company:** GrowthNation (stealth, pre-product-market-fit) · **Role:** Senior Software Engineer / Product Engineer (contract)
 - **Period:** Jul 2025 – Jun 2026 · **Lane:** the underlying proof store, ingestion, and presentation
 - **Stack:** TypeScript · React · Supabase · Vercel AI SDK · custom MCP servers · BullMQ
 
@@ -19,7 +20,9 @@ This draft exists to FIND the CaseStudy shape (section set, length, voice), not 
 
 ## Problem
 
-Three months before the contract ended, the CEO called a pivot: from AI content marketing to a "social proof OS for sales teams." The new product needed a single place to hold a company's proof — case studies, customers, testimonials, stats — that other surfaces could read from to assemble tailored sales pitches. That store didn't exist yet, and the two surfaces that would consume it (proof *delivery* and proof *collection*) were being built in parallel by other engineers. Someone had to own the thing in the middle and make it real.
+GrowthNation was a stealth, pre-product-market-fit startup, and it hunted for that fit by pivoting: it began in AI content marketing, and roughly three months before the contract ended the CEO pivoted it to a "social proof OS for sales teams." (It has since pivoted again, after I left, toward AI-driven org optimization — interviewing employees with AI to surface improvements that used to be done by hand.) Delivering real product through that churn was the job.
+
+The sales-tool pivot needed a single place to hold a company's proof — case studies, customers, testimonials, stats — that other surfaces could read from to assemble tailored sales pitches. That store didn't exist yet, and the two surfaces that would consume it (proof *delivery* and proof *collection*) were being built in parallel by other engineers. Someone had to own the thing in the middle and make it real.
 
 ## Constraints
 
