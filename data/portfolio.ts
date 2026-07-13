@@ -159,7 +159,10 @@ export const profile: Profile = {
   socials: [
     { label: "LinkedIn", url: "https://www.linkedin.com/in/akds/" },
     { label: "GitHub", url: "https://github.com/akdsco" },
-    { label: "Stack Overflow", url: "https://stackoverflow.com/users/8598252/akds" },
+    {
+      label: "Stack Overflow",
+      url: "https://stackoverflow.com/users/8598252/akds",
+    },
     { label: "Pluralsight", url: "https://app.pluralsight.com/profile/akds" },
   ],
 };
@@ -169,7 +172,7 @@ export const hero: HeroCopy = {
   tagline: "I build production AI-native software end-to-end.",
   paragraphs: [
     "London-based. TypeScript, React, Node, Postgres, BullMQ, Vercel AI SDK. Currently wrapping up a 12-month contract at a stealth sales-AI startup, where I ran the proof-library product, built the server-side LLM tagging architecture, and wrote CEO-facing delivery summaries.",
-    "Previously: three years at a documentary studio shipping AI-assisted research tools on GPT-3.5/4 in 2023, before \"AI-assisted coding\" was a phrase.",
+    'Previously: three years at a documentary studio shipping AI-assisted research tools on GPT-3.5/4 in 2023, before "AI-assisted coding" was a phrase.',
     "Open to senior / staff / founding-engineer roles.",
   ],
 };
@@ -303,7 +306,7 @@ export const skills: SkillCategory[] = [
       "Currying-based dependency injection",
       "Ports-and-adapters",
       "TDD",
-      "\"Agent skills produce data\" pattern",
+      '"Agent skills produce data" pattern',
       "Pay-on-success cost tracking",
       "AI-assisted coding with human-in-the-loop quality gates",
     ],
@@ -372,7 +375,7 @@ export const portfolio: PortfolioCard[] = [
     role: "Solo-built a React Native iOS app to test market demand for a universal cycling-route wallet. A single home for routes scattered across Garmin, Strava, Komoot, Ride with GPS, and the inevitable Google Docs cycling clubs end up maintaining.",
     stack: ["React Native", "iOS", "TypeScript"],
     focus:
-      "Product judgement under uncertainty. Real market test with a London cycling club returned an honest \"we have three apps already\" signal. Killed the project rather than push past the data.",
+      'Product judgement under uncertainty. Real market test with a London cycling club returned an honest "we have three apps already" signal. Killed the project rather than push past the data.',
     image: "/img/portfolio-routes-wallet.png",
   },
   {
@@ -402,7 +405,7 @@ export const portfolio: PortfolioCard[] = [
     visible: false,
     title: "Stores panel",
     company: "Wutzu Technologies",
-    role: "Refactored the MVP codebase; shipped the first production stores panel, \"still in use in some areas to this day\" (Hevar Abrihem, 2021).",
+    role: 'Refactored the MVP codebase; shipped the first production stores panel, "still in use in some areas to this day" (Hevar Abrihem, 2021).',
     stack: ["JavaScript", "Node", "Payments API"],
     focus: "First production refactor at scale; junior → mid arc.",
   },
@@ -461,7 +464,15 @@ export const experience: WorkExperience[] = [
       "Built the film production tracking platform: database design, problem definition, early prototypes.",
       "Worked closely with the CEO and Bonamy Grimes on prioritisation and stakeholder framing.",
     ],
-    stack: ["TypeScript", "React", "Node", "Express", "MongoDB", "BullMQ", "OpenAI"],
+    stack: [
+      "TypeScript",
+      "React",
+      "Node",
+      "Express",
+      "MongoDB",
+      "BullMQ",
+      "OpenAI",
+    ],
   },
   {
     id: 4,
@@ -531,13 +542,21 @@ export const experience: WorkExperience[] = [
     location: "London",
     employmentType: "Full-time",
     summary:
-      "\"Deliveroo for small independent London shops.\" Worked on order / basket creation and external payment integration via API. Intern → developer in 7 months.",
+      '"Deliveroo for small independent London shops." Worked on order / basket creation and external payment integration via API. Intern → developer in 7 months.',
     highlights: [
-      "Refactored the MVP codebase and shipped the first production stores panel (Hevar Abrihem: \"still in use in some areas to this day\").",
+      'Refactored the MVP codebase and shipped the first production stores panel (Hevar Abrihem: "still in use in some areas to this day").',
       "Built order and basket flows with external payment-API integration.",
       "Promoted from Intern to JavaScript Developer in seven months.",
     ],
-    stack: ["JavaScript", "React", "Node", "Firebase", "Redux", "Webpack", "Payments API"],
+    stack: [
+      "JavaScript",
+      "React",
+      "Node",
+      "Firebase",
+      "Redux",
+      "Webpack",
+      "Payments API",
+    ],
   },
   {
     id: 1,
@@ -647,7 +666,8 @@ export const testimonials: Testimonial[] = [
     date: "Nov 14, 2017",
     quote:
       "Arkadiusz worked very well in a team to gather requirements very accurately and turn them into visual results with a very fast turnaround. Arkadiusz is someone who gets the job done.",
-    context: "Named industry figure (Snyk, Tessl); validates the freelance era.",
+    context:
+      "Named industry figure (Snyk, Tessl); validates the freelance era.",
   },
   {
     id: 5,
