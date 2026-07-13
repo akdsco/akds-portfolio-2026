@@ -153,7 +153,7 @@ export const profile: Profile = {
     "Open to senior / staff / founding-engineer roles. Hybrid or remote.",
   publicEmail: "hire-arkadiusz@pm.me",
   cvEmail: "arkadiusz.ostrowski@protonmail.com",
-  brandImage: "/images/brand-image.jpg",
+  brandImage: "/images/brand-image.webp",
   aboutImage: "/images/about-image.jpg",
   cvFile: "",
   socials: [
