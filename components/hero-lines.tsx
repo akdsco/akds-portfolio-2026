@@ -1,43 +1,87 @@
-import type { CSSProperties } from "react";
+"use client";
 
-// Decorative animated line "blips" behind hero content. Deterministic positions
-// (no random, so SSR is stable). Hidden entirely for prefers-reduced-motion.
-const LINES = [
-  { top: 14, left: 6, w: 90, pk: 0.3, delay: 0, dur: 3.4 },
-  { top: 28, left: 22, w: 140, pk: 0.22, delay: 1.1, dur: 4.2 },
-  { top: 44, left: 4, w: 60, pk: 0.34, delay: 0.6, dur: 3.0 },
-  { top: 58, left: 30, w: 110, pk: 0.2, delay: 2.0, dur: 4.6 },
-  { top: 72, left: 10, w: 170, pk: 0.26, delay: 0.3, dur: 3.8 },
-  { top: 20, left: 55, w: 80, pk: 0.24, delay: 1.6, dur: 4.0 },
-  { top: 38, left: 68, w: 120, pk: 0.3, delay: 0.9, dur: 3.3 },
-  { top: 64, left: 60, w: 70, pk: 0.22, delay: 2.4, dur: 4.4 },
-  { top: 82, left: 40, w: 100, pk: 0.26, delay: 1.3, dur: 3.6 },
-  { top: 8, left: 44, w: 130, pk: 0.2, delay: 0.5, dur: 4.1 },
-  { top: 50, left: 78, w: 90, pk: 0.3, delay: 1.8, dur: 3.5 },
-  { top: 88, left: 14, w: 60, pk: 0.24, delay: 0.2, dur: 3.9 },
-];
+import { useEffect, useRef } from "react";
 
+// Faithful port of the design's fx layer (_fxTick / _fxBlip): thin line "blips"
+// spawn at random positions on a ~44px row grid, fade in-and-out once while
+// wiping across, then get removed. Mostly very faint, with a rare bright flash.
+// Client-only (spawns on the client, so no SSR/hydration output) and disabled
+// for prefers-reduced-motion.
 export function HeroLines() {
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const host = ref.current;
+    if (!host) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    let alive = true;
+    let tickTimer = 0;
+    const pending = new Set<number>();
+
+    const blip = () => {
+      if (host.childElementCount > 26) host.firstChild?.remove();
+      const s = document.createElement("span");
+      const hi = Math.random() < 0.55;
+      const len =
+        Math.random() < 0.5 ? 9 + Math.random() * 12 : 22 + Math.random() * 30;
+      const life = 1100 + Math.random() * 1600;
+      const step = 44;
+      const rows = Math.max(1, Math.floor((host.clientHeight || 300) / step));
+      const row = Math.floor(Math.random() * rows);
+      const r = Math.random();
+      const peak =
+        r < 0.8
+          ? 0.12 + Math.random() * 0.14
+          : r < 0.97
+            ? 0.38 + Math.random() * 0.22
+            : 0.85;
+
+      Object.assign(s.style, {
+        position: "absolute",
+        left: `${(Math.random() * 100).toFixed(2)}%`,
+        top: `${row * step + step - 4}px`,
+        width: `${Math.round(len)}px`,
+        height: `${Math.random() < 0.25 ? 2 : 1.5}px`,
+        borderRadius: "1px",
+        background: hi ? "var(--hi)" : "var(--fg)",
+        transformOrigin: "left center",
+        animation: `fx-blip ${Math.round(life)}ms ease-in-out forwards, fx-wipe ${Math.round(life)}ms ease-out forwards`,
+      } satisfies Partial<CSSStyleDeclaration>);
+      s.style.setProperty("--pk", peak.toFixed(3));
+      host.appendChild(s);
+
+      const t = window.setTimeout(() => {
+        s.remove();
+        pending.delete(t);
+      }, life + 60);
+      pending.add(t);
+    };
+
+    const tick = () => {
+      if (!alive) return;
+      blip();
+      if (Math.random() < 0.06) {
+        const t = window.setTimeout(blip, 80 + Math.random() * 160);
+        pending.add(t);
+      }
+      tickTimer = window.setTimeout(tick, 720 + Math.random() * 1700);
+    };
+    tick();
+
+    return () => {
+      alive = false;
+      clearTimeout(tickTimer);
+      pending.forEach(clearTimeout);
+      host.replaceChildren();
+    };
+  }, []);
+
   return (
     <div
+      ref={ref}
       aria-hidden
-      className="pointer-events-none absolute inset-0 overflow-hidden motion-reduce:hidden"
-    >
-      {LINES.map((l) => (
-        <span
-          key={`${l.top}-${l.left}`}
-          className="bg-brand absolute h-px origin-left"
-          style={
-            {
-              top: `${l.top}%`,
-              left: `${l.left}%`,
-              width: `${l.w}px`,
-              animation: `line-blip ${l.dur}s ease-in-out ${l.delay}s infinite`,
-              "--pk": l.pk,
-            } as CSSProperties
-          }
-        />
-      ))}
-    </div>
+      className="pointer-events-none absolute inset-0 overflow-hidden"
+    />
   );
 }

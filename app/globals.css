@@ -162,21 +162,30 @@
     transform: scale(0.8);
   }
 }
-/* Decorative hero "line-blip": a thin line wipes in, holds, fades out. */
-@keyframes line-blip {
+/* Decorative hero line "blips" (see components/hero-lines.tsx): fade in-and-out
+ * once (fx-blip) while wiping across (fx-wipe). Ported from the design fx layer. */
+@keyframes fx-blip {
   0% {
     opacity: 0;
-    transform: translateX(-10px) scaleX(0);
   }
-  24% {
-    opacity: var(--pk, 0.3);
-    transform: translateX(0) scaleX(1);
+  35% {
+    opacity: var(--pk, 0.4);
   }
   65% {
-    opacity: var(--pk, 0.3);
+    opacity: var(--pk, 0.4);
   }
   100% {
     opacity: 0;
+  }
+}
+@keyframes fx-wipe {
+  0% {
+    transform: translateX(-10px) scaleX(0);
+  }
+  24% {
+    transform: translateX(0) scaleX(1);
+  }
+  100% {
     transform: translateX(14px) scaleX(1);
   }
 }
