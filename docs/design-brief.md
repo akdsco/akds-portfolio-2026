@@ -1,4 +1,4 @@
-# Design brief — akds portfolio (portable kickoff for a Claude design session)
+# Design brief: akds portfolio (portable kickoff for a Claude design session)
 
 This is a self-contained brief. Paste it into a fresh Claude session and ask for
 an **Artifact**. It has everything the design needs: direction, references,
@@ -67,7 +67,7 @@ as accent: linear.app, vercel.com.
 - **Implementation target (design to be portable to it):** Next.js + Tailwind CSS
   v4 + shadcn/ui (Base UI). Keep it implementable in plain CSS/Tailwind. Use
   web-safe or Google-available fonts. Current baseline fonts are **Geist** (sans)
-  and **Geist Mono** — feel free to propose alternatives, but keep them freely web-available.
+  and **Geist Mono**. Feel free to propose alternatives, but keep them freely web-available.
 - **Annotate the system** so it ports into Tailwind tokens: name the type scale,
   the color tokens (as hex or oklch), spacing rhythm, and radii. This matters more
   than pixel perfection.
@@ -79,15 +79,15 @@ element present here. Components this screen establishes (and the rest of the si
 
 - **Breadcrumb / back-to-work** affordance (dev-coded cue lives well here)
 - **Page title** (project name)
-- **Hook** — the one lede line under the title; largest non-title text; its job is
+- **Hook**: the one lede line under the title; largest non-title text; its job is
   to pull the reader in
-- **Meta row** — company, role, period, stack chips (mono accent candidate)
-- **Section blocks** — Problem, Constraints, Approach, Contribution, Outcome,
+- **Meta row**: company, role, period, stack chips (mono accent candidate)
+- **Section blocks**: Problem, Constraints, Approach, Contribution, Outcome,
   Reflection. Body is multi-paragraph prose. Design the section heading treatment
   (mono section numbers? kicker labels?) and comfortable reading measure.
-- **Stack chips** — small tag pills, 6 here but up to ~27 on other projects, so
+- **Stack chips**: small tag pills, 6 here but up to ~27 on other projects, so
   the treatment must survive wrapping to several rows.
-- **Inline testimonial** — an optional pulled quote with author + designation.
+- **Inline testimonial**: an optional pulled quote with author + designation.
 
 ### Real content for the anchor screen
 
@@ -155,7 +155,7 @@ element present here. Components this screen establishes (and the rest of the si
 > "Arkadiusz is a strong self-starter who is diligent and righteous when it comes
 > to building product, but measured and pragmatic about delivery so doesn't allow
 > himself to get pulled into over-engineering."
-> — **Ben Ritchie**, Hands-on CTO · managed Arkadiusz directly
+> **Ben Ritchie**, Hands-on CTO · managed Arkadiusz directly
 
 ## The wider system (design the anchor screen aware of these)
 
@@ -178,8 +178,8 @@ just do not paint the anchor into a corner that cannot extend to them.
 1. **Two directional variations** of the case-study detail page as **self-contained
    responsive HTML artifacts** (inline CSS, no external assets), each working in
    light and dark and from mobile to desktop.
-2. For each: a short note on the **design tokens** — type scale, color tokens
-   (hex/oklch), spacing rhythm, radii, and how monospace is used — so it ports
+2. For each: a short note on the **design tokens** (type scale, color tokens as
+   hex/oklch, spacing rhythm, radii, and how monospace is used) so it ports
    cleanly into Tailwind v4.
 3. Call out any **hero-moment or signature detail** you introduced (the one thing
    that makes it memorable) so it can be applied consistently elsewhere.
