@@ -14,7 +14,7 @@ This draft exists to FIND the CaseStudy shape (section set, length, voice), not 
 **Hook:** At GrowthNation, a stealth startup still hunting for product-market fit, I owned the proof store: how evidence got in, the dashboard the CEO worked from, and a tagging layer that kept each customer's library organized on its own.
 
 - **Company:** GrowthNation (stealth, pre-product-market-fit) · **Role:** Senior Software Engineer / Product Engineer (contract)
-- **Period:** Jul 2025 to Jun 2026 · **Lane:** the proof store, ingestion, and presentation
+- **Period:** Jul 2025 to Jun 2026
 - **Stack:** TypeScript · React · Supabase · Vercel AI SDK · custom MCP servers · BullMQ
 
 ---
