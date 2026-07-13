@@ -6,21 +6,26 @@ on:
   push:
     branches: [main]
 
-# Cancel superseded runs on the same ref to save minutes.
+# Read-only CI: least-privilege token so a compromised step can't write to the repo.
+permissions:
+  contents: read
+
+# Cancel superseded PR runs to save minutes; never cancel a main run (keep its record).
 concurrency:
   group: ci-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   verify:
     name: format · lint · typecheck · build
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     env:
       NEXT_TELEMETRY_DISABLED: "1"
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
           node-version-file: .nvmrc
           cache: npm
