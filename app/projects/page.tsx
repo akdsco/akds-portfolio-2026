@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 import { HeroPrompt } from "@/components/command-palette";
-import { HeroLines } from "@/components/hero-lines";
+import { HeroBand } from "@/components/hero-band";
 import { EarlierWork } from "@/components/projects/earlier-work";
 import { ProjectCard } from "@/components/projects/project-card";
 import { projects } from "@/data/portfolio";
@@ -17,22 +17,18 @@ const earlier = projects.filter((p) => !p.featured);
 export default function ProjectsPage() {
   return (
     <>
-      <section className="border-line relative border-b">
-        <div className="scanline pointer-events-none absolute inset-0" />
-        <HeroLines />
-        <div className="relative mx-auto max-w-[880px] px-6 py-11 md:px-10">
-          <div className="mb-6">
-            <HeroPrompt command="ls ~/projects" />
-          </div>
-          <h1 className="text-ink mb-3 text-4xl font-semibold tracking-tight sm:text-[40px]">
-            Projects
-          </h1>
-          <p className="text-dim max-w-xl text-lg leading-relaxed text-pretty">
-            Selected work, newest first. Four have full write-ups; the rest are
-            here for completeness.
-          </p>
+      <HeroBand className="max-w-[880px] py-11">
+        <div className="mb-6">
+          <HeroPrompt command="ls ~/projects" />
         </div>
-      </section>
+        <h1 className="text-ink mb-3 text-4xl font-semibold tracking-tight sm:text-[40px]">
+          Projects
+        </h1>
+        <p className="text-dim max-w-xl text-lg leading-relaxed text-pretty">
+          Selected work, newest first. Four have full write-ups; the rest are
+          here for completeness.
+        </p>
+      </HeroBand>
 
       <div className="mx-auto max-w-[880px] px-6 py-10 md:px-10">
         <div className="grid gap-4 sm:grid-cols-2">

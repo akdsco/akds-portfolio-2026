@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { HeroPrompt } from "@/components/command-palette";
-import { HeroLines } from "@/components/hero-lines";
+import { HeroBand } from "@/components/hero-band";
 import { MetaCard } from "@/components/case-study/meta-card";
 import { Toc } from "@/components/case-study/toc";
 import { Kicker } from "@/components/kicker";
@@ -62,21 +62,17 @@ export default async function CaseStudyPage({
 
   return (
     <>
-      <section className="border-line relative border-b">
-        <div className="scanline pointer-events-none absolute inset-0" />
-        <HeroLines />
-        <div className="relative mx-auto max-w-[900px] px-6 py-10 md:px-11">
-          <div className="mb-6">
-            <HeroPrompt command={`cat ~/projects/${slug}.md`} />
-          </div>
-          <h1 className="text-ink mb-4 text-4xl font-semibold tracking-tight sm:text-[46px]">
-            {project.title}
-          </h1>
-          <p className="text-dim max-w-2xl text-xl leading-relaxed text-pretty">
-            {project.hook}
-          </p>
+      <HeroBand className="max-w-[900px] py-10 md:px-11">
+        <div className="mb-6">
+          <HeroPrompt command={`cat ~/projects/${slug}.md`} />
         </div>
-      </section>
+        <h1 className="text-ink mb-4 text-4xl font-semibold tracking-tight sm:text-[46px]">
+          {project.title}
+        </h1>
+        <p className="text-dim max-w-2xl text-xl leading-relaxed text-pretty">
+          {project.hook}
+        </p>
+      </HeroBand>
 
       <div className="mx-auto grid max-w-[900px] items-start gap-11 px-6 py-11 md:px-11 lg:grid-cols-[1fr_252px]">
         <div className="min-w-0">
