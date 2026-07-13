@@ -2,8 +2,8 @@
 
 Companion to the design brief. This is the real content for every surface except
 the case-study detail page (which the brief already covered with Proof Library).
-Attach this to the Claude design session so it designs Home, the Projects index,
-and About against actual text, not lorem.
+Attach this to the Claude design session so it designs the landing (Home/About)
+and the Projects index against actual text, not lorem.
 
 Naming note: the company formerly framed as "stealth sales-AI startup" is named
 openly as **GrowthNation** (stealth, pre-product-market-fit). Testimonial quotes
@@ -24,11 +24,19 @@ are verbatim and must not be edited.
 
 ---
 
-## HOME (`/`) · hero copy
+## THE LANDING (`/`) · Home and About in one page
+
+There is no separate Home or /about route. The site lands directly on this page,
+and this page is the About/home. Nav "About" points here (or to the bio section
+anchor); the logo also returns here. Compose it top-to-bottom as: hero band,
+featured projects, about/bio, skills, experience timeline, testimonials,
+education + certifications, footer.
+
+### Hero band (top of the landing)
 
 **Tagline:** I build production AI-native software end-to-end.
 
-**Hero paragraphs:**
+**Short intro paragraphs:**
 1. London-based. TypeScript, React, Node, Postgres, BullMQ, Vercel AI SDK.
    Recently wrapped a 12-month contract at GrowthNation, a stealth sales-AI
    startup, where I ran the proof-library product, built the server-side LLM
@@ -37,9 +45,14 @@ are verbatim and must not be edited.
    tools on GPT-3.5/4 in 2023, before "AI-assisted coding" was a phrase.
 3. Open to senior / staff / founding-engineer roles.
 
----
+### Featured projects (on the landing)
 
-## ABOUT (`/about`) · long-form bio
+A teaser strip of the four case-study cards (Proof Library, SlateIQ, AI research
+assistant, Routes Wallet), each linking to its `/projects/[slug]` detail page,
+with a "View all projects" link to the full index. Card content is in the
+PROJECTS index section below.
+
+### About / bio (fuller narrative, further down the landing)
 
 **Tagline:** Software Engineer · Full-Stack · TypeScript · React · Node
 
@@ -110,7 +123,7 @@ Connect4 and Wutzu sit behind an "earlier work" toggle.
 
 ---
 
-## SKILLS section (Home or About) · 9 categories
+## SKILLS section (on the landing) · 9 categories
 
 Headings + tag lists. Uneven counts (4 to 14). No bars, stars, or levels.
 
@@ -140,7 +153,7 @@ Headings + tag lists. Uneven counts (4 to 14). No bars, stars, or levels.
 
 ---
 
-## TESTIMONIALS (Home or About) · 6, verbatim
+## TESTIMONIALS (on the landing) · 6, verbatim
 
 Quote lengths 162–327 chars. Needs a treatment that survives the variance
 (line-clamp + expand is fine). Do not edit the quotes.
@@ -182,7 +195,7 @@ Quote lengths 162–327 chars. Needs a treatment that survives the variance
 
 ---
 
-## EXPERIENCE timeline (About) · roles, newest first
+## EXPERIENCE timeline (on the landing) · roles, newest first
 
 Each role: period, position, company, location/type, one-line summary, stack chips
 (3 to 27 chips · the chip treatment must survive the high end).
@@ -232,7 +245,7 @@ Each role: period, position, company, location/type, one-line summary, stack chi
 
 ---
 
-## EDUCATION (About)
+## EDUCATION (on the landing)
 
 - **Bachelor's degree, Software Developer** · OpenClassrooms (2019–2020)
   Degree-level diploma: JavaScript, REST APIs, OOP, React.js, MySQL, CSS3/HTML5,
@@ -241,7 +254,7 @@ Each role: period, position, company, location/type, one-line summary, stack chi
   Self-study track covering OCA Java SE 8 (1Z0-808) and MTA Software Development
   Fundamentals (98-361).
 
-## CERTIFICATIONS (About)
+## CERTIFICATIONS (on the landing)
 
 - **Cloud Digital Leader** · Google (Feb 2023) · current
 - **Oracle Certified Associate, Java SE 8 Programmer I** · Oracle (May 2018) · legacy
