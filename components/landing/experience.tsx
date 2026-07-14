@@ -10,7 +10,7 @@ export function Experience() {
         {experience.map((role) => (
           <div
             key={role.id}
-            className="border-line grid grid-cols-[16px_1fr] gap-4 border-t border-dashed py-5 sm:grid-cols-[16px_120px_1fr]"
+            className="border-line grid grid-cols-[16px_1fr] gap-4 border-t border-dashed py-5 first:border-t-0 first:pt-0 sm:grid-cols-[16px_120px_1fr]"
           >
             <div className="flex justify-center pt-1.5">
               <span className="bg-hi size-[9px] rounded-[2px] shadow-[0_0_0_4px_var(--base)]" />
