@@ -302,7 +302,7 @@ export function HeroPrompt({ command }: { command: string }) {
       aria-haspopup="dialog"
       aria-keyshortcuts="/ Meta+K Control+K"
       aria-label="Open command palette"
-      className="text-dim inline-flex cursor-pointer items-center gap-2 font-mono text-[12.5px]"
+      className="text-dim focus-visible:outline-hi inline-flex cursor-pointer items-center gap-2 rounded-[5px] font-mono text-[12.5px] focus-visible:outline-2 focus-visible:outline-offset-4"
     >
       <span className="text-brand">$</span>
       <span>{command}</span>
