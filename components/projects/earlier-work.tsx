@@ -2,8 +2,11 @@
 
 import { useState } from "react";
 
+import { Collapse } from "@/components/collapse";
 import { ProjectCard } from "@/components/projects/project-card";
 import type { Project } from "@/data/portfolio";
+
+const PANEL_ID = "earlier-work";
 
 export function EarlierWork({ projects }: { projects: Project[] }) {
   const [show, setShow] = useState(false);
@@ -17,6 +20,7 @@ export function EarlierWork({ projects }: { projects: Project[] }) {
           type="button"
           onClick={() => setShow((s) => !s)}
           aria-expanded={show}
+          aria-controls={PANEL_ID}
           className="border-line bg-chip text-dim hover:text-ink hover:border-hi cursor-pointer rounded-[7px] border px-3.5 py-1.5 font-mono text-xs transition-colors"
         >
           {show
@@ -25,13 +29,13 @@ export function EarlierWork({ projects }: { projects: Project[] }) {
         </button>
         <div className="border-line flex-1 border-t border-dashed" />
       </div>
-      {show && (
+      <Collapse open={show} id={PANEL_ID}>
         <div className="grid gap-4 sm:grid-cols-2">
           {projects.map((project) => (
             <ProjectCard key={project.slug} project={project} />
           ))}
         </div>
-      )}
+      </Collapse>
     </div>
   );
 }
