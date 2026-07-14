@@ -246,6 +246,22 @@
   .reveal > *:nth-child(n + 7) {
     animation-delay: 0.36s;
   }
+  /* Hero prompt types itself out once on load; --tw is set inline to the
+   * command length in ch (monospace). The blinking caret rides the edge. */
+  .type-in {
+    display: inline-block;
+    overflow: hidden;
+    white-space: nowrap;
+    animation: type-in 0.8s steps(22, end) both;
+  }
+}
+@keyframes type-in {
+  from {
+    width: 0;
+  }
+  to {
+    width: var(--tw);
+  }
 }
 
 @layer utilities {

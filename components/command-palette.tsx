@@ -10,6 +10,7 @@ import {
   useMemo,
   useRef,
   useState,
+  type CSSProperties,
   type ReactNode,
 } from "react";
 
@@ -316,7 +317,12 @@ export function HeroPrompt({ command }: { command: string }) {
       className="text-dim focus-visible:outline-hi inline-flex cursor-pointer items-center gap-2 rounded-[5px] font-mono text-[12.5px] focus-visible:outline-2 focus-visible:outline-offset-4"
     >
       <span className="text-brand">$</span>
-      <span>{command}</span>
+      <span
+        className="type-in"
+        style={{ "--tw": `${command.length}ch` } as CSSProperties}
+      >
+        {command}
+      </span>
       <span className="bg-brand animate-blink inline-block h-[14px] w-2" />
       <span className="ml-2 hidden items-center gap-2 sm:flex">
         <span className="text-faint">try</span>
