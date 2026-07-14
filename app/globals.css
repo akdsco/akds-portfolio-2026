@@ -145,6 +145,12 @@
     outline: 2px solid var(--hi);
     outline-offset: 2px;
   }
+  /* Text selection: the theme brand at 40% opacity, derived automatically so it
+   * tracks --brand in both light and dark. */
+  ::selection {
+    background: color-mix(in oklch, var(--brand) 40%, transparent);
+    color: var(--ink);
+  }
 }
 
 @keyframes blink {
