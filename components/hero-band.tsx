@@ -18,7 +18,7 @@ export function HeroBand({
     <section className="border-line relative border-b">
       <div className="scanline pointer-events-none absolute inset-0" />
       <HeroLines />
-      <div className={cn("relative mx-auto px-6 md:px-10", className)}>
+      <div className={cn("reveal relative mx-auto px-6 md:px-10", className)}>
         {children}
       </div>
     </section>

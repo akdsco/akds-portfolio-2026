@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 export function ProjectCard({ project }: { project: Project }) {
   const linked = Boolean(project.caseStudy);
   const className = cn(
-    "border-line bg-panel hover:border-hi flex flex-col gap-3.5 rounded-[11px] border p-5 transition-colors",
+    "border-line bg-panel hover:border-hi flex flex-col gap-3.5 rounded-[11px] border p-5 transition-[transform,border-color] duration-200 ease-out hover:-translate-y-0.5 motion-reduce:hover:translate-y-0",
     !linked && "opacity-90",
   );
 

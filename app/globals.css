@@ -213,6 +213,41 @@
   animation-iteration-count: 1;
 }
 
+/* One-time entrance reveal: children fade + rise, gently staggered. */
+@keyframes reveal {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .reveal > * {
+    animation: reveal 0.5s ease-out both;
+  }
+  .reveal > *:nth-child(2) {
+    animation-delay: 0.06s;
+  }
+  .reveal > *:nth-child(3) {
+    animation-delay: 0.12s;
+  }
+  .reveal > *:nth-child(4) {
+    animation-delay: 0.18s;
+  }
+  .reveal > *:nth-child(5) {
+    animation-delay: 0.24s;
+  }
+  .reveal > *:nth-child(6) {
+    animation-delay: 0.3s;
+  }
+  .reveal > *:nth-child(n + 7) {
+    animation-delay: 0.36s;
+  }
+}
+
 @layer utilities {
   /* Subtle CRT scanline overlay for hero bands. */
   .scanline {
