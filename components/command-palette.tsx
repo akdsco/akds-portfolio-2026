@@ -134,13 +134,25 @@ export function PaletteProvider({ children }: { children: ReactNode }) {
         key: "/theme",
         label: "Toggle light / dark",
         tag: "toggle",
-        run: () => setTheme(resolvedTheme === "dark" ? "light" : "dark"),
+        run: () => {
+          setTheme(resolvedTheme === "dark" ? "light" : "dark");
+          close();
+        },
       },
       {
         key: "/top",
         label: "Back to the top",
         tag: "go",
-        run: () => goto("/about"),
+        run: () => {
+          close();
+          // On /about, router.push is a no-op; scroll instead. scrollTo({}) with
+          // no behavior honours the CSS scroll-behavior (smooth, reduced-safe).
+          if (window.location.pathname === "/about") {
+            window.scrollTo({ top: 0 });
+          } else {
+            router.push("/about");
+          }
+        },
       },
     ];
   }, [close, router, setTheme, resolvedTheme, social]);
@@ -159,14 +171,18 @@ export function PaletteProvider({ children }: { children: ReactNode }) {
     const onKey = (e: KeyboardEvent) => {
       const cmdK = (e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k";
       const slash = e.key === "/" && !isTypingTarget(e.target);
-      if (cmdK || (slash && !isOpen)) {
+      if (cmdK) {
+        e.preventDefault();
+        if (isOpen) close();
+        else open();
+      } else if (slash && !isOpen) {
         e.preventDefault();
         open();
       }
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [isOpen, open]);
+  }, [isOpen, open, close]);
 
   // Focus the input on open; restore focus to the trigger on close.
   useEffect(() => {
@@ -187,6 +203,10 @@ export function PaletteProvider({ children }: { children: ReactNode }) {
     } else if (e.key === "Escape") {
       e.preventDefault();
       close();
+    } else if (e.key === "Tab") {
+      // Focus trap: the input is the only focusable element in the dialog, so
+      // keep Tab from moving focus to the page behind the modal.
+      e.preventDefault();
     }
   };
 
