@@ -139,6 +139,13 @@
   body {
     @apply bg-base text-ink font-sans antialiased;
   }
+  /* Smooth in-page anchor scrolling (TOC clicks, hash nav). Sections carry
+   * scroll-mt-20 so they land below the sticky nav. */
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
   /* Unified keyboard-focus ring in the theme accent (coral), not browser blue.
    * outline follows each element's border-radius automatically. */
   :focus-visible {
