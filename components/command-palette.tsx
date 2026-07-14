@@ -306,7 +306,7 @@ export function HeroPrompt({ command }: { command: string }) {
     >
       <span className="text-brand">$</span>
       <span>{command}</span>
-      <span className="bg-brand animate-blink inline-block h-[15px] w-2 translate-y-0.5" />
+      <span className="bg-brand animate-blink inline-block h-[14px] w-2" />
       <span className="ml-2 hidden items-center gap-2 sm:flex">
         <span className="text-faint">try</span>
         <kbd className="border-line text-dim rounded-[5px] border px-1.5 py-px text-[11px]">
