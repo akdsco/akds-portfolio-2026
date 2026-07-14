@@ -51,7 +51,7 @@ app/             # App Router routes & layout
 components/      # Shared components (SiteNav, ThemeProvider, ModeToggle, icons)
 components/ui/   # shadcn primitives (button, card, …)
 lib/             # Utilities (cn helper)
-data/            # NOT YET — typed TS objects (no MDX/CMS) added in a later phase
+data/            # portfolio.ts — typed content (Project, skills, experience, testimonials…)
 ```
 
 File naming: kebab-case for files, PascalCase for component exports. Imports use `@/`.
@@ -75,18 +75,20 @@ Two patterns that work, in order of preference:
 ## Notes for future work
 
 - **No contact form, no mailto.** Recruiter contact path is GitHub + LinkedIn (icons in `SiteNav`). Do not add a contact API, nodemailer, or email form.
-- **About / Resume / Projects routes 404 by design** until pages are built. Skeleton nav links are intentional placeholders.
-- **Bio copy is owner-supplied.** Never invent professional history, job titles, or project descriptions — ask for them.
-- **Data layer (`data/`) is deferred.** When added, it will be typed TS objects only — no MDX, no Contentlayer, no CMS.
+- **Routes:** the site lands on `/` → redirects to `/about` (the About/home). Pages: `/about`, `/projects`, `/projects/[slug]`. There is no `/resume` and no separate home. Nav shows About + Projects; logo → `/about`.
+- **Bio copy is owner-supplied.** Never invent professional history, job titles, or project descriptions — ask for them. Case-study copy in `data/portfolio.ts` is rough by design; the owner chisels exact wording on the rendered site.
+- **Data layer:** `data/portfolio.ts` — typed TS objects only (no MDX/CMS). One `Project` type drives both `/projects` cards and `/projects/[slug]` detail pages (a project with a `caseStudy` gets a detail page).
+- **Theme:** the colour palette lives in `app/theme.css` (one swap-a-file, cool "tasteful dev-coded" scheme, light + dark), mapped into `app/globals.css` via `@theme inline`. Semantic tokens: `base/panel/ink/dim/faint/line/chip/brand/hi`.
+- **No contact form, no mailto, no CV download.** GitHub + LinkedIn are the only surfaced links; the site is the expansion of the CV the owner sends directly.
 
 ## Pending TODO (track these; don't lose them)
 
 - [x] **Favicon** — done. Owner-supplied `public/images/brand-image.webp` (500x500); derived `app/icon.png` (256px) + `app/apple-icon.png` (180px); removed the default `app/favicon.ico`. Next 16 auto-serves these. (Note: it's a portrait photo, so it reads soft at 16px; a mono "akds"/glyph icon is an easy swap later if wanted.)
-- [ ] **Metadata** — only generic `title` + `description` in `app/layout.tsx`. Pending owner's resume/data work. When done: set `metadataBase`, OG title/description, OG image, Twitter card, `robots`, canonical. Per-page metadata via `generateMetadata` where dynamic.
-- [ ] **Data layer (`data/`)** — owner is producing typed content for resume, projects, about. Once delivered, scaffold `data/` with one typed module per surface (e.g. `data/projects.ts`, `data/work.ts`, `data/profile.ts`). Strict types, no `any`.
-- [ ] **Design direction** — owner is collecting references / mood. Visual direction (type scale, color beyond shadcn defaults, rhythm, hero treatment) blocks page design. Tokens land in `app/globals.css` via `@theme inline` (oklch).
-- [ ] **Pages** — `/about`, `/resume`, `/projects`. Build after data layer + design direction land. Each page consumes a typed module from `data/`.
-- [ ] **Real copy** — owner-supplied (see "Bio copy" rule above). Do not stub plausible-sounding placeholder text in committed code; use obvious lorem (`Lorem ipsum…`) so it can't accidentally ship.
+- [ ] **Metadata** — per-page titles/descriptions + OpenGraph title/description are in place (`app/layout.tsx`; `generateMetadata` on projects + case study). Still TODO: `metadataBase` + OG image + Twitter card + `robots` + canonical once the production domain is set.
+- [x] **Data layer** — delivered in `data/portfolio.ts` (typed; one `Project` type + skills/experience/education/certs/testimonials).
+- [x] **Design direction** — locked: "tasteful dev-coded", cool scheme; palette in `app/theme.css`.
+- [x] **Pages** — built: `/about` (landing), `/projects` index, `/projects/[slug]` detail, plus the command palette. No `/resume`.
+- [x] **Real copy** — owner-supplied content is in `data/portfolio.ts` (case-study copy intentionally rough; owner chisels on the rendered site).
 
 ## History context
 

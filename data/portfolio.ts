@@ -3,14 +3,14 @@
  *
  * Sculpted from PORTFOLIO_RESEARCH.md.
  *
- * Designed to drop into the new Next.js 16 (App Router) + Tailwind +
- * shadcn/ui repo. Shape is richer than the old `data/database.ts`:
- * categorised skills (no percentage bars), explicit hero + about copy,
- * portfolio cards as 4-field objects, and a visibility flag separating
- * the 5 default cards from the 2 collapsed "earlier work" cards.
+ * Consumed by the Next.js 16 (App Router) + Tailwind v4 + Base UI site.
+ * One `Project` type drives both the /projects cards and the
+ * /projects/[slug] detail pages: a project with a `caseStudy` gets a detail
+ * page; `featured` splits top cards from the "earlier work" toggle. Skills are
+ * categorised (no levels/bars); hero + about copy are explicit.
  *
- * Strings are kept as plain markdown-free text so any component can
- * render them. Long-form paragraphs use \n\n separators.
+ * Strings are plain, markdown-free text so any component can render them;
+ * long-form sections are arrays of paragraphs.
  */
 
 // ---------------------------------------------------------------------------
@@ -31,7 +31,6 @@ export type Profile = {
   publicEmail: string; // hire contact; kept in data, intentionally NOT surfaced on the site (no contact form, no mailto)
   cvEmail: string; // kept off the public site, for CV / direct outreach
   brandImage: string;
-  cvFile: string;
   socials: SocialLink[];
 };
 
@@ -52,42 +51,11 @@ export type SkillCategory = {
   items: string[];
 };
 
-export type PortfolioCard = {
-  id: string;
-  order: number;
-  visible: boolean; // true = visible by default, false = under "earlier work"
-  title: string;
-  company: string; // generic / stealth-safe wording where required
-  role: string;
-  stack: string[];
-  focus: string;
-  image?: string;
-  url?: string;
-};
-
 /**
- * A case study extends a PortfolioCard with long-form, section-based content.
- * The card fields (title, company, role, stack) still drive the index summary;
- * `hook` and `sections` drive the detail page at /projects/[slug].
- *
- * Section bodies are arrays of plain-text paragraphs (no markdown), matching the
- * rest of this file. The render layer decides presentation.
- *
- * Proposed shape, not yet populated with data. Draft prose lives in
- * docs/case-studies/*.md until each study is promoted into a typed object here.
+ * Long-form, section-based case-study body. Each section is an array of
+ * plain-text paragraphs (no markdown); the render layer decides presentation.
  */
-export type CaseStudy = PortfolioCard & {
-  /**
-   * The one line under the project title on the detail page. Its only job is to
-   * earn the next 30 seconds of reading. Keep every hook to these rules:
-   *  1. One sentence, one idea. Push setup and context (stealth, dates, company
-   *     stage) into the meta row and the `problem` section, not here.
-   *  2. Lead with the verb or the outcome ("Owned...", "Cut...", "Shipped...").
-   *  3. Be specific enough that a generic engineer could not have written the
-   *     same sentence about themselves. Name the concrete, interesting thing.
-   *  4. No marketing fluff. If it reads like a landing-page tagline, rewrite it.
-   */
-  hook: string;
+export type CaseStudy = {
   sections: {
     problem: string[];
     constraints: string[];
@@ -96,7 +64,30 @@ export type CaseStudy = PortfolioCard & {
     outcome: string[];
     reflection?: string[]; // optional, only when there is a real lesson to tell
   };
-  testimonialId?: number; // optional: pull a relevant testimonial inline, by id
+  testimonialId?: number; // pull a relevant testimonial inline, by id
+  status?: string; // short honest label shown in the meta card, e.g. "shipped"
+};
+
+/**
+ * A single project. Cards on /projects render from the top-level fields; a
+ * project with a `caseStudy` also gets a /projects/[slug] detail page.
+ */
+export type Project = {
+  slug: string; // URL segment + stable key
+  title: string;
+  company: string;
+  stack: string[];
+  /**
+   * One line: the card blurb and the detail-page lede. Its only job is to earn
+   * the next 30 seconds of reading. Rules: one sentence, one idea; lead with the
+   * verb or outcome; specific enough that a generic engineer could not have
+   * written it; no marketing fluff.
+   */
+  hook: string;
+  featured: boolean; // true = top card on /projects; false = "earlier work" toggle
+  role?: string; // detail meta row (job title)
+  period?: string; // detail meta row
+  caseStudy?: CaseStudy; // present => has a detail page
 };
 
 export type WorkExperience = {
@@ -153,7 +144,6 @@ export const profile: Profile = {
   publicEmail: "hire-arkadiusz@pm.me",
   cvEmail: "arkadiusz.ostrowski@protonmail.com",
   brandImage: "/images/brand-image.webp",
-  cvFile: "",
   // Full set of profile links (data). The nav DISPLAYS only GitHub + LinkedIn;
   // Stack Overflow + Pluralsight are kept here for reference / future use, not shown.
   socials: [
@@ -171,7 +161,7 @@ export const hero: HeroCopy = {
   name: "Arkadiusz Ostrowski",
   tagline: "I build production AI-native software end-to-end.",
   paragraphs: [
-    "London-based. TypeScript, React, Node, Postgres, BullMQ, Vercel AI SDK. Currently wrapping up a 12-month contract at a stealth sales-AI startup, where I ran the proof-library product, built the server-side LLM tagging architecture, and wrote CEO-facing delivery summaries.",
+    "London-based. TypeScript, React, Node, Postgres, BullMQ, Vercel AI SDK. Recently wrapped a 12-month contract at GrowthNation, a stealth sales-AI startup, where I ran the proof-library product, built the server-side LLM tagging architecture, and wrote CEO-facing delivery summaries.",
     'Previously: three years at a documentary studio shipping AI-assisted research tools on GPT-3.5/4 in 2023, before "AI-assisted coding" was a phrase.',
     "Open to senior / staff / founding-engineer roles.",
   ],
@@ -331,83 +321,183 @@ export const skills: SkillCategory[] = [
   },
 ];
 
-export const portfolio: PortfolioCard[] = [
+export const projects: Project[] = [
   {
-    id: "proof-library",
-    order: 1,
-    visible: true,
+    slug: "proof-library",
     title: "Proof Library",
-    company: "Stealth sales-AI startup",
-    role: "Owned the proof store end-to-end: dashboard, ingestion, server-side LLM tagging, and CEO-facing delivery summaries. Co-created and shipped an autonomous AI bug-triage system that opens fix PRs on its own.",
-    stack: ["TypeScript", "React", "Supabase", "Vercel AI SDK", "MCP"],
-    focus:
-      "AI-native product development with architectural decisions driven by CEO-level requirements.",
+    company: "GrowthNation",
+    stack: [
+      "TypeScript",
+      "React",
+      "Supabase",
+      "Vercel AI SDK",
+      "custom MCP servers",
+      "BullMQ",
+    ],
+    hook: "Owned the proof store behind a sales-AI product: ingestion, a user-facing dashboard with search, and a tagging layer that kept every customer's library organized on its own.",
+    featured: true,
+    role: "Senior Software Engineer / Product Engineer (contract)",
+    period: "Jul 2025 to Jun 2026",
+    caseStudy: {
+      status: "shipped",
+      testimonialId: 1,
+      sections: {
+        problem: [
+          'GrowthNation was a stealth startup still looking for product-market fit, and it looked by pivoting. It started in AI content marketing. About three months before my contract ended, the CEO moved the whole product to a "social proof OS for sales teams." (After I left it pivoted again, toward AI-driven org optimization: interviewing employees with AI to surface improvements people used to find by hand.) Shipping real product across those swings was the actual job.',
+          "The sales pivot needed one place to hold a company's proof: case studies, customers, testimonials, stats. Other parts of the product would read from it to assemble tailored pitches. It didn't exist yet, and the two surfaces that would consume it, proof delivery and proof collection, were being built at the same time by other engineers. Someone had to own the store in the middle and make it real. That was me.",
+        ],
+        constraints: [
+          "The scope came from the founder, who judged the work on business impact rather than implementation detail. Every major delivery went out with a written summary he could read in a couple of minutes. The skill there was being a reliable human in the loop, not producing more words.",
+          "The team was small and shipped fast on heavy AI assistance, which also meant tech debt stacking up quickly. What I was paid for was direction, judgement, and knowing when the AI output was wrong.",
+          "An empty proof store is useless, so onboarding a new customer had to produce a usable, organized library straight away.",
+        ],
+        approach: [
+          "I split the store into three layers and built each one with AI assistance under my own review.",
+          "Ingestion came first. The public-scrape lane runs end to end: paste a URL, it extracts, you preview, you save, it appears in the dashboard. On top of that, uploads of any kind (docs, PDFs, plain text) plus screenshots run through AI vision to pull quotes and testimonials straight out of images.",
+          "Presentation was a user-facing dashboard that had to work for every workspace on real data, and the CEO wanted it front and center. It ran as two tabs. The Dashboard tab gave the overview: coverage percentage, total items, gaps, and last contribution across the top, then a coverage matrix broken down by ICP with a bar per pain point, rows you can expand to the underlying quotes and stats with their source, a consented-only filter, and a sidebar of live contributions. The Explore tab was for digging into the store itself, so a user could find a specific piece of proof by filtering, sorting, and fuzzy-searching across the whole database.",
+          "The tagging layer was the decision that mattered most. Every new quote, stat, or case study gets tagged against the workspace's ICPs and pain points before the save call even returns, and when a workspace edits its ICPs or pain points, everything already stored gets re-tagged. That is what let a brand-new customer have a useful library on day one, and what kept it accurate as their positioning shifted.",
+          "Alongside the store I took over an autonomous bug-triage system the CTO had started. It does root-cause analysis (ordering events in time, trusting server logs over client, fingerprinting errors, catching cascades) and opens its own fix PRs, so a triage points at the cause instead of whichever symptom surfaced first.",
+        ],
+        contribution: [
+          "I owned the store, its ingestion, and its presentation, and exposed all of it over a custom MCP layer so agents could read it too. I wrote the delivery summaries that went out with each milestone, including what got left out on purpose: the first dashboard shipped behind a feature flag for every workspace, with the deferred items named openly rather than dropped without a word.",
+          "To be accurate about scope: proof delivery and proof collection belonged to other engineers. My lane was the store they both read from. Where the work was shared, I've said so.",
+        ],
+        outcome: [
+          "The store, dashboard, and tagging layer shipped and ran for every workspace on the platform. Real customers used it, some of them outside the US. The product was demoed at a conference in June 2026, and the company had earlier reached the top 10% of a YC application round. My twelve-month contract finished on schedule.",
+        ],
+        reflection: [
+          "What made this work wasn't output speed. It was reading a founder-level ask, breaking it into layers, and making one call, tag on the way in and re-tag on change, that dealt with the empty-library problem and the drift problem together. The other half was staying honest about what the AI produced instead of shipping its guesses. A line from my manager stuck with me: you're allowed to have a conversation with uncertainty as an engineer, but you're not allowed to dress uncertainty up as certainty.",
+        ],
+      },
+    },
   },
   {
-    id: "slate-iq",
-    order: 2,
-    visible: true,
+    slug: "slate-iq",
     title: "SlateIQ",
     company: "Noah Media Group",
-    role: "Built the film-success prediction tool. Combined IMDB, social, piracy, and market data into a comp-matching workflow.",
     stack: ["TypeScript", "React", "Node", "MongoDB", "BullMQ", "OpenAI"],
-    focus:
-      "5+ third-party data integrations; pragmatic decision to keep comp-matching human-driven rather than over-engineer ML.",
-    image: "/img/portfolio-slate-iq.png",
+    hook: "Built a film-success predictor that pulled IMDB, social, piracy, and market data into one comp-matching tool the studio used in real pitch decisions.",
+    featured: true,
+    role: "Software Engineer",
+    period: "2022 to 2025",
+    caseStudy: {
+      status: "shipped",
+      sections: {
+        problem: [
+          'The studio wanted to gauge a film\'s potential the way the industry actually thinks about it: by comparison to past titles ("comps"). The signals for that lived in a dozen different places, from IMDB to social audience data to piracy numbers. Nobody had them in one view.',
+        ],
+        constraints: [
+          "Internal-only tool, second engineer on a small team. No auth by design, since the CTO chose not to invest in it before there was external traction. The interesting call was what not to build: comp-matching is a human judgement in film, so we deliberately skipped a vector database or semantic-search layer we did not need.",
+        ],
+        approach: [
+          "Pulled five-plus third-party sources into one pipeline: IMDB via its GraphQL API, Muso for piracy data, Audiense and SocialBlade and DemographicsPRO for social and audience, and bespoke Cheerio and Puppeteer scraping for the rest. Combined those into a comp view an analyst could read, and kept the actual comparison human-driven rather than dressing it up as an ML prediction.",
+        ],
+        contribution: [
+          "Built the integrations and the tool end to end and shipped a working prototype.",
+        ],
+        outcome: [
+          "Used in real pitch decisions. The bigger takeaway landed at the org level: documentary funding turned out to be driven by human storytelling, not statistics, which fed a strategic pivot away from data-led greenlighting. The tool did its job; the lesson was about the limits of the data.",
+        ],
+        reflection: [
+          "Knowing what not to build is the signal here. Skipping the semantic-search layer kept the thing shippable and honest about where the real judgement sat.",
+        ],
+      },
+    },
   },
   {
-    id: "ai-research-assistant",
-    order: 3,
-    visible: true,
+    slug: "ai-research-assistant",
     title: "AI-powered research assistant",
     company: "Noah Media Group",
-    role: "Co-built with the CTO. A documentary-research tool on GPT-3.5/4 in 2023. Paired on architecture and prompt strategy; owned significant chunks of the implementation.",
-    stack: ["TypeScript", "React", "Node", "OpenAI", "Cheerio", "Puppeteer"],
-    focus:
-      "Early-adopter AI productisation; integration tests running live LLM calls with graded responses, years before this became standard practice.",
+    stack: [
+      "TypeScript",
+      "React",
+      "Node",
+      "OpenAI (GPT-3.5 + GPT-4)",
+      "Cheerio",
+      "Puppeteer",
+    ],
+    hook: "Co-built a documentary research assistant on GPT-3.5/4 in 2023, before AI-assisted tooling was a category: give it a subject, it returned biographical leads and story angles worth chasing.",
+    featured: true,
+    role: "Software Engineer (paired with the CTO)",
+    period: "2023",
+    caseStudy: {
+      status: "sunset",
+      sections: {
+        problem: [
+          "The documentary research team spent real time finding leads and angles on a new subject. The question was whether an early LLM could surface threads worth pursuing and give researchers a faster starting point.",
+        ],
+        constraints: [
+          "This was 2023, on GPT-3.5 and GPT-4, before there were patterns to copy. Early models were unreliable, and an internal creative team has a high bar for what it will trust. Getting output stable enough to be useful was the hard part.",
+        ],
+        approach: [
+          "Input a subject name, get back biographical leads, story angles, and threads to pull. Paired with the CTO on architecture and prompt strategy, and owned significant chunks of the implementation. Built integration tests that run live OpenAI calls with graded responses, keeping output inside tolerance bands. That harness came years before checking LLMs in CI was standard, and the same pattern carried through to GrowthNation three years later.",
+        ],
+        contribution: [
+          "A paired role, stated honestly: the CTO drove it, I paired and owned significant implementation chunks, including the graded-LLM test harness.",
+        ],
+        outcome: [
+          'A capable, working tool. It was sunset because the creative research team preferred its traditional workflow, with the head of research objecting to "AI slop." The tech worked; adoption was blocked by preference, not capability.',
+        ],
+        reflection: [
+          "The durable artifact is the graded-LLM integration test pattern, built well ahead of the curve. The temporal signal (production LLM work in 2023) matters more than the tool that got shelved.",
+        ],
+      },
+    },
   },
   {
-    id: "routes-wallet",
-    order: 4,
-    visible: true,
+    slug: "routes-wallet",
     title: "Routes Wallet",
-    company: "Self-initiated mobile app (iOS)",
-    role: "Solo-built a React Native iOS app to test market demand for a universal cycling-route wallet. A single home for routes scattered across Garmin, Strava, Komoot, Ride with GPS, and the inevitable Google Docs cycling clubs end up maintaining.",
+    company: "Self-initiated (iOS)",
     stack: ["React Native", "iOS", "TypeScript"],
-    focus:
-      'Product judgement under uncertainty. Real market test with a London cycling club returned an honest "we have three apps already" signal. Killed the project rather than push past the data.',
-    image: "/img/portfolio-routes-wallet.png",
+    hook: "Solo-shipped an iOS app to test whether cyclists wanted one home for routes scattered across Garmin, Strava, Komoot, and club Google Docs, then killed it when the market said no.",
+    featured: true,
+    role: "Solo build",
+    period: "Mar to Jun 2025",
+    caseStudy: {
+      status: "killed on the data",
+      sections: {
+        problem: [
+          "Cycling routes end up scattered: Garmin, Strava, Komoot, Ride with GPS, and the inevitable Google Docs a club keeps maintaining by hand. The bet was that riders wanted a single wallet to hold all of them. The real question was whether that demand actually existed.",
+        ],
+        constraints: [
+          "A solo, self-funded side project built to answer one thing: is this worth pursuing? Genuine uncertainty about demand, and no team or budget to hide behind.",
+        ],
+        approach: [
+          "Built the app solo in React Native for iOS, then ran a real market test with a London cycling club rather than guessing from the outside.",
+        ],
+        contribution: ["Everything: the build and the test design."],
+        outcome: [
+          'The club\'s honest answer was "we have three apps already." Killed the project on that signal instead of pushing past it.',
+        ],
+        reflection: [
+          "This is product judgement under uncertainty. The discipline was validating cheaply and stopping on the evidence, not defending a sunk cost. Shipping it, testing it, and killing it is a stronger story than quietly shelving it would have been.",
+        ],
+      },
+    },
   },
   {
-    id: "film-production-tracking",
-    order: 5,
-    visible: true,
+    slug: "film-production-tracking",
     title: "Film production tracking platform",
     company: "Noah Media Group",
-    role: "Worked directly with the CEO and Skyscanner co-founder Bonamy Grimes. Drove database design and early prototypes that gave leadership visibility into production progress.",
     stack: ["TypeScript", "React", "Node", "MongoDB"],
-    focus:
-      "Stakeholder-facing product work and executive collaboration. Database design exposed production progress at the leadership level.",
+    hook: "Drove database design and early prototypes with the CEO and Skyscanner co-founder Bonamy Grimes, giving leadership visibility into production progress.",
+    featured: false,
   },
   {
-    id: "connect4-meetings",
-    order: 6,
-    visible: false,
+    slug: "connect4-meetings",
     title: "Meeting productivity platform",
     company: "Connect4",
-    role: "Ported the Blaze front-end to React; shipped agenda drag-and-drop and recurring meeting templates.",
     stack: ["React", "Meteor.js", "WebSockets"],
-    focus: "Reactive DB-driven architectures; unidirectional data flow.",
+    hook: "Ported the Blaze front-end to React and shipped agenda drag-and-drop plus recurring meeting templates.",
+    featured: false,
   },
   {
-    id: "wutzu-stores-panel",
-    order: 7,
-    visible: false,
+    slug: "wutzu-stores-panel",
     title: "Stores panel",
     company: "Wutzu Technologies",
-    role: 'Refactored the MVP codebase; shipped the first production stores panel, "still in use in some areas to this day" (Hevar Abrihem, 2021).',
     stack: ["JavaScript", "Node", "Payments API"],
-    focus: "First production refactor at scale; junior → mid arc.",
+    hook: "Refactored the MVP and shipped the first production stores panel, still in use in some areas to this day.",
+    featured: false,
   },
 ];
 
@@ -416,7 +506,7 @@ export const experience: WorkExperience[] = [
     id: 6,
     period: "2025 Jul - 2026 Jun",
     position: "Senior Software Engineer / Product Engineer",
-    company: "Stealth sales-AI startup (GrowthNation)",
+    company: "GrowthNation",
     location: "Remote",
     employmentType: "Contract (12 months)",
     summary:
@@ -705,7 +795,7 @@ const portfolioData = {
   hero,
   about,
   skills,
-  portfolio,
+  projects,
   experience,
   education,
   certifications,

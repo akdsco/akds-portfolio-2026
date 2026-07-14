@@ -3,6 +3,9 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 
 import { ThemeProvider } from "@/components/theme-provider";
+import { PaletteProvider } from "@/components/command-palette";
+import { SiteNav } from "@/components/site-nav";
+import { SiteFooter } from "@/components/site-footer";
 
 import "./globals.css";
 
@@ -17,8 +20,15 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Arkadiusz — Software Engineer",
-  description: "Portfolio of Arkadiusz, software engineer.",
+  title: "Arkadiusz Ostrowski — Software Engineer",
+  description:
+    "London-based software engineer building production AI-native software end-to-end. Selected work, experience, and case studies.",
+  openGraph: {
+    title: "Arkadiusz Ostrowski — Software Engineer",
+    description:
+      "London-based software engineer building production AI-native software end-to-end.",
+    type: "website",
+  },
 };
 
 export default function RootLayout({
@@ -39,9 +49,14 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {children}
+          <PaletteProvider>
+            <SiteNav />
+            <main className="flex-1">{children}</main>
+            <SiteFooter />
+          </PaletteProvider>
         </ThemeProvider>
-        <Analytics />
+        {/* Analytics only in production — keeps local dev console quiet. */}
+        {process.env.NODE_ENV === "production" && <Analytics />}
       </body>
     </html>
   );
