@@ -24,7 +24,7 @@ export function Testimonials() {
           return (
             <figure
               key={t.id}
-              className="border-line bg-panel hover:border-hi relative m-0 rounded-[10px] border p-5 transition-[transform,border-color] duration-200 ease-out hover:-translate-y-0.5 motion-reduce:hover:translate-y-0"
+              className="border-line bg-panel hover:border-hi relative m-0 rounded-[10px] border p-5 transition-[transform,box-shadow,border-color] duration-[260ms] ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-1 hover:shadow-[0_16px_34px_-18px_rgba(0,0,0,0.6)] motion-reduce:hover:translate-y-0 motion-reduce:hover:shadow-none"
             >
               <div className="text-hi absolute top-2 left-4 font-serif text-4xl leading-none opacity-50">
                 &ldquo;
