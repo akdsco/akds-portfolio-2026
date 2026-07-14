@@ -1,0 +1,36 @@
+"use client";
+
+import { ChevronDown } from "lucide-react";
+import { useState, type ReactNode } from "react";
+
+import { cn } from "@/lib/utils";
+
+// Collapses the deeper About sections (skills, experience, testimonials) behind
+// one toggle, mirroring the Projects "show earlier work" pattern. The sections
+// are passed as children (server-rendered) and revealed instantly on toggle.
+export function AboutMore({ children }: { children: ReactNode }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className="mx-auto max-w-[820px] px-6 py-14 md:px-10">
+      <div className="flex items-center gap-4">
+        <div className="border-line flex-1 border-t border-dashed" />
+        <button
+          type="button"
+          onClick={() => setOpen((o) => !o)}
+          aria-expanded={open}
+          className="border-line bg-chip text-dim hover:text-ink hover:border-hi inline-flex cursor-pointer items-center gap-2 rounded-[7px] border px-3.5 py-1.5 font-mono text-xs transition-colors"
+        >
+          {open ? "Show less" : "Show more"}
+          <ChevronDown
+            className={cn(
+              "size-3.5 transition-transform",
+              open && "rotate-180",
+            )}
+          />
+        </button>
+        <div className="border-line flex-1 border-t border-dashed" />
+      </div>
+      {open && <div className="mt-14 space-y-14">{children}</div>}
+    </div>
+  );
+}

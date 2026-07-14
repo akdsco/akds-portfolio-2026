@@ -1,3 +1,4 @@
+import { AboutMore } from "@/components/landing/about-more";
 import { Experience } from "@/components/landing/experience";
 import { Hero } from "@/components/landing/hero";
 import { Skills } from "@/components/landing/skills";
@@ -7,11 +8,11 @@ export default function AboutPage() {
   return (
     <>
       <Hero />
-      <div className="mx-auto max-w-[820px] space-y-14 px-6 py-14 md:px-10">
+      <AboutMore>
         <Skills />
         <Experience />
         <Testimonials />
-      </div>
+      </AboutMore>
     </>
   );
 }
