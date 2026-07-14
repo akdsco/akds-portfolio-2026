@@ -80,7 +80,7 @@ export default async function CaseStudyPage({
             <section
               key={section.key}
               id={section.key}
-              className="mb-10 scroll-mt-20"
+              className="scroll-reveal mb-10 scroll-mt-20"
             >
               <Kicker label={section.kicker} />
               <h2 className="text-ink mb-3.5 text-2xl font-semibold tracking-tight">

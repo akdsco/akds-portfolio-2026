@@ -31,7 +31,7 @@ export default function ProjectsPage() {
       </HeroBand>
 
       <div className="mx-auto max-w-[880px] px-6 py-10 md:px-10">
-        <div className="grid gap-4 sm:grid-cols-2">
+        <div className="scroll-reveal-group grid gap-4 sm:grid-cols-2">
           {featured.map((project) => (
             <ProjectCard key={project.slug} project={project} />
           ))}
