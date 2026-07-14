@@ -88,6 +88,17 @@ export function PaletteProvider({ children }: { children: ReactNode }) {
       if (url) window.open(url, "_blank", "noopener,noreferrer");
       close();
     };
+    // Jump to a collapsible About section: on /about, reveal it in place; from
+    // elsewhere, navigate to the hash (AboutMore reveals it on mount).
+    const goSection = (id: string) => {
+      close();
+      if (window.location.pathname === "/about") {
+        history.replaceState(null, "", `#${id}`);
+        window.dispatchEvent(new CustomEvent("about:reveal", { detail: id }));
+      } else {
+        router.push(`/about#${id}`);
+      }
+    };
     return [
       {
         key: "/projects",
@@ -99,19 +110,19 @@ export function PaletteProvider({ children }: { children: ReactNode }) {
         key: "/skills",
         label: "Jump to skills",
         tag: "go",
-        run: () => goto("/about#skills"),
+        run: () => goSection("skills"),
       },
       {
         key: "/experience",
         label: "Jump to experience",
         tag: "go",
-        run: () => goto("/about#experience"),
+        run: () => goSection("experience"),
       },
       {
         key: "/testimonials",
         label: "Jump to testimonials",
         tag: "go",
-        run: () => goto("/about#testimonials"),
+        run: () => goSection("testimonials"),
       },
       {
         key: "/github",
