@@ -32,7 +32,7 @@ export function SiteNav() {
       <nav className="mx-auto flex h-14 w-full max-w-5xl items-center justify-between px-6 md:px-8">
         <Link
           href="/about"
-          className="text-ink text-sm font-semibold tracking-tight"
+          className="text-ink -mx-2 rounded-md px-2 py-1 text-sm font-semibold tracking-tight"
         >
           akds
         </Link>
