@@ -27,7 +27,7 @@ import { cn } from "@/lib/utils";
 type Command = {
   key: string;
   label: string;
-  tag: "go" | "external" | "toggle" | "echo";
+  tag: "go" | "external" | "toggle";
   run: () => void;
 };
 
@@ -65,7 +65,6 @@ export function PaletteProvider({ children }: { children: ReactNode }) {
   const [isOpen, setIsOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [active, setActive] = useState(0);
-  const [echo, setEcho] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const restoreRef = useRef<HTMLElement | null>(null);
 
@@ -74,7 +73,6 @@ export function PaletteProvider({ children }: { children: ReactNode }) {
 
   const open = useCallback(() => {
     restoreRef.current = document.activeElement as HTMLElement | null;
-    setEcho(null);
     setQuery("");
     setActive(0);
     setIsOpen(true);
@@ -155,15 +153,6 @@ export function PaletteProvider({ children }: { children: ReactNode }) {
         label: "Back to the top",
         tag: "go",
         run: () => goto("/about"),
-      },
-      {
-        key: "/whoami",
-        label: "Who is this?",
-        tag: "echo",
-        run: () =>
-          setEcho(
-            "Arkadiusz Ostrowski: London software engineer. You're reading the long version.",
-          ),
       },
     ];
   }, [close, router, setTheme, resolvedTheme, social]);
@@ -274,11 +263,6 @@ export function PaletteProvider({ children }: { children: ReactNode }) {
                     aria-label="Commands"
                     className="border-line bg-panel mt-2 max-h-[300px] overflow-auto rounded-[9px] border p-1.5 shadow-[0_18px_44px_-14px_rgba(0,0,0,0.55)]"
                   >
-                    {echo && (
-                      <li className="text-dim px-2.5 py-2 font-mono text-[12px]">
-                        <span className="text-hi">&gt;</span> {echo}
-                      </li>
-                    )}
                     {filtered.length === 0 ? (
                       <li
                         role="option"
