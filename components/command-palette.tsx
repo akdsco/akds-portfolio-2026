@@ -1,5 +1,12 @@
 "use client";
 
+import {
+  AnimatePresence,
+  domAnimation,
+  LazyMotion,
+  m,
+  MotionConfig,
+} from "motion/react";
 import { useRouter } from "next/navigation";
 import { useTheme } from "next-themes";
 import {
@@ -210,95 +217,110 @@ export function PaletteProvider({ children }: { children: ReactNode }) {
   return (
     <PaletteContext.Provider value={{ open }}>
       {children}
-      {isOpen && (
-        <div
-          className="motion-safe:animate-in motion-safe:fade-in fixed inset-0 z-50 flex items-start justify-center bg-black/40 px-4 pt-[15vh]"
-          onClick={close}
-        >
-          <div
-            role="dialog"
-            aria-modal="true"
-            aria-label="Command palette"
-            className="w-full max-w-md"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="border-hi bg-panel flex items-center gap-2 rounded-[9px] border px-3 py-2.5 font-mono text-[13px] shadow-[0_0_0_3px_var(--hi-soft)]">
-              <span className="text-brand">$</span>
-              <input
-                ref={inputRef}
-                type="text"
-                role="combobox"
-                aria-expanded="true"
-                aria-controls="palette-list"
-                aria-autocomplete="list"
-                aria-activedescendant={
-                  activeCmd ? optionId(activeCmd.key) : undefined
-                }
-                aria-label="Type a command"
-                value={query}
-                onChange={(e) => {
-                  setQuery(e.target.value);
-                  setActive(0);
-                }}
-                onKeyDown={onInputKeyDown}
-                placeholder="type a command…  esc to close"
-                autoComplete="off"
-                autoCorrect="off"
-                spellCheck={false}
-                className="text-ink placeholder:text-faint min-w-0 flex-1 bg-transparent outline-none"
-              />
-            </div>
-
-            <ul
-              id="palette-list"
-              role="listbox"
-              aria-label="Commands"
-              className="border-line bg-panel mt-2 max-h-[300px] overflow-auto rounded-[9px] border p-1.5 shadow-[0_18px_44px_-14px_rgba(0,0,0,0.55)]"
-            >
-              {echo && (
-                <li className="text-dim px-2.5 py-2 font-mono text-[12px]">
-                  <span className="text-hi">&gt;</span> {echo}
-                </li>
-              )}
-              {filtered.length === 0 ? (
-                <li
-                  role="option"
-                  aria-selected={false}
-                  aria-disabled="true"
-                  className="text-faint px-2.5 py-2 font-mono text-[12px]"
+      <LazyMotion features={domAnimation}>
+        <MotionConfig reducedMotion="user">
+          <AnimatePresence>
+            {isOpen && (
+              <m.div
+                key="palette"
+                className="fixed inset-0 z-50 flex items-start justify-center bg-black/40 px-4 pt-[15vh]"
+                onClick={close}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.15 }}
+              >
+                <m.div
+                  role="dialog"
+                  aria-modal="true"
+                  aria-label="Command palette"
+                  className="w-full max-w-md"
+                  onClick={(e) => e.stopPropagation()}
+                  initial={{ opacity: 0, scale: 0.98, y: -6 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.98, y: -6 }}
+                  transition={{ duration: 0.16, ease: "easeOut" }}
                 >
-                  no matching command
-                </li>
-              ) : (
-                filtered.map((c, i) => (
-                  <li
-                    key={c.key}
-                    id={optionId(c.key)}
-                    role="option"
-                    aria-selected={i === active}
-                    onMouseEnter={() => setActive(i)}
-                    onClick={c.run}
-                    className={cn(
-                      "flex cursor-pointer items-center gap-3 rounded-md px-2.5 py-2",
-                      i === active && "bg-chip",
-                    )}
+                  <div className="border-hi bg-panel flex items-center gap-2 rounded-[9px] border px-3 py-2.5 font-mono text-[13px] shadow-[0_0_0_3px_var(--hi-soft)]">
+                    <span className="text-brand">$</span>
+                    <input
+                      ref={inputRef}
+                      type="text"
+                      role="combobox"
+                      aria-expanded="true"
+                      aria-controls="palette-list"
+                      aria-autocomplete="list"
+                      aria-activedescendant={
+                        activeCmd ? optionId(activeCmd.key) : undefined
+                      }
+                      aria-label="Type a command"
+                      value={query}
+                      onChange={(e) => {
+                        setQuery(e.target.value);
+                        setActive(0);
+                      }}
+                      onKeyDown={onInputKeyDown}
+                      placeholder="type a command…  esc to close"
+                      autoComplete="off"
+                      autoCorrect="off"
+                      spellCheck={false}
+                      className="text-ink placeholder:text-faint min-w-0 flex-1 bg-transparent outline-none"
+                    />
+                  </div>
+
+                  <ul
+                    id="palette-list"
+                    role="listbox"
+                    aria-label="Commands"
+                    className="border-line bg-panel mt-2 max-h-[300px] overflow-auto rounded-[9px] border p-1.5 shadow-[0_18px_44px_-14px_rgba(0,0,0,0.55)]"
                   >
-                    <span className="text-ink min-w-[108px] font-mono text-[12.5px]">
-                      {c.key}
-                    </span>
-                    <span className="text-dim flex-1 text-[12.5px]">
-                      {c.label}
-                    </span>
-                    <span className="text-hi border-line rounded-[4px] border px-1.5 py-0.5 font-mono text-[9.5px] tracking-[0.06em] uppercase">
-                      {c.tag}
-                    </span>
-                  </li>
-                ))
-              )}
-            </ul>
-          </div>
-        </div>
-      )}
+                    {echo && (
+                      <li className="text-dim px-2.5 py-2 font-mono text-[12px]">
+                        <span className="text-hi">&gt;</span> {echo}
+                      </li>
+                    )}
+                    {filtered.length === 0 ? (
+                      <li
+                        role="option"
+                        aria-selected={false}
+                        aria-disabled="true"
+                        className="text-faint px-2.5 py-2 font-mono text-[12px]"
+                      >
+                        no matching command
+                      </li>
+                    ) : (
+                      filtered.map((c, i) => (
+                        <li
+                          key={c.key}
+                          id={optionId(c.key)}
+                          role="option"
+                          aria-selected={i === active}
+                          onMouseEnter={() => setActive(i)}
+                          onClick={c.run}
+                          className={cn(
+                            "flex cursor-pointer items-center gap-3 rounded-md px-2.5 py-2",
+                            i === active && "bg-chip",
+                          )}
+                        >
+                          <span className="text-ink min-w-[108px] font-mono text-[12.5px]">
+                            {c.key}
+                          </span>
+                          <span className="text-dim flex-1 text-[12.5px]">
+                            {c.label}
+                          </span>
+                          <span className="text-hi border-line rounded-[4px] border px-1.5 py-0.5 font-mono text-[9.5px] tracking-[0.06em] uppercase">
+                            {c.tag}
+                          </span>
+                        </li>
+                      ))
+                    )}
+                  </ul>
+                </m.div>
+              </m.div>
+            )}
+          </AnimatePresence>
+        </MotionConfig>
+      </LazyMotion>
     </PaletteContext.Provider>
   );
 }
