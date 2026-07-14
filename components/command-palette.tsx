@@ -157,13 +157,19 @@ export function PaletteProvider({ children }: { children: ReactNode }) {
     ];
   }, [close, router, setTheme, resolvedTheme, social]);
 
-  const filtered = useMemo(
-    () =>
-      query.trim()
-        ? commands.filter((c) => fuzzy(query.trim(), `${c.key} ${c.label}`))
-        : commands,
-    [commands, query],
-  );
+  const filtered = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    if (!q) return commands;
+    // Match a subsequence of the key (the /command), or a plain substring of
+    // the label. Keeps typos like "/ttop" from matching unrelated commands
+    // while still allowing label search (e.g. "toggle" -> /theme).
+    const bare = q.replace(/^\//, "");
+    return commands.filter(
+      (c) =>
+        fuzzy(bare, c.key.replace(/^\//, "")) ||
+        c.label.toLowerCase().includes(bare),
+    );
+  }, [commands, query]);
 
   // Global shortcuts: Cmd/Ctrl+K anywhere; "/" when not typing in a field.
   useEffect(() => {
