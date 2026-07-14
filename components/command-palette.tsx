@@ -25,12 +25,44 @@ import {
 import { profile } from "@/data/portfolio";
 import { cn } from "@/lib/utils";
 
-type Command = {
+export type CommandTag = "go" | "external" | "toggle";
+
+// Static metadata for every command — the single source of truth for keys and
+// labels. The palette UI attaches a per-key `run` handler; `filterCommands`
+// matches against this shape. Keeping it module-level makes matching unit-
+// testable without mounting the component.
+export type CommandMeta = {
   key: string;
   label: string;
-  tag: "go" | "external" | "toggle";
-  run: () => void;
+  tag: CommandTag;
 };
+
+export const commandList: CommandMeta[] = [
+  { key: "/projects", label: "Browse all projects", tag: "go" },
+  { key: "/skills", label: "Jump to skills", tag: "go" },
+  { key: "/experience", label: "Jump to experience", tag: "go" },
+  { key: "/testimonials", label: "Jump to testimonials", tag: "go" },
+  { key: "/github", label: "Open GitHub", tag: "external" },
+  { key: "/linkedin", label: "Open LinkedIn", tag: "external" },
+  { key: "/theme", label: "Toggle light / dark", tag: "toggle" },
+  { key: "/top", label: "Back to the top", tag: "go" },
+];
+
+// Pure matcher: fuzzysort ranks subsequence matches by score across key +
+// label. Empty query returns everything. Extracted so the matching contract
+// (e.g. "/ttop" must match nothing) is testable in isolation.
+export function filterCommands<T extends { key: string; label: string }>(
+  query: string,
+  commands: readonly T[],
+): T[] {
+  const q = query.trim();
+  if (!q) return commands.slice();
+  return fuzzysort
+    .go(q, commands, { keys: ["key", "label"] })
+    .map((r) => r.obj);
+}
+
+type Command = CommandMeta & { run: () => void };
 
 const PaletteContext = createContext<{ open: () => void } | null>(null);
 
@@ -93,78 +125,48 @@ export function PaletteProvider({ children }: { children: ReactNode }) {
         router.push(`/about#${id}`);
       }
     };
-    return [
-      {
-        key: "/projects",
-        label: "Browse all projects",
-        tag: "go",
-        run: () => goto("/projects"),
-      },
-      {
-        key: "/skills",
-        label: "Jump to skills",
-        tag: "go",
-        run: () => goSection("skills"),
-      },
-      {
-        key: "/experience",
-        label: "Jump to experience",
-        tag: "go",
-        run: () => goSection("experience"),
-      },
-      {
-        key: "/testimonials",
-        label: "Jump to testimonials",
-        tag: "go",
-        run: () => goSection("testimonials"),
-      },
-      {
-        key: "/github",
-        label: "Open GitHub",
-        tag: "external",
-        run: () => openExternal(social("GitHub")),
-      },
-      {
-        key: "/linkedin",
-        label: "Open LinkedIn",
-        tag: "external",
-        run: () => openExternal(social("LinkedIn")),
-      },
-      {
-        key: "/theme",
-        label: "Toggle light / dark",
-        tag: "toggle",
-        run: () => {
-          setTheme(resolvedTheme === "dark" ? "light" : "dark");
-          close();
-        },
-      },
-      {
-        key: "/top",
-        label: "Back to the top",
-        tag: "go",
-        run: () => {
-          close();
-          // On /about, router.push is a no-op; scroll instead. scrollTo({}) with
-          // no behavior honours the CSS scroll-behavior (smooth, reduced-safe).
-          if (window.location.pathname === "/about") {
-            window.scrollTo({ top: 0 });
-          } else {
-            router.push("/about");
-          }
-        },
-      },
-    ];
+    const runFor = (key: string): (() => void) => {
+      switch (key) {
+        case "/projects":
+          return () => goto("/projects");
+        case "/skills":
+          return () => goSection("skills");
+        case "/experience":
+          return () => goSection("experience");
+        case "/testimonials":
+          return () => goSection("testimonials");
+        case "/github":
+          return () => openExternal(social("GitHub"));
+        case "/linkedin":
+          return () => openExternal(social("LinkedIn"));
+        case "/theme":
+          return () => {
+            setTheme(resolvedTheme === "dark" ? "light" : "dark");
+            close();
+          };
+        case "/top":
+          return () => {
+            close();
+            // On /about, router.push is a no-op; scroll instead. scrollTo({})
+            // with no behavior honours the CSS scroll-behavior (smooth,
+            // reduced-safe).
+            if (window.location.pathname === "/about") {
+              window.scrollTo({ top: 0 });
+            } else {
+              router.push("/about");
+            }
+          };
+        default:
+          return () => {};
+      }
+    };
+    return commandList.map((c) => ({ ...c, run: runFor(c.key) }));
   }, [close, router, setTheme, resolvedTheme, social]);
 
-  const filtered = useMemo(() => {
-    const q = query.trim();
-    if (!q) return commands;
-    // fuzzysort ranks subsequence matches by score across the key + label.
-    return fuzzysort
-      .go(q, commands, { keys: ["key", "label"] })
-      .map((r) => r.obj);
-  }, [commands, query]);
+  const filtered = useMemo(
+    () => filterCommands(query, commands),
+    [commands, query],
+  );
 
   // Global shortcuts: Cmd/Ctrl+K anywhere; "/" when not typing in a field.
   useEffect(() => {
