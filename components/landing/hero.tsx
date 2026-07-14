@@ -57,8 +57,8 @@ export function Hero() {
         </p>
       ))}
 
-      <div className="text-dim mt-6 flex items-center gap-2 font-mono text-xs">
-        <span className="bg-hi animate-pulse-dot size-[7px] rounded-full shadow-[0_0_8px_var(--hi)]" />
+      <div className="text-dim mt-6 flex items-start gap-2 font-mono text-xs">
+        <span className="bg-hi animate-pulse-dot mt-1.5 size-[7px] shrink-0 rounded-full shadow-[0_0_8px_var(--hi)]" />
         <span>
           {profile.availability} · {profile.location}
         </span>

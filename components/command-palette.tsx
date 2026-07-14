@@ -1,5 +1,6 @@
 "use client";
 
+import fuzzysort from "fuzzysort";
 import {
   AnimatePresence,
   domAnimation,
@@ -37,19 +38,6 @@ export function usePalette() {
   const ctx = useContext(PaletteContext);
   if (!ctx) throw new Error("usePalette must be used within <PaletteProvider>");
   return ctx;
-}
-
-// Subsequence match: every char of the query appears in order in the text.
-function fuzzy(query: string, text: string) {
-  if (!query) return true;
-  const q = query.toLowerCase();
-  const t = text.toLowerCase();
-  let i = 0;
-  for (const ch of t) {
-    if (ch === q[i]) i += 1;
-    if (i === q.length) return true;
-  }
-  return false;
 }
 
 function isTypingTarget(target: EventTarget | null) {
@@ -158,17 +146,12 @@ export function PaletteProvider({ children }: { children: ReactNode }) {
   }, [close, router, setTheme, resolvedTheme, social]);
 
   const filtered = useMemo(() => {
-    const q = query.trim().toLowerCase();
+    const q = query.trim();
     if (!q) return commands;
-    // Match a subsequence of the key (the /command), or a plain substring of
-    // the label. Keeps typos like "/ttop" from matching unrelated commands
-    // while still allowing label search (e.g. "toggle" -> /theme).
-    const bare = q.replace(/^\//, "");
-    return commands.filter(
-      (c) =>
-        fuzzy(bare, c.key.replace(/^\//, "")) ||
-        c.label.toLowerCase().includes(bare),
-    );
+    // fuzzysort ranks subsequence matches by score across the key + label.
+    return fuzzysort
+      .go(q, commands, { keys: ["key", "label"] })
+      .map((r) => r.obj);
   }, [commands, query]);
 
   // Global shortcuts: Cmd/Ctrl+K anywhere; "/" when not typing in a field.

@@ -44,7 +44,7 @@ export function MetaCard({ project }: { project: Project }) {
         </div>
         {status && (
           <div className="border-line flex items-center gap-2 border-t border-dashed pt-3.5">
-            <span className="bg-hi animate-pulse-dot size-[7px] rounded-full shadow-[0_0_8px_var(--hi)]" />
+            <span className="bg-hi animate-pulse-dot size-[7px] shrink-0 rounded-full shadow-[0_0_8px_var(--hi)]" />
             <span className="text-dim font-mono text-[11.5px]">
               status: <span className="text-hi">{status}</span>
             </span>
