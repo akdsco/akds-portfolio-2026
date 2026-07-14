@@ -139,6 +139,12 @@
   body {
     @apply bg-base text-ink font-sans antialiased;
   }
+  /* Unified keyboard-focus ring in the theme accent (coral), not browser blue.
+   * outline follows each element's border-radius automatically. */
+  :focus-visible {
+    outline: 2px solid var(--hi);
+    outline-offset: 2px;
+  }
 }
 
 @keyframes blink {
