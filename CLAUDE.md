@@ -36,13 +36,41 @@ Design is intentionally deferred. The home page is a working placeholder using s
 ## Commands
 
 ```bash
-npm run dev      # next dev (Turbopack, default in v16)
-npm run build    # next build
-npm run start    # next start
-npm run lint     # eslint (flat config)
+npm run dev        # next dev (Turbopack, default in v16)
+npm run build      # next build
+npm run start      # next start
+npm run lint       # eslint (flat config)
+npm run typecheck  # tsc --noEmit
+npm run test       # vitest run (Tier 1 unit/component tests)
+npm run test:watch # vitest (watch mode)
 ```
 
-No test command — tests are deferred until there's something worth testing.
+## Testing
+
+**Tier 1: Vitest + Testing Library** (jsdom). `npm run test` runs the suite; CI
+runs it in the `verify` job between typecheck and build. Config lives in
+`vitest.config.ts` (jsdom env, globals, `@/` alias mirroring `tsconfig.json`);
+`vitest.setup.ts` loads `@testing-library/jest-dom` and stubs the browser APIs
+jsdom lacks but components use — `matchMedia`, `IntersectionObserver`,
+`ResizeObserver`, and `Element.scrollIntoView`.
+
+What's covered (the regression-prone client logic, not presentation):
+
+- **Command palette matching** (`command-palette.matching.test.ts`) — the pure
+  `filterCommands` matcher, incl. the shipped `/ttop` → `/testimonials` bug.
+- **Command palette keyboard/a11y** (`command-palette.keyboard.test.tsx`) —
+  open/focus, arrow selection, Enter → router, Escape + focus restore.
+- **Collapse** (`collapse.test.tsx`) — `inert` + grid-rows by `open`.
+- **AboutMore** (`about-more.test.tsx`) — reveal on `about:reveal` + scroll.
+- **Data invariants** (`data/portfolio.test.ts`) — unique slugs, resolvable
+  `testimonialId`, featured↔caseStudy intent.
+
+Tests colocate with source as `*.test.ts(x)`. `next build` ignores them (they're
+not routes) but `tsc` still typechecks them. Tier 2 (a Playwright smoke e2e) is a
+deferred follow-up, not built here.
+
+> **Turbopack stale-CSS quirk:** if CSS changes don't appear in `next dev`, clear
+> the cache (`rm -rf .next`) and restart — the production build is unaffected.
 
 ## Folder structure
 
