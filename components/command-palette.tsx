@@ -261,7 +261,7 @@ export function PaletteProvider({ children }: { children: ReactNode }) {
                     id="palette-list"
                     role="listbox"
                     aria-label="Commands"
-                    className="border-line bg-panel mt-2 max-h-[300px] overflow-auto rounded-[9px] border p-1.5 shadow-[0_18px_44px_-14px_rgba(0,0,0,0.55)]"
+                    className="border-line bg-panel mt-2 max-h-[min(68vh,34rem)] overflow-auto rounded-[9px] border p-1.5 shadow-[0_18px_44px_-14px_rgba(0,0,0,0.55)]"
                   >
                     {filtered.length === 0 ? (
                       <li
