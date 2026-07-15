@@ -58,7 +58,7 @@ export function Hero() {
         </p>
       ))}
 
-      <div className="text-dim mt-6 flex items-start gap-2 font-mono text-xs">
+      <div className="text-dim mt-6 flex items-center gap-2 font-mono text-xs">
         <PulseDot />
         <span>
           {profile.availability} · {profile.location}

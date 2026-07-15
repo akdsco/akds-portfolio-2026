@@ -44,7 +44,7 @@ export function MetaCard({ project }: { project: Project }) {
           <StackChips items={project.stack} />
         </div>
         {status && (
-          <div className="border-line flex items-start gap-2 border-t border-dashed pt-3.5">
+          <div className="border-line flex items-center gap-2 border-t border-dashed pt-3.5">
             <PulseDot />
             <span className="text-dim font-mono text-[11.5px]">
               status: <span className="text-hi">{status}</span>

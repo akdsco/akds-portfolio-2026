@@ -13,12 +13,21 @@ it sat ~1.5px low. The same dot markup was duplicated in
 `components/case-study/meta-card.tsx` (there using `items-center`, fine only
 while the status stays single-line).
 
-**Fix:** extracted a reusable `components/pulse-dot.tsx`. It wraps the dot in a
-`h-[1lh]` (one line-height tall) flex box that centres the dot, so a parent row
-set to `items-start` lands the dot on the optical centre of the *first* text
-line — no magic margin, adapts to any font size, and stays correct if the text
-wraps. Both call sites now use `<PulseDot />` with `items-start` rows.
+**Fix:** extracted a reusable `components/pulse-dot.tsx` (just the dot: colour +
+pulse + glow, `aria-hidden`). Alignment is the caller's job — both rows use a
+plain `flex items-center`, which centres the dot **dead-centre on the whole text
+block**: on the line for a single-line label, and at the midpoint of the block
+for a wrapped two-line label. No magic top-margin.
 
-**Verified:** typecheck + eslint clean; dev server confirms the `h-[1lh]` rule
-compiles (`.h-\[1lh\]{height:1lh}`) and the wrapper renders on `/about`.
-`lh` unit is Baseline-2024, fine for a modern portfolio.
+Owner's spec: dead-centre for both one *and* two lines. An earlier attempt wrapped
+the dot in a `h-[1lh]` box + `items-start` to pin it to line 1 — rejected, because
+that is the opposite of centring on a two-line block.
+
+Also shortened the availability copy to
+"Open to remote or hybrid, senior engineering roles" (owner-supplied).
+
+**Verified** via headless-Chrome screenshots + pixel measurement of dot-centre vs
+text-block-centre:
+- single line (1000px viewport): offset −0.5px (dead centre)
+- wrapped two lines (340px viewport): offset +1.0px (dead centre of block)
+typecheck + eslint clean.

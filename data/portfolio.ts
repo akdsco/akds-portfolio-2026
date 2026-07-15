@@ -139,8 +139,7 @@ export const profile: Profile = {
   fullName: "Arkadiusz Ostrowski",
   title: "Software Engineer · Full-Stack · TypeScript · React · Node",
   location: "London, UK",
-  availability:
-    "Open to senior / staff / founding-engineer roles. Hybrid or remote.",
+  availability: "Open to remote or hybrid, senior engineering roles",
   publicEmail: "hire-arkadiusz@pm.me",
   cvEmail: "arkadiusz.ostrowski@protonmail.com",
   brandImage: "/images/brand-image.webp",
