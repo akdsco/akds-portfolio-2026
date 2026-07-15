@@ -44,12 +44,15 @@ vi.mock("motion/react", async () => {
     for (const k in props) if (!MOTION_PROPS.has(k)) out[k] = props[k];
     return out;
   };
-  const m = new Proxy({} as Record<string, unknown>, {
-    get:
-      (_t, tag: string) =>
-      (props: { children?: React.ReactNode } & Record<string, unknown>) =>
-        React.createElement(tag, clean(props), props.children),
-  });
+  const m = new Proxy(
+    {},
+    {
+      get:
+        (_t, tag: string) =>
+        (props: { children?: React.ReactNode } & Record<string, unknown>) =>
+          React.createElement(tag, clean(props), props.children),
+    },
+  );
   const Passthrough = ({ children }: { children: React.ReactNode }) => children;
   return {
     __esModule: true,

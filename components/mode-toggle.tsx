@@ -16,7 +16,9 @@ export function ModeToggle() {
     <button
       type="button"
       aria-label="Toggle theme"
-      onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
+      onClick={() => {
+        setTheme(resolvedTheme === "dark" ? "light" : "dark");
+      }}
       className="text-dim hover:text-ink relative grid size-8 cursor-pointer place-items-center rounded-md transition-colors"
     >
       <Sun className="size-4 scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90" />

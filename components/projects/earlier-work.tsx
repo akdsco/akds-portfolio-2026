@@ -18,7 +18,9 @@ export function EarlierWork({ projects }: { projects: Project[] }) {
         <div className="border-line flex-1 border-t border-dashed" />
         <button
           type="button"
-          onClick={() => setShow((s) => !s)}
+          onClick={() => {
+            setShow((s) => !s);
+          }}
           aria-expanded={show}
           aria-controls={PANEL_ID}
           className="border-line bg-chip text-dim hover:text-ink hover:border-hi cursor-pointer rounded-[7px] border px-3.5 py-1.5 font-mono text-xs transition-colors"

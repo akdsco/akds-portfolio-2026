@@ -36,9 +36,13 @@ export function AboutMore({ children }: { children: ReactNode }) {
       );
     };
     reveal(window.location.hash.replace("#", ""));
-    const onReveal = (e: Event) => reveal((e as CustomEvent<string>).detail);
+    const onReveal = (e: Event) => {
+      reveal((e as CustomEvent<string>).detail);
+    };
     window.addEventListener("about:reveal", onReveal);
-    return () => window.removeEventListener("about:reveal", onReveal);
+    return () => {
+      window.removeEventListener("about:reveal", onReveal);
+    };
   }, []);
 
   return (
@@ -47,7 +51,9 @@ export function AboutMore({ children }: { children: ReactNode }) {
         <div className="border-line flex-1 border-t border-dashed" />
         <button
           type="button"
-          onClick={() => setOpen((o) => !o)}
+          onClick={() => {
+            setOpen((o) => !o);
+          }}
           aria-expanded={open}
           aria-controls={PANEL_ID}
           className="border-line bg-chip text-dim hover:text-ink hover:border-hi inline-flex cursor-pointer items-center gap-2 rounded-[7px] border px-3.5 py-1.5 font-mono text-xs transition-colors"

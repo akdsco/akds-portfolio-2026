@@ -31,11 +31,11 @@ export type CommandTag = "go" | "external" | "toggle";
 // labels. The palette UI attaches a per-key `run` handler; `filterCommands`
 // matches against this shape. Keeping it module-level makes matching unit-
 // testable without mounting the component.
-export type CommandMeta = {
+export interface CommandMeta {
   key: string;
   label: string;
   tag: CommandTag;
-};
+}
 
 export const commandList: CommandMeta[] = [
   { key: "/projects", label: "Browse all projects", tag: "go" },
@@ -98,7 +98,9 @@ export function PaletteProvider({ children }: { children: ReactNode }) {
     setIsOpen(true);
   }, []);
 
-  const close = useCallback(() => setIsOpen(false), []);
+  const close = useCallback(() => {
+    setIsOpen(false);
+  }, []);
 
   const social = useCallback(
     (label: string) => profile.socials.find((s) => s.label === label)?.url,
@@ -128,17 +130,29 @@ export function PaletteProvider({ children }: { children: ReactNode }) {
     const runFor = (key: string): (() => void) => {
       switch (key) {
         case "/projects":
-          return () => goto("/projects");
+          return () => {
+            goto("/projects");
+          };
         case "/skills":
-          return () => goSection("skills");
+          return () => {
+            goSection("skills");
+          };
         case "/experience":
-          return () => goSection("experience");
+          return () => {
+            goSection("experience");
+          };
         case "/testimonials":
-          return () => goSection("testimonials");
+          return () => {
+            goSection("testimonials");
+          };
         case "/github":
-          return () => openExternal(social("GitHub"));
+          return () => {
+            openExternal(social("GitHub"));
+          };
         case "/linkedin":
-          return () => openExternal(social("LinkedIn"));
+          return () => {
+            openExternal(social("LinkedIn"));
+          };
         case "/theme":
           return () => {
             setTheme(resolvedTheme === "dark" ? "light" : "dark");
@@ -157,7 +171,9 @@ export function PaletteProvider({ children }: { children: ReactNode }) {
             }
           };
         default:
-          return () => {};
+          return () => {
+            /* unknown key: no-op */
+          };
       }
     };
     return commandList.map((c) => ({ ...c, run: runFor(c.key) }));
@@ -183,7 +199,9 @@ export function PaletteProvider({ children }: { children: ReactNode }) {
       }
     };
     window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
+    return () => {
+      window.removeEventListener("keydown", onKey);
+    };
   }, [isOpen, open, close]);
 
   // Focus the input on open; restore focus to the trigger on close.
@@ -235,7 +253,9 @@ export function PaletteProvider({ children }: { children: ReactNode }) {
                   aria-modal="true"
                   aria-label="Command palette"
                   className="w-full max-w-md"
-                  onClick={(e) => e.stopPropagation()}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                  }}
                   initial={{ opacity: 0, scale: 0.98, y: -6 }}
                   animate={{ opacity: 1, scale: 1, y: 0 }}
                   exit={{ opacity: 0, scale: 0.98, y: -6 }}
@@ -290,7 +310,9 @@ export function PaletteProvider({ children }: { children: ReactNode }) {
                           id={optionId(c.key)}
                           role="option"
                           aria-selected={i === active}
-                          onMouseEnter={() => setActive(i)}
+                          onMouseEnter={() => {
+                            setActive(i);
+                          }}
                           onClick={c.run}
                           className={cn(
                             "flex cursor-pointer items-center gap-3 rounded-md px-2.5 py-2",

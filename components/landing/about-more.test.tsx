@@ -37,9 +37,9 @@ describe("AboutMore", () => {
     expect(toggle).toHaveAttribute("aria-expanded", "true");
     expect(toggle).toHaveTextContent("Show less");
     // scrollIntoView runs after a double rAF — wait for it.
-    await waitFor(() =>
-      expect(Element.prototype.scrollIntoView).toHaveBeenCalled(),
-    );
+    await waitFor(() => {
+      expect(Element.prototype.scrollIntoView).toHaveBeenCalled();
+    });
   });
 
   test("ignores an unmanaged section id", async () => {
@@ -49,7 +49,11 @@ describe("AboutMore", () => {
     const toggle = screen.getByRole("button");
     expect(toggle).toHaveAttribute("aria-expanded", "false");
     // Give any (unexpected) rAF-scheduled scroll a chance to fire.
-    await new Promise((r) => requestAnimationFrame(() => r(null)));
+    await new Promise((r) =>
+      requestAnimationFrame(() => {
+        r(null);
+      }),
+    );
     expect(Element.prototype.scrollIntoView).not.toHaveBeenCalled();
   });
 });

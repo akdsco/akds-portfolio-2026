@@ -32,8 +32,12 @@ export function Toc({
       // A thin detection band near the top of the viewport.
       { rootMargin: "-20% 0px -72% 0px" },
     );
-    els.forEach((el) => observer.observe(el));
-    return () => observer.disconnect();
+    els.forEach((el) => {
+      observer.observe(el);
+    });
+    return () => {
+      observer.disconnect();
+    };
   }, [sections]);
 
   return (
