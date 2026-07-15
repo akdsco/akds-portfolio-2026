@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 
+import { PulseDot } from "@/components/pulse-dot";
 import { StackChips } from "@/components/stack-chips";
 import type { Project } from "@/data/portfolio";
 
@@ -43,8 +44,8 @@ export function MetaCard({ project }: { project: Project }) {
           <StackChips items={project.stack} />
         </div>
         {status && (
-          <div className="border-line flex items-center gap-2 border-t border-dashed pt-3.5">
-            <span className="bg-hi animate-pulse-dot size-[7px] shrink-0 rounded-full shadow-[0_0_8px_var(--hi)]" />
+          <div className="border-line flex items-start gap-2 border-t border-dashed pt-3.5">
+            <PulseDot />
             <span className="text-dim font-mono text-[11.5px]">
               status: <span className="text-hi">{status}</span>
             </span>

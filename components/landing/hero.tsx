@@ -2,6 +2,7 @@ import Image from "next/image";
 
 import { HeroPrompt } from "@/components/command-palette";
 import { HeroBand } from "@/components/hero-band";
+import { PulseDot } from "@/components/pulse-dot";
 import { about, hero, profile } from "@/data/portfolio";
 
 const HIGHLIGHT = "AI-native software";
@@ -58,7 +59,7 @@ export function Hero() {
       ))}
 
       <div className="text-dim mt-6 flex items-start gap-2 font-mono text-xs">
-        <span className="bg-hi animate-pulse-dot mt-1.5 size-[7px] shrink-0 rounded-full shadow-[0_0_8px_var(--hi)]" />
+        <PulseDot />
         <span>
           {profile.availability} · {profile.location}
         </span>
