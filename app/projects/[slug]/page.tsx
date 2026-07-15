@@ -34,6 +34,13 @@ export async function generateMetadata({
   return {
     title: `${project.title} — Arkadiusz Ostrowski`,
     description: project.hook,
+    alternates: { canonical: `/projects/${slug}` },
+    openGraph: {
+      title: `${project.title} — Arkadiusz Ostrowski`,
+      description: project.hook,
+      type: "article",
+      url: `/projects/${slug}`,
+    },
   };
 }
 
