@@ -29,7 +29,9 @@ Design is intentionally deferred. The home page is a working placeholder using s
 - **next-themes** with `attribute="class"`, `defaultTheme="system"`
 - **Lucide** for icons (brand glyphs inlined in `components/icons.tsx` — lucide v1.x dropped them)
 - **@vercel/analytics**
-- **ESLint** (flat config) + **Prettier** with `prettier-plugin-tailwindcss`
+- **ESLint** (flat config, **strict + type-aware**: `typescript-eslint`
+  `strictTypeChecked` + `stylisticTypeChecked` over `eslint-config-next`;
+  `--max-warnings=0`) + **Prettier** with `prettier-plugin-tailwindcss`
 - **npm**, no `src/` directory, `@/*` import alias
 - **Node 24 LTS** (pinned via `.nvmrc` for Vercel parity)
 
@@ -39,7 +41,7 @@ Design is intentionally deferred. The home page is a working placeholder using s
 npm run dev        # next dev (Turbopack, default in v16)
 npm run build      # next build
 npm run start      # next start
-npm run lint       # eslint (flat config)
+npm run lint       # eslint (flat config, strict type-aware, --max-warnings=0)
 npm run typecheck  # tsc --noEmit
 npm run test       # vitest run (Tier 1 unit/component tests)
 npm run test:watch # vitest (watch mode)
