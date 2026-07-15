@@ -22,73 +22,73 @@ const COLORS = {
 
 export default function OpengraphImage() {
   return new ImageResponse(
-    (
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
+        width: "100%",
+        height: "100%",
+        backgroundColor: COLORS.base,
+        padding: "72px 80px",
+        borderLeft: `10px solid ${COLORS.hi}`,
+      }}
+    >
+      {/* terminal prompt, echoing the site's `$` motif */}
       <div
         style={{
           display: "flex",
-          flexDirection: "column",
-          justifyContent: "space-between",
-          width: "100%",
-          height: "100%",
-          backgroundColor: COLORS.base,
-          padding: "72px 80px",
-          borderLeft: `10px solid ${COLORS.hi}`,
+          fontSize: 30,
+          fontFamily: "monospace",
+          color: COLORS.brand,
         }}
       >
-        {/* terminal prompt, echoing the site's `$` motif */}
+        $ whoami
+      </div>
+
+      <div style={{ display: "flex", flexDirection: "column" }}>
         <div
           style={{
             display: "flex",
-            fontSize: 30,
-            fontFamily: "monospace",
-            color: COLORS.brand,
+            fontSize: 96,
+            fontWeight: 700,
+            letterSpacing: "-0.02em",
+            color: COLORS.ink,
+            lineHeight: 1.05,
           }}
         >
-          $ whoami
+          {profile.fullName}
         </div>
-
-        <div style={{ display: "flex", flexDirection: "column" }}>
-          <div
-            style={{
-              display: "flex",
-              fontSize: 96,
-              fontWeight: 700,
-              letterSpacing: "-0.02em",
-              color: COLORS.ink,
-              lineHeight: 1.05,
-            }}
-          >
-            {profile.fullName}
-          </div>
-          <div
-            style={{
-              display: "flex",
-              fontSize: 42,
-              color: COLORS.dim,
-              marginTop: 20,
-            }}
-          >
-            Software Engineer · {profile.location}
-          </div>
-        </div>
-
         <div
           style={{
             display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            fontSize: 26,
-            fontFamily: "monospace",
-            color: COLORS.faint,
-            borderTop: `1px solid ${COLORS.line}`,
-            paddingTop: 28,
+            fontSize: 42,
+            color: COLORS.dim,
+            marginTop: 20,
           }}
         >
-          <span>arkadiusz.tech</span>
-          <span style={{ color: COLORS.brand }}>Selected work · case studies</span>
+          Software Engineer · {profile.location}
         </div>
       </div>
-    ),
+
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          fontSize: 26,
+          fontFamily: "monospace",
+          color: COLORS.faint,
+          borderTop: `1px solid ${COLORS.line}`,
+          paddingTop: 28,
+        }}
+      >
+        <span>arkadiusz.tech</span>
+        <span style={{ color: COLORS.brand }}>
+          Selected work · case studies
+        </span>
+      </div>
+    </div>,
     { ...size },
   );
 }
