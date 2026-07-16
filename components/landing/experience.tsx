@@ -36,9 +36,18 @@ export function Experience() {
                 </span>
                 {role.location} · {role.employmentType}
               </div>
-              <p className="text-dim mb-3.5 text-[14.5px] leading-relaxed text-pretty">
+              {/* Summary sets the scene in one line and stays quiet; the
+                  highlights are what the reader is here for. */}
+              <p className="text-faint mb-2.5 text-[13.5px] leading-relaxed text-pretty">
                 {role.summary}
               </p>
+              <ul className="text-dim marker:text-hi mb-3.5 list-disc space-y-1.5 pl-4 text-[14.5px] leading-relaxed">
+                {role.highlights.map((h) => (
+                  <li key={h} className="text-pretty">
+                    {h}
+                  </li>
+                ))}
+              </ul>
               <RoleStack lead={role.stack.lead} rest={role.stack.rest} />
             </div>
           </div>

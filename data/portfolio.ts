@@ -516,7 +516,7 @@ export const experience: WorkExperience[] = [
     location: "Remote",
     employmentType: "Contract (12 months)",
     summary:
-      "Joined a small founding team building a social-proof OS for sales teams. Built and ran the proof-store product across a CEO-driven pivot, from ingestion through dashboard to delivery summaries.",
+      "Founding-team engineer on a social-proof OS for sales teams, through a CEO-driven pivot.",
     highlights: [
       "Built the Proof Library / Proof Store: ingestion (URL scrape, file upload, AI-vision screenshot extraction), dashboard with coverage matrix, and MCP/agentic access.",
       "Server-side LLM tagging as an architectural unlock. Every new quote, stat, or case study is tagged against the workspace's ICPs and pain points before save returns, with fan-out re-tag on edits.",
@@ -560,7 +560,7 @@ export const experience: WorkExperience[] = [
     location: "London (hybrid)",
     employmentType: "Full-time",
     summary:
-      "Promoted to Lead Product Engineer as the sole remaining technical IC after the CTO's departure. Continued to drive product work directly with the CEO and Skyscanner co-founder Bonamy Grimes until the tech arm wound down.",
+      "Promoted to lead as the sole remaining technical IC after the CTO's departure, and drove product until the tech arm wound down.",
     highlights: [
       "Built the film production tracking platform: database design, problem definition, early prototypes.",
       "Worked closely with the CEO and Bonamy Grimes on prioritisation and stakeholder framing.",
@@ -588,7 +588,7 @@ export const experience: WorkExperience[] = [
     location: "London (hybrid)",
     employmentType: "Full-time",
     summary:
-      "Second engineer in NMG's newly-formed tech arm. Built three products 0→1 across the team's lifetime, worked directly with leadership, and adopted production LLM tooling years ahead of mainstream curve.",
+      "Second engineer in NMG's newly-formed tech arm, building three products 0→1 over three years.",
     highlights: [
       "SlateIQ: film success prediction. Combined IMDB, social, piracy, and market data into a comp-matching tool used in pitch decisions.",
       "AI-powered research assistant on GPT-3.5/4 in 2023. Integration tests ran live LLM calls with graded responses to stabilise output, years before this became standard practice.",
@@ -637,7 +637,7 @@ export const experience: WorkExperience[] = [
     location: "Remote",
     employmentType: "Full-time",
     summary:
-      "First of three companies working alongside Ben Ritchie, who mentored Akds from junior into mid-level. B2B SaaS for productivity around online meetings: agendas, structured notes, planning, meeting history.",
+      "B2B SaaS for online-meeting productivity, and the first of three companies alongside Ben Ritchie, who mentored Akds from junior to mid-level.",
     highlights: [
       "Ported the Blaze front-end to React without breaking production.",
       "Built agenda creation with drag-and-drop and recurring meeting templates.",
@@ -656,8 +656,7 @@ export const experience: WorkExperience[] = [
     company: "Wutzu Technologies",
     location: "London",
     employmentType: "Full-time",
-    summary:
-      '"Deliveroo for small independent London shops." Worked on order / basket creation and external payment integration via API. Intern → developer in 7 months.',
+    summary: '"Deliveroo for small independent London shops."',
     highlights: [
       'Refactored the MVP codebase and shipped the first production stores panel (Hevar Abrihem: "still in use in some areas to this day").',
       "Built order and basket flows with external payment-API integration.",
@@ -685,7 +684,7 @@ export const experience: WorkExperience[] = [
     location: "London",
     employmentType: "Freelance",
     summary:
-      "Built websites for the London Java Community and Meet a Mentor; took a few paid freelance projects; mentored junior devs into their first roles via LJC.",
+      "Community sites and paid client work, through the London Java Community.",
     highlights: [
       "Built websites for the London Java Community and Meet a Mentor (referenced by Martijn Verburg and Simon Maple).",
       "Mentored junior developers into their first software roles via LJC, having started as a mentee in the same community.",
