@@ -38,6 +38,7 @@ export type CommandMeta = {
 };
 
 export const commandList: CommandMeta[] = [
+  { key: "/about", label: "Go to about", tag: "go" },
   { key: "/projects", label: "Browse all projects", tag: "go" },
   { key: "/skills", label: "Jump to skills", tag: "go" },
   { key: "/experience", label: "Jump to experience", tag: "go" },
@@ -129,6 +130,10 @@ export function PaletteProvider({ children }: { children: ReactNode }) {
     };
     const runFor = (key: string): (() => void) => {
       switch (key) {
+        case "/about":
+          return () => {
+            goto("/about");
+          };
         case "/projects":
           return () => {
             goto("/projects");

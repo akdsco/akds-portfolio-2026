@@ -1,8 +1,10 @@
 "use client";
 
+import { Command } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
+import { usePalette } from "@/components/command-palette";
 import { ExternalLink } from "@/components/external-link";
 import { GithubIcon, LinkedinIcon } from "@/components/icons";
 import { ModeToggle } from "@/components/mode-toggle";
@@ -26,6 +28,7 @@ const navSocials = profile.socials
 
 export function SiteNav() {
   const pathname = usePathname();
+  const { open } = usePalette();
   const isActive = (href: string) =>
     href === "/projects" ? pathname.startsWith("/projects") : pathname === href;
 
@@ -70,17 +73,33 @@ export function SiteNav() {
         </ul>
 
         <div className="flex items-center gap-0.5">
-          {navSocials.map(({ url, label, Icon }) => (
-            <ExternalLink
-              key={label}
-              href={url}
-              aria-label={label}
-              className="text-dim hover:text-ink grid size-8 place-items-center rounded-md transition-colors"
-            >
-              <Icon className="size-4" />
-            </ExternalLink>
-          ))}
-          <ModeToggle />
+          {/* Under 500px these three don't fit beside the wordmark and the two
+              nav links — the bar overflowed and the wordmark ran under "About".
+              They fold into the command palette, which already carries all
+              three (/github, /linkedin, /theme) and is otherwise unreachable on
+              touch: its only hints are "/" and "⌘K". */}
+          <button
+            type="button"
+            onClick={open}
+            aria-label="Open command palette"
+            className="text-dim hover:text-ink grid size-8 cursor-pointer place-items-center rounded-md transition-colors min-[500px]:hidden"
+          >
+            <Command className="size-4" />
+          </button>
+
+          <div className="hidden items-center gap-0.5 min-[500px]:flex">
+            {navSocials.map(({ url, label, Icon }) => (
+              <ExternalLink
+                key={label}
+                href={url}
+                aria-label={label}
+                className="text-dim hover:text-ink grid size-8 place-items-center rounded-md transition-colors"
+              >
+                <Icon className="size-4" />
+              </ExternalLink>
+            ))}
+            <ModeToggle />
+          </div>
         </div>
       </nav>
     </header>

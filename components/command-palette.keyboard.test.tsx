@@ -114,9 +114,10 @@ describe("command palette keyboard + a11y", () => {
 
     expect(screen.getByRole("dialog")).toBeInTheDocument();
     expect(input()).toHaveFocus();
-    // First command is selected by default.
-    expect(selectedOption()).toHaveTextContent("/projects");
-    expect(input()).toHaveAttribute("aria-activedescendant", "cmd-projects");
+    // First command is selected by default; the list leads with the nav's own
+    // order, so that's /about.
+    expect(selectedOption()).toHaveTextContent("/about");
+    expect(input()).toHaveAttribute("aria-activedescendant", "cmd-about");
   });
 
   test("ArrowDown moves the active option", async () => {
@@ -126,8 +127,8 @@ describe("command palette keyboard + a11y", () => {
 
     await user.keyboard("{ArrowDown}");
 
-    expect(selectedOption()).toHaveTextContent("/skills");
-    expect(input()).toHaveAttribute("aria-activedescendant", "cmd-skills");
+    expect(selectedOption()).toHaveTextContent("/projects");
+    expect(input()).toHaveAttribute("aria-activedescendant", "cmd-projects");
   });
 
   test("Enter runs the highlighted command via the router", async () => {
@@ -135,10 +136,10 @@ describe("command palette keyboard + a11y", () => {
     renderPalette();
     await user.click(trigger());
 
-    // Default highlight is /projects, whose run() calls router.push.
+    // Default highlight is /about, whose run() calls router.push.
     await user.keyboard("{Enter}");
 
-    expect(push).toHaveBeenCalledWith("/projects");
+    expect(push).toHaveBeenCalledWith("/about");
   });
 
   // "Back to the top" used to mean "go to /about" from anywhere that wasn't
