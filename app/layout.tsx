@@ -38,11 +38,11 @@ export const metadata: Metadata = {
     // OG image comes from app/opengraph-image.tsx (file convention).
   },
   twitter: {
+    // Title, description and image are auto-filled from `openGraph` above — but
+    // only while none of them are set here. Pinning a title disables that for
+    // every descendant, which leaves case studies advertising the site title
+    // instead of the project's. Leave this as just the card type.
     card: "summary_large_image",
-    title: "Arkadiusz Ostrowski — Software Engineer",
-    description:
-      "London-based software engineer building production AI-native software end-to-end.",
-    // Twitter image comes from app/twitter-image.tsx (file convention).
   },
 };
 
