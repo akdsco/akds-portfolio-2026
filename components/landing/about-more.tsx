@@ -9,7 +9,7 @@ import {
   type ReactNode,
 } from "react";
 
-import { Collapse } from "@/components/collapse";
+import { Collapse, COLLAPSE_MS } from "@/components/collapse";
 import { scrollIntoViewLive } from "@/lib/scroll-into-view-live";
 import { cn } from "@/lib/utils";
 
@@ -20,9 +20,6 @@ const MANAGED = ["skills", "experience", "testimonials"];
 const MANAGED_SELECTOR = MANAGED.map((id) => `#${id}`).join(", ");
 const PANEL_ID = "about-more";
 const TOGGLE_ID = "about-more-toggle";
-// How long the reveal takes to stop moving the layout around. Keep in sync
-// with Collapse's duration-300.
-const COLLAPSE_MS = 300;
 
 // Collapses the deeper About sections (skills, experience, testimonials) behind
 // one toggle, mirroring the Projects "show earlier work" pattern. Opening is

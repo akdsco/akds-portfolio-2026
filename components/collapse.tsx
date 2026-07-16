@@ -4,8 +4,8 @@ import { useEffect, useState, type ReactNode } from "react";
 
 import { cn } from "@/lib/utils";
 
-// Keep in sync with duration-300 below.
-const ROWS_MS = 300;
+/** How long the rows take to move. Keep in sync with `duration-300` below. */
+export const COLLAPSE_MS = 300;
 
 // Smoothly animates auto-height with the grid 0fr->1fr trick: no fixed height,
 // so content that grows while open (e.g. a testimonial's own "read more") just
@@ -38,7 +38,7 @@ export function Collapse({
       () => {
         setSettled(open);
       },
-      open ? ROWS_MS : 0,
+      open ? COLLAPSE_MS : 0,
     );
     return () => {
       clearTimeout(t);

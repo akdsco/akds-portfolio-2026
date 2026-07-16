@@ -161,14 +161,9 @@ export function PaletteProvider({ children }: { children: ReactNode }) {
         case "/top":
           return () => {
             close();
-            // On /about, router.push is a no-op; scroll instead. scrollTo({})
-            // with no behavior honours the CSS scroll-behavior (smooth,
-            // reduced-safe).
-            if (window.location.pathname === "/about") {
-              window.scrollTo({ top: 0 });
-            } else {
-              router.push("/about");
-            }
+            // Whichever page you're on. scrollTo with no behavior honours the
+            // CSS scroll-behavior (smooth, reduced-safe).
+            window.scrollTo({ top: 0 });
           };
         default:
           return () => {
