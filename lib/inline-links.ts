@@ -9,15 +9,13 @@
  * fact, so `[x](javascript:…)` is simply not a match and survives as literal
  * text. Safety is a property of the grammar, not a check someone can forget to
  * call. `[^\s)]` stops the href swallowing its own closing paren.
+ *
+ * Shared instance despite the `/g` flag: `String.replace` and `String.matchAll`
+ * both leave `lastIndex` at 0, so the usual stateful-regex trap doesn't apply to
+ * either consumer here. It would apply to `.test()`/`.exec()` — if you reach for
+ * those, clone it (`new RegExp(INLINE_LINK)`) rather than calling it directly.
  */
-const PATTERN = String.raw`\[([^\]]+)\]\((https:\/\/[^\s)]+)\)`;
-
-/**
- * A fresh regex per call. A shared `/g` instance carries `lastIndex` between
- * callers, which turns "works" into "works every other time" — worth the
- * allocation to make that class of bug impossible.
- */
-export const inlineLinkPattern = () => new RegExp(PATTERN, "g");
+export const INLINE_LINK = /\[([^\]]+)\]\((https:\/\/[^\s)]+)\)/g;
 
 /**
  * Strips link markup down to its label, for the places a real link can't go:
@@ -25,5 +23,5 @@ export const inlineLinkPattern = () => new RegExp(PATTERN, "g");
  * og:description is worse than shipping no link at all.
  */
 export function plainText(text: string): string {
-  return text.replace(inlineLinkPattern(), "$1");
+  return text.replace(INLINE_LINK, "$1");
 }

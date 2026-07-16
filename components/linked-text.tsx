@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 
-import { ExternalLink } from "@/components/external-link";
-import { inlineLinkPattern } from "@/lib/inline-links";
+import { ExternalLink, proseLinkClass } from "@/components/external-link";
+import { INLINE_LINK } from "@/lib/inline-links";
 
 /**
  * Renders a prose string, turning any `[label](https://…)` into an external
@@ -15,7 +15,7 @@ export function LinkedText({ text }: { text: string }) {
   const nodes: ReactNode[] = [];
   let cursor = 0;
 
-  for (const match of text.matchAll(inlineLinkPattern())) {
+  for (const match of text.matchAll(INLINE_LINK)) {
     const [full, label, href] = match;
     // noUncheckedIndexedAccess: groups are `string | undefined` to the compiler
     // even though the pattern guarantees them. Skip rather than assert.
@@ -23,7 +23,7 @@ export function LinkedText({ text }: { text: string }) {
 
     if (match.index > cursor) nodes.push(text.slice(cursor, match.index));
     nodes.push(
-      <ExternalLink key={match.index} href={href}>
+      <ExternalLink key={match.index} href={href} className={proseLinkClass}>
         {label}
       </ExternalLink>,
     );

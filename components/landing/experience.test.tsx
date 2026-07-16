@@ -28,6 +28,19 @@ describe("Experience", () => {
     ).not.toBeInTheDocument();
   });
 
+  // jsdom derives the list role from the tag, so getByRole("list") passes with
+  // or without this — hence the explicit attribute assertion. Tailwind preflight
+  // sets list-style:none, and WebKit drops list semantics when it does, so the
+  // role has to be stated or VoiceOver never announces "list, N items".
+  it("keeps list semantics under list-style:none", () => {
+    render(<Experience />);
+    const role = roleFor("GrowthNation");
+
+    expect(
+      screen.getByRole("list", { name: `${role.position} at ${role.company}` }),
+    ).toHaveAttribute("role", "list");
+  });
+
   it("renders every highlight for a role", () => {
     render(<Experience />);
     const role = roleFor("GrowthNation");

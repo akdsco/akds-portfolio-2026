@@ -1,9 +1,8 @@
-import { ExternalLink } from "@/components/external-link";
+import { CompanyLink } from "@/components/company-link";
 import { Kicker } from "@/components/kicker";
 import { LinkedText } from "@/components/linked-text";
 import { StackChips } from "@/components/stack-chips";
-import { companyHref, experience } from "@/data/portfolio";
-import { plainText } from "@/lib/inline-links";
+import { experience } from "@/data/portfolio";
 
 export function Experience() {
   return (
@@ -11,8 +10,6 @@ export function Experience() {
       <Kicker label="experience" />
       <div>
         {experience.map((role) => {
-          // null whenever the company has no live site — see companySites.
-          const href = companyHref(role.company);
           return (
             <div
               key={role.id}
@@ -29,11 +26,7 @@ export function Experience() {
                   {role.position}
                 </div>
                 <div className="text-dim mt-0.5 text-[13.5px]">
-                  {href ? (
-                    <ExternalLink href={href}>{role.company}</ExternalLink>
-                  ) : (
-                    role.company
-                  )}
+                  <CompanyLink company={role.company} />
                 </div>
                 <div className="text-faint mt-1 mb-3 font-mono text-[11px]">
                   <span className="sm:hidden">{role.period} · </span>
@@ -44,15 +37,19 @@ export function Experience() {
                 </p>
                 {role.highlights.length > 0 && (
                   <ul
+                    // Explicit role: Tailwind's preflight sets list-style:none,
+                    // and WebKit drops list semantics when it does — without
+                    // this, VoiceOver never announces "list, N items".
+                    role="list"
                     aria-label={`${role.position} at ${role.company}`}
                     className="mb-3.5 flex flex-col gap-1.5"
                   >
-                    {role.highlights.map((highlight) => (
+                    {/* Keyed by index: the list is static and never reorders or
+                        filters, so the index is stable — and unlike a truncated
+                        string it cannot collide. */}
+                    {role.highlights.map((highlight, index) => (
                       <li
-                        // Keyed on the label, not the raw string: a whole
-                        // highlight as a key ships the markup in the RSC payload
-                        // for no benefit.
-                        key={plainText(highlight).slice(0, 24)}
+                        key={index}
                         className="text-dim grid grid-cols-[10px_1fr] gap-2 text-[13.5px] leading-relaxed text-pretty"
                       >
                         <span

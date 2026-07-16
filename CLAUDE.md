@@ -66,6 +66,15 @@ What's covered (the regression-prone client logic, not presentation):
 - **AboutMore** (`about-more.test.tsx`) — reveal on `about:reveal` + scroll.
 - **Data invariants** (`data/portfolio.test.ts`) — unique slugs, resolvable
   `testimonialId`, featured↔caseStudy intent.
+- **Company sites** (`data/company-sites.test.ts`) — `companyHref` returns a URL
+  or `null`, never a sentinel; every company used has an entry.
+- **Inline links** (`lib/inline-links.test.ts`, `components/linked-text.test.tsx`)
+  — `[text](url)` → anchor with `target`/`rel`; refuses `javascript:`, `http:`,
+  `data:` and relative hrefs; `plainText` degrades markup to its label.
+- **Experience** (`components/landing/experience.test.tsx`) — company linked vs
+  plain by `companyHref`; highlights render; `role="list"` survives.
+- **Case-study prose** (`app/projects/[slug]/page.prose.test.ts`) — no inline
+  link markup ever reaches `<meta>`/`og:description`.
 
 Tests colocate with source as `*.test.ts(x)`. `next build` ignores them (they're
 not routes) but `tsc` still typechecks them. Tier 2 (a Playwright smoke e2e) is a
@@ -101,6 +110,24 @@ Two patterns that work, in order of preference:
 
 1. **Render-stable markup, CSS-driven theme branching.** Make the output identical for both themes; let Tailwind's `dark:` variant flip what's visible. next-themes sets the `class` on `<html>` via an inline script that runs before React hydrates, so the correct branch is already painted on first frame. `ModeToggle` uses this — generic `aria-label="Toggle theme"`, Sun/Moon swap via `dark:scale-0` / `dark:scale-100`, and the click handler reads `resolvedTheme` at invocation time (post-hydration).
 2. **Mount gate** — only when the markup *must* differ. Render a stable placeholder until a `useSyncExternalStore` "am I on the client?" hook flips. Don't use the `useState`+`useEffect` mount pattern: React 19's `react-hooks/set-state-in-effect` rule flags it.
+
+## Links
+
+- **All outbound links go through `ExternalLink`** (`components/external-link.tsx`).
+  It carries no styling — its one job is that `target="_blank"` never ships
+  without `rel="noopener noreferrer"`. Pass `proseLinkClass` for links sitting in
+  a run of prose; icon links style themselves.
+- **Company names render via `CompanyLink`**, which links or plain-texts based on
+  `companyHref`. `companySites` in `data/portfolio.ts` maps every `CompanyName`
+  to a URL *or* an explicit sentinel (`url-no-longer-active`, `no-public-url`) —
+  it's a `Record`, so adding a company without deciding won't compile.
+- **Prose fields support inline `[text](url)`** — `summary`, `highlights`, the
+  case-study `hook` and body paragraphs. Only `https://` linkifies; anything else
+  stays literal text, which is what keeps `javascript:` inert. Titles, company
+  names and chip labels are not prose — don't parse them.
+- **Where a link can't render, use `plainText()`**: inside another anchor
+  (`ProjectCard` wraps its body in a `<Link>`) and in `<meta>` content
+  (`generateMetadata`). Both would otherwise leak raw `[x](https://…)`.
 
 ## Notes for future work
 

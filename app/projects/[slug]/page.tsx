@@ -98,9 +98,11 @@ export default async function CaseStudyPage({
               <h2 className="text-ink mb-3.5 text-2xl font-semibold tracking-tight">
                 {section.title}
               </h2>
-              {section.paragraphs.map((para) => (
+              {/* Keyed by index: static list, and a prose prefix is no longer a
+                  safe key now that paragraphs may open with link markup. */}
+              {section.paragraphs.map((para, index) => (
                 <p
-                  key={para.slice(0, 24)}
+                  key={index}
                   className="text-dim mb-4 text-[16.5px] leading-relaxed text-pretty"
                 >
                   <LinkedText text={para} />

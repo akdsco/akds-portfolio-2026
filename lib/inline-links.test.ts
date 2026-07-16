@@ -28,8 +28,13 @@ describe("plainText", () => {
     );
   });
 
-  it("is stable when called repeatedly (no shared regex state)", () => {
+  // INLINE_LINK is a shared /g instance. String.replace resets lastIndex, so
+  // this is safe — but it's the exact shape of the classic stateful-regex bug,
+  // so it stays pinned.
+  it("is stable when called repeatedly", () => {
     const input = "[one](https://a.example) and [two](https://b.example)";
-    expect(plainText(input)).toBe(plainText(input));
+    expect(plainText(input)).toBe("one and two");
+    expect(plainText(input)).toBe("one and two");
+    expect(plainText(input)).toBe("one and two");
   });
 });
