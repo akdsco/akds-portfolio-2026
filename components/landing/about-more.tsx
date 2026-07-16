@@ -72,7 +72,7 @@ export function AboutMore({ children }: { children: ReactNode }) {
   }, [reveal]);
 
   return (
-    <div className="mx-auto max-w-[820px] px-6 py-14 md:px-10">
+    <div className="mx-auto max-w-[820px] px-6 py-8 md:px-10">
       {/* The toggle collapses on the same curve as the panel expands, rather
           than unmounting mid-flight and jerking the content up under it. */}
       <Collapse open={!open} id={TOGGLE_ID}>
