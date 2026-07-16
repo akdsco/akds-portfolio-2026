@@ -1,7 +1,6 @@
 import { describe, expect, it } from "vitest";
 
 import { projects } from "@/data/portfolio";
-import { SOCIAL_IMAGE } from "@/lib/site";
 
 import { generateMetadata } from "./page";
 
@@ -11,19 +10,22 @@ const metadataFor = (s: string) =>
   generateMetadata({ params: Promise.resolve({ slug: s }) });
 
 describe("case-study generateMetadata", () => {
-  // A page-level `openGraph` REPLACES the resolved one rather than merging into
-  // it (next/dist/lib/metadata/resolve-metadata.js, `mergeMetadata`), and the
-  // file-convention image from app/opengraph-image.tsx is only injected at the
-  // segment owning that file. So whatever this block omits is simply absent from
-  // the rendered page — which is how case studies shipped with no og:image.
-  it("carries the social card image", async () => {
+  // Asserting an ABSENCE on purpose — do not "fix" this by adding images.
+  //
+  // This segment owns an opengraph-image.tsx, so Next injects the per-project
+  // card for us. It only does that while no level declares `images` itself
+  // (next/dist/lib/metadata/resolve-metadata.js, ~line 149). Declaring it here
+  // would silently swap every case study's card for the generic one — the tags
+  // would still look right, so only a build + grep would catch it.
+  it("declares no images, leaving the per-project card to the file convention", async () => {
     const meta = await metadataFor(slug);
 
-    expect(meta.openGraph?.images).toContainEqual(
-      expect.objectContaining({ url: SOCIAL_IMAGE.url }),
-    );
+    expect(meta.openGraph).not.toHaveProperty("images");
   });
 
+  // Conversely, these two DO have to be repeated: a page-level openGraph
+  // replaces the layout's rather than merging into it, so anything omitted here
+  // is absent from the page. That's how case studies shipped with no og:image.
   it("carries siteName and locale", async () => {
     const meta = await metadataFor(slug);
 

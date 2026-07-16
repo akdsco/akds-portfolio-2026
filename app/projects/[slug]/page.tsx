@@ -9,7 +9,6 @@ import { Toc } from "@/components/case-study/toc";
 import { Kicker } from "@/components/kicker";
 import { projects, testimonials, type CaseStudy } from "@/data/portfolio";
 import { plainText } from "@/lib/inline-links";
-import { SOCIAL_IMAGE } from "@/lib/site";
 
 const SECTION_ORDER = [
   { key: "problem", kicker: "the situation", title: "Problem" },
@@ -42,9 +41,12 @@ export async function generateMetadata({
     description,
     alternates: { canonical: `/projects/${slug}` },
     // This block REPLACES the layout's openGraph rather than merging into it,
-    // and the file-convention image from app/opengraph-image.tsx is only added
-    // at the segment owning that file — so siteName, locale and images have to
-    // be repeated here or the card ships as a bare text link.
+    // so siteName and locale have to be repeated or they're simply absent.
+    //
+    // Deliberately NO `images` key: this segment owns an opengraph-image.tsx, so
+    // Next injects the per-project card automatically — but only while no level
+    // declares `images` itself. Setting it here would silently override every
+    // case study with the generic card.
     openGraph: {
       title: `${project.title} — Arkadiusz Ostrowski`,
       description,
@@ -52,7 +54,6 @@ export async function generateMetadata({
       url: `/projects/${slug}`,
       siteName: "Arkadiusz Ostrowski",
       locale: "en_GB",
-      images: [SOCIAL_IMAGE],
     },
   };
 }
