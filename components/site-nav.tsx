@@ -93,10 +93,16 @@ export function SiteNav() {
         // arriving takes its time, which is what reads as smooth rather than
         // snapped-back.
         scrollingDown ? "duration-300" : "duration-[380ms]",
-        // Gone while reading down the page, back on any upward intent. It
-        // returns for focus too: a tabbed-to link inside a bar that's slid
+        // Gone while reading down the page, back on any upward intent. It also
+        // returns for keyboard focus: a tabbed-to link inside a bar that's slid
         // off-screen is a focus ring nobody can see.
-        scrollingDown && "-translate-y-full focus-within:translate-y-0",
+        //
+        // :focus-visible, not :focus-within. A mouse click on the theme toggle
+        // leaves focus sitting on it, and plain focus-within then pinned the bar
+        // open until the next page load — switch theme, and the nav stopped
+        // hiding entirely. :focus-visible only matches the keyboard case this is
+        // actually for.
+        scrollingDown && "-translate-y-full has-[:focus-visible]:translate-y-0",
         // Reduced motion means no travel, so the bar just stays put. The 57px
         // isn't worth sliding a whole landmark past someone who asked for less
         // movement.
