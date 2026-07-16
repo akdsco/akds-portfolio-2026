@@ -1,12 +1,15 @@
 import { ImageResponse } from "next/og";
 
 import { profile } from "@/data/portfolio";
+import { SOCIAL_IMAGE } from "@/lib/site";
 
 // Site-wide social card. Next serves this for `og:image`; app/twitter-image.tsx
-// re-exports it for the Twitter card. 1200×630 is the standard large-image size.
-export const size = { width: 1200, height: 630 };
+// re-exports it for the Twitter card. Dimensions and alt come from SOCIAL_IMAGE
+// so pages that reference the card in their own `openGraph` describe the same
+// image this route actually renders. 1200×630 is the standard large-image size.
+export const size = { width: SOCIAL_IMAGE.width, height: SOCIAL_IMAGE.height };
 export const contentType = "image/png";
-export const alt = "Arkadiusz Ostrowski — Software Engineer";
+export const alt = SOCIAL_IMAGE.alt;
 
 // Dark palette from app/theme.css, converted to hex — Satori (the ImageResponse
 // renderer) doesn't parse oklch. Keep in sync with the `.dark` tokens there.

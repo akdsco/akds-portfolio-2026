@@ -9,6 +9,7 @@ import { Toc } from "@/components/case-study/toc";
 import { Kicker } from "@/components/kicker";
 import { projects, testimonials, type CaseStudy } from "@/data/portfolio";
 import { plainText } from "@/lib/inline-links";
+import { SOCIAL_IMAGE } from "@/lib/site";
 
 const SECTION_ORDER = [
   { key: "problem", kicker: "the situation", title: "Problem" },
@@ -40,11 +41,18 @@ export async function generateMetadata({
     title: `${project.title} — Arkadiusz Ostrowski`,
     description,
     alternates: { canonical: `/projects/${slug}` },
+    // This block REPLACES the layout's openGraph rather than merging into it,
+    // and the file-convention image from app/opengraph-image.tsx is only added
+    // at the segment owning that file — so siteName, locale and images have to
+    // be repeated here or the card ships as a bare text link.
     openGraph: {
       title: `${project.title} — Arkadiusz Ostrowski`,
       description,
       type: "article",
       url: `/projects/${slug}`,
+      siteName: "Arkadiusz Ostrowski",
+      locale: "en_GB",
+      images: [SOCIAL_IMAGE],
     },
   };
 }
