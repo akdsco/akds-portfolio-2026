@@ -3,6 +3,7 @@
 import { Command } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 
 import { usePalette } from "@/components/command-palette";
 import { ExternalLink } from "@/components/external-link";
@@ -17,6 +18,46 @@ const links = [
   { href: "/projects", label: "Projects" },
 ] as const;
 
+// Movement needed before the bar reacts. Momentum scrolling and iOS
+// rubber-banding emit a constant dribble of small deltas in both directions; a
+// bar that answers every one of them flickers. Deltas below this accumulate
+// instead of being acted on, so it takes a deliberate push either way.
+const SCROLL_THRESHOLD_PX = 10;
+// Near the top the bar always shows: overscroll at the top of the document
+// reads as downward movement, which would otherwise hide it exactly where it's
+// most wanted.
+const TOP_ZONE_PX = 80;
+
+/** True while the reader is scrolling down, away from the top of the page. */
+function useScrollingDown() {
+  const [down, setDown] = useState(false);
+
+  useEffect(() => {
+    let last = window.scrollY;
+    let queued = false;
+    const onScroll = () => {
+      if (queued) return;
+      queued = true;
+      requestAnimationFrame(() => {
+        queued = false;
+        const y = window.scrollY;
+        const delta = y - last;
+        // Leave `last` alone below the threshold so slow movement accumulates
+        // rather than being discarded a pixel at a time.
+        if (Math.abs(delta) < SCROLL_THRESHOLD_PX) return;
+        last = y;
+        setDown(y > TOP_ZONE_PX && delta > 0);
+      });
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+    };
+  }, []);
+
+  return down;
+}
+
 // Nav shows only GitHub + LinkedIn (the no-contact rule); the rest of
 // profile.socials is data only.
 const navSocials = profile.socials
@@ -29,13 +70,27 @@ const navSocials = profile.socials
 export function SiteNav() {
   const pathname = usePathname();
   const { open } = usePalette();
+  const scrollingDown = useScrollingDown();
   const isActive = (href: string) =>
     href === "/projects" ? pathname.startsWith("/projects") : pathname === href;
 
   return (
     // overflow-hidden lets the logo below bleed past the bar and get cut by the
     // bottom border, echoing the footer and the social cards.
-    <header className="border-line bg-base/80 sticky top-0 z-40 overflow-hidden border-b backdrop-blur">
+    <header
+      className={cn(
+        "border-line bg-base/80 sticky top-0 z-40 overflow-hidden border-b backdrop-blur",
+        "transition-transform duration-300 ease-out motion-reduce:transition-none",
+        // Gone while reading down the page, back on any upward intent. It
+        // returns for focus too: a tabbed-to link inside a bar that's slid
+        // off-screen is a focus ring nobody can see.
+        scrollingDown && "-translate-y-full focus-within:translate-y-0",
+        // Reduced motion means no travel, so the bar just stays put. The 57px
+        // isn't worth sliding a whole landmark past someone who asked for less
+        // movement.
+        "motion-reduce:translate-y-0",
+      )}
+    >
       <nav className="mx-auto flex h-14 w-full max-w-5xl items-center justify-between px-6 md:px-8">
         {/* self-end puts the mark's bottom on the header's bottom border, so the
             border itself is what cuts it. */}
