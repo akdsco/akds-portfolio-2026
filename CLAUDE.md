@@ -129,6 +129,31 @@ Two patterns that work, in order of preference:
   (`ProjectCard` wraps its body in a `<Link>`) and in `<meta>` content
   (`generateMetadata`). Both would otherwise leak raw `[x](https://…)`.
 
+## Metadata
+
+The production origin and the social-card descriptor live in `lib/site.ts`
+(`SITE_URL`, `SOCIAL_IMAGE`) — a domain move is a one-line edit there. Canonical
+URLs are set **per page, never on the layout**: a layout canonical cascades to
+every route, and `/` redirects to `/about`. The OG card is rendered by
+`app/opengraph-image.tsx` and re-exported by `app/twitter-image.tsx`.
+
+Two merge rules in Next's metadata resolution are counter-intuitive, invisible in
+the source, and have each shipped as a bug here:
+
+1. **A page-level `openGraph` replaces the layout's — it does not merge into it.**
+   The file-convention image is only injected at the segment owning
+   `opengraph-image.tsx`, so any page declaring its own `openGraph` must repeat
+   `siteName`/`locale`/`images` or it ships with no `og:image` at all.
+2. **`twitter` title/description auto-fill from `openGraph` only while unset.**
+   Pinning a title on the layout silently gives every child page the generic site
+   title instead of its own.
+
+Unit tests guard both (`app/layout.metadata.test.ts`,
+`app/projects/[slug]/page.metadata.test.ts` — note they assert an *absence*, so
+don't "tidy them up"). The real check is a build plus a grep of the emitted HTML
+in `.next/server/app/`: Next's own resolution is where both bugs lived, and the
+metadata objects can look correct while the rendered tags aren't.
+
 ## Notes for future work
 
 - **No contact form, no mailto.** Recruiter contact path is GitHub + LinkedIn (icons in `SiteNav`). Do not add a contact API, nodemailer, or email form.
@@ -137,16 +162,11 @@ Two patterns that work, in order of preference:
 - **Data layer:** `data/portfolio.ts` — typed TS objects only (no MDX/CMS). One `Project` type drives both `/projects` cards and `/projects/[slug]` detail pages (a project with a `caseStudy` gets a detail page).
 - **Theme:** the colour palette lives in `app/theme.css` (one swap-a-file, cool "tasteful dev-coded" scheme, light + dark), mapped into `app/globals.css` via `@theme inline`. Semantic tokens: `base/panel/ink/dim/faint/line/chip/brand/hi`.
 - **No contact form, no mailto, no CV download.** GitHub + LinkedIn are the only surfaced links; the site is the expansion of the CV the owner sends directly.
+- **Icons:** `app/icon.png` (256px) + `app/apple-icon.png` (180px) are derived from the owner-supplied `public/images/brand-image.webp`; Next 16 auto-serves them by file convention (there is no `app/favicon.ico` — don't re-add one).
 
-## Pending TODO (track these; don't lose them)
-
-- [x] **Favicon** — done. Owner-supplied `public/images/brand-image.webp` (500x500); derived `app/icon.png` (256px) + `app/apple-icon.png` (180px); removed the default `app/favicon.ico`. Next 16 auto-serves these. (Note: it's a portrait photo, so it reads soft at 16px; a mono "akds"/glyph icon is an easy swap later if wanted.)
-- [x] **Metadata** — done. Per-page titles/descriptions, `metadataBase` + canonical (per-page, never on the layout — `/` redirects to `/about`), a dynamic OG card (`app/opengraph-image.tsx`, re-exported by `app/twitter-image.tsx`), Twitter card, `robots.ts` + `sitemap.ts`. The production origin and the social-card descriptor live in `lib/site.ts` (`SITE_URL`, `SOCIAL_IMAGE`) — a domain move is a one-line edit there.
-  - **Gotcha, if you touch this:** a page-level `openGraph` *replaces* the layout's rather than merging, and Next only injects the file-convention image at the segment owning `opengraph-image.tsx` — so a page declaring its own `openGraph` must repeat `siteName`/`locale`/`images` or it ships with no `og:image`. Likewise, `twitter` title/description auto-fill from `openGraph` **only while unset**; pinning them on the layout silently gives every child page the generic site title. Both shipped as bugs once. Unit tests guard them (`app/layout.metadata.test.ts`, `app/projects/[slug]/page.metadata.test.ts`), but the real check is grepping the built HTML in `.next/server/app/`.
-- [x] **Data layer** — delivered in `data/portfolio.ts` (typed; one `Project` type + skills/experience/education/certs/testimonials).
-- [x] **Design direction** — locked: "tasteful dev-coded", cool scheme; palette in `app/theme.css`.
-- [x] **Pages** — built: `/about` (landing), `/projects` index, `/projects/[slug]` detail, plus the command palette. No `/resume`.
-- [x] **Real copy** — owner-supplied content is in `data/portfolio.ts` (case-study copy intentionally rough; owner chisels on the rendered site).
+Work that's pending rather than settled belongs in `docs/TODO.md`, not here — this
+file is loaded into every session, so it's for rules that stay true, not state
+that goes stale.
 
 ## History context
 
