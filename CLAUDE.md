@@ -114,17 +114,17 @@ Two patterns that work, in order of preference:
 ## Links
 
 - **All outbound links go through `ExternalLink`** (`components/external-link.tsx`).
-  It carries no styling — its one job is that `target="_blank"` never ships
+  It carries no styling. Its one job is that `target="_blank"` never ships
   without `rel="noopener noreferrer"`. Pass `proseLinkClass` for links sitting in
   a run of prose; icon links style themselves.
 - **Company names render via `CompanyLink`**, which links or plain-texts based on
   `companyHref`. `companySites` in `data/portfolio.ts` maps every `CompanyName`
-  to a URL *or* an explicit sentinel (`url-no-longer-active`, `no-public-url`) —
-  it's a `Record`, so adding a company without deciding won't compile.
-- **Prose fields support inline `[text](url)`** — `summary`, `highlights`, the
+  to a URL *or* an explicit sentinel (`url-no-longer-active`, `no-public-url`).
+  It's a `Record`, so adding a company without deciding won't compile.
+- **Prose fields support inline `[text](url)`**: `summary`, `highlights`, the
   case-study `hook` and body paragraphs. Only `https://` linkifies; anything else
   stays literal text, which is what keeps `javascript:` inert. Titles, company
-  names and chip labels are not prose — don't parse them.
+  names and chip labels are not prose, so don't parse them.
 - **Where a link can't render, use `plainText()`**: inside another anchor
   (`ProjectCard` wraps its body in a `<Link>`) and in `<meta>` content
   (`generateMetadata`). Both would otherwise leak raw `[x](https://…)`.

@@ -1,7 +1,5 @@
 import type { ReactNode } from "react";
 
-import { cn } from "@/lib/utils";
-
 /**
  * Styling for a link sitting in a run of prose — company names, inline links.
  * Kept next to ExternalLink so the two callers that want this look share one
@@ -33,7 +31,7 @@ export function ExternalLink({
       target="_blank"
       rel="noopener noreferrer"
       aria-label={ariaLabel}
-      className={cn(className)}
+      className={className}
     >
       {children}
     </a>
