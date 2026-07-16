@@ -92,14 +92,21 @@ export type Project = {
 
 export type WorkExperience = {
   id: number;
-  period: string;
+  /** Ends and starts are separate so the rail can stack them end-over-start,
+   *  and so a month can never wrap onto its own line. Newest role first, and
+   *  one role's `start` generally meets the next one's `end`. */
+  start: string;
+  end: string;
   position: string;
   company: string;
   location: string;
   employmentType: string;
   summary: string;
   highlights: string[];
-  stack: string[];
+  /** `lead` is what a scanning reader should see — keep it to one line. `rest`
+   *  is everything else, behind a "+n more". Split rather than sliced, so the
+   *  headline tech is a decision here and not a function of chip widths. */
+  stack: { lead: string[]; rest: string[] };
 };
 
 export type Education = {
@@ -502,7 +509,8 @@ export const projects: Project[] = [
 export const experience: WorkExperience[] = [
   {
     id: 6,
-    period: "2025 Jul - 2026 Jun",
+    start: "2025 Jul",
+    end: "2026 Jun",
     position: "Senior Software Engineer / Product Engineer",
     company: "GrowthNation",
     location: "Remote",
@@ -514,34 +522,39 @@ export const experience: WorkExperience[] = [
       "Server-side LLM tagging as an architectural unlock. Every new quote, stat, or case study is tagged against the workspace's ICPs and pain points before save returns, with fan-out re-tag on edits.",
       "Co-created an autonomous AI bug-triage system that performs root-cause analysis (temporal ordering, source prioritisation, fingerprinting, cascade detection) and opens clean fix PRs on its own.",
     ],
-    stack: [
-      "TypeScript",
-      "React 18",
-      "Vite",
-      "Tailwind CSS",
-      "Supabase (Postgres, Auth, Storage, Realtime, Edge Functions)",
-      "Drizzle ORM",
-      "BullMQ",
-      "Vercel AI SDK",
-      "OpenAI",
-      "Anthropic Claude",
-      "OpenRouter",
-      "DeepSeek",
-      "Langfuse",
-      "ElevenLabs",
-      "Model Context Protocol (custom MCP servers)",
-      "Fly.io",
-      "Docker",
-      "Cypress",
-      "Vitest",
-      "PostHog",
-      "Sentry",
-      "Better Stack",
-    ],
+    stack: {
+      lead: [
+        "TypeScript",
+        "React 18",
+        "Drizzle ORM",
+        "BullMQ",
+        "Vercel AI SDK",
+      ],
+      rest: [
+        "Vite",
+        "Tailwind CSS",
+        "Supabase (Postgres, Auth, Storage, Realtime, Edge Functions)",
+        "OpenAI",
+        "Anthropic Claude",
+        "OpenRouter",
+        "DeepSeek",
+        "Langfuse",
+        "ElevenLabs",
+        "Model Context Protocol (custom MCP servers)",
+        "Fly.io",
+        "Docker",
+        "Cypress",
+        "Vitest",
+        "PostHog",
+        "Sentry",
+        "Better Stack",
+      ],
+    },
   },
   {
     id: 5,
-    period: "2025 Apr - 2025 Sep",
+    start: "2025 Apr",
+    end: "2025 Sep",
     position: "Lead Product Engineer",
     company: "Noah Media Group",
     location: "London (hybrid)",
@@ -552,19 +565,24 @@ export const experience: WorkExperience[] = [
       "Built the film production tracking platform: database design, problem definition, early prototypes.",
       "Worked closely with the CEO and Bonamy Grimes on prioritisation and stakeholder framing.",
     ],
-    stack: [
-      "TypeScript",
-      "React",
-      "Node",
-      "Express",
-      "MongoDB",
-      "BullMQ",
-      "OpenAI",
-    ],
+    stack: {
+      // Short enough to lead in full — nothing worth hiding.
+      lead: [
+        "TypeScript",
+        "React",
+        "Node",
+        "Express",
+        "MongoDB",
+        "BullMQ",
+        "OpenAI",
+      ],
+      rest: [],
+    },
   },
   {
     id: 4,
-    period: "2022 Mar - 2025 Mar",
+    start: "2022 Mar",
+    end: "2025 Mar",
     position: "Software Engineer",
     company: "Noah Media Group",
     location: "London (hybrid)",
@@ -576,39 +594,44 @@ export const experience: WorkExperience[] = [
       "AI-powered research assistant on GPT-3.5/4 in 2023. Integration tests ran live LLM calls with graded responses to stabilise output, years before this became standard practice.",
       "Established currying-based dependency injection as a team pattern (carries through to GrowthNation three years later).",
     ],
-    stack: [
-      "TypeScript",
-      "React 17",
-      "Redux Toolkit + RTK Query",
-      "TanStack Query",
-      "Material UI",
-      "styled-components",
-      "Node.js",
-      "Express",
-      "MongoDB",
-      "BullMQ",
-      "OpenAI (GPT-3.5 + GPT-4)",
-      "IMDB GraphQL",
-      "Muso",
-      "Audiense",
-      "SocialBlade",
-      "DemographicsPRO",
-      "Cheerio",
-      "Puppeteer",
-      "Heroku",
-      "Google Cloud",
-      "AWS",
-      "Redis",
-      "Jest",
-      "Cypress",
-      "Sentry",
-      "Winston",
-      "GitHub Actions",
-    ],
+    stack: {
+      lead: [
+        "TypeScript",
+        "React 17",
+        "Node.js",
+        "MongoDB",
+        "OpenAI (GPT-3.5 + GPT-4)",
+      ],
+      rest: [
+        "Redux Toolkit + RTK Query",
+        "TanStack Query",
+        "Material UI",
+        "styled-components",
+        "Express",
+        "BullMQ",
+        "IMDB GraphQL",
+        "Muso",
+        "Audiense",
+        "SocialBlade",
+        "DemographicsPRO",
+        "Cheerio",
+        "Puppeteer",
+        "Heroku",
+        "Google Cloud",
+        "AWS",
+        "Redis",
+        "Jest",
+        "Cypress",
+        "Sentry",
+        "Winston",
+        "GitHub Actions",
+      ],
+    },
   },
   {
     id: 3,
-    period: "2020 Nov - 2022 Mar",
+    start: "2020 Nov",
+    end: "2022 Mar",
     position: "Software Engineer",
     company: "Connect4",
     location: "Remote",
@@ -620,11 +643,15 @@ export const experience: WorkExperience[] = [
       "Built agenda creation with drag-and-drop and recurring meeting templates.",
       "Internalised unidirectional data flow and reactive DB-driven background refresh patterns.",
     ],
-    stack: ["Meteor.js", "Blaze", "React", "WebSockets", "MongoDB"],
+    stack: {
+      lead: ["Meteor.js", "Blaze", "React", "WebSockets", "MongoDB"],
+      rest: [],
+    },
   },
   {
     id: 2,
-    period: "2020 May - 2020 Nov",
+    start: "2020 May",
+    end: "2020 Nov",
     position: "Software Developer (Intern → JavaScript Developer)",
     company: "Wutzu Technologies",
     location: "London",
@@ -636,19 +663,23 @@ export const experience: WorkExperience[] = [
       "Built order and basket flows with external payment-API integration.",
       "Promoted from Intern to JavaScript Developer in seven months.",
     ],
-    stack: [
-      "JavaScript",
-      "React",
-      "Node",
-      "Firebase",
-      "Redux",
-      "Webpack",
-      "Payments API",
-    ],
+    stack: {
+      lead: [
+        "JavaScript",
+        "React",
+        "Node",
+        "Firebase",
+        "Redux",
+        "Webpack",
+        "Payments API",
+      ],
+      rest: [],
+    },
   },
   {
     id: 1,
-    period: "2018 - 2019",
+    start: "2018",
+    end: "2019",
     position: "Freelance Web Developer",
     company: "Self-employed",
     location: "London",
@@ -660,7 +691,7 @@ export const experience: WorkExperience[] = [
       "Mentored junior developers into their first software roles via LJC, having started as a mentee in the same community.",
       "Took paid client work including the LJC Unconference site and a project for RecWorks (Barry Cranford).",
     ],
-    stack: ["HTML5", "CSS3", "JavaScript"],
+    stack: { lead: ["HTML5", "CSS3", "JavaScript"], rest: [] },
   },
 ];
 
