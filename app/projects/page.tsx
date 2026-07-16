@@ -6,10 +6,24 @@ import { EarlierWork } from "@/components/projects/earlier-work";
 import { ProjectCard } from "@/components/projects/project-card";
 import { projects } from "@/data/portfolio";
 
+const description =
+  "Selected engineering work, with full case-study write-ups.";
+
 export const metadata: Metadata = {
   title: "projects",
-  description: "Selected engineering work, with full case-study write-ups.",
+  description,
   alternates: { canonical: "/projects" },
+  // og:title would otherwise inherit the tab title and share this page as
+  // "akds : projects". No `images`: this segment owns an opengraph-image.tsx,
+  // which only applies while no level declares `images` itself.
+  openGraph: {
+    title: "Projects — Arkadiusz Ostrowski",
+    description,
+    type: "website",
+    url: "/projects",
+    siteName: "Arkadiusz Ostrowski",
+    locale: "en_GB",
+  },
 };
 
 const featured = projects.filter((p) => p.featured);

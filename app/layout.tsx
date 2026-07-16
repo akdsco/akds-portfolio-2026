@@ -7,7 +7,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { PaletteProvider } from "@/components/command-palette";
 import { SiteNav } from "@/components/site-nav";
 import { SiteFooter } from "@/components/site-footer";
-import { SITE_URL } from "@/lib/site";
+import { SITE_TITLE, SITE_URL } from "@/lib/site";
 
 import "./globals.css";
 
@@ -30,25 +30,31 @@ export const metadata: Metadata = {
   // their own (not-found, error), where the full name is more use than "akds".
   title: {
     template: "akds : %s",
-    default: "Arkadiusz Ostrowski — Software Engineer",
+    default: SITE_TITLE,
   },
   description:
     "London-based software engineer building production AI-native software end-to-end. Selected work, experience, and case studies.",
   openGraph: {
-    title: "Arkadiusz Ostrowski — Software Engineer",
-    description:
-      "London-based software engineer building production AI-native software end-to-end.",
+    // og:title is pinned; og:description is not. Next falls og:title back to the
+    // page's own `title`, and those now read as routes ("akds : about") — fine
+    // in a tab, useless in a feed. So the site name is the floor, and any page
+    // wanting better states its own openGraph.title (/projects, case studies).
+    // A page that forgets one shares as the site rather than as "akds : thing".
+    //
+    // Description still inherits per page, which is why it isn't pinned here:
+    // pinning would cascade the site blurb over each page's own.
+    title: SITE_TITLE,
     type: "website",
     siteName: "Arkadiusz Ostrowski",
     locale: "en_GB",
     // OG image comes from app/opengraph-image.tsx (file convention).
   },
   twitter: {
+    // Title, description and image are auto-filled from `openGraph` above — but
+    // only while none of them are set here. Pinning a title disables that for
+    // every descendant, which leaves case studies advertising the site title
+    // instead of the project's. Leave this as just the card type.
     card: "summary_large_image",
-    title: "Arkadiusz Ostrowski — Software Engineer",
-    description:
-      "London-based software engineer building production AI-native software end-to-end.",
-    // Twitter image comes from app/twitter-image.tsx (file convention).
   },
 };
 

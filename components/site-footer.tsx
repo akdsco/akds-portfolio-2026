@@ -1,34 +1,25 @@
-import { ExternalLink } from "@/components/external-link";
-import { GithubIcon, LinkedinIcon } from "@/components/icons";
-import { profile } from "@/data/portfolio";
-
-const footerSocials = profile.socials
-  .filter((s) => s.label === "GitHub" || s.label === "LinkedIn")
-  .map((s) => ({
-    ...s,
-    Icon: s.label === "GitHub" ? GithubIcon : LinkedinIcon,
-  }));
+import { Wordmark } from "@/components/wordmark";
 
 export function SiteFooter() {
-  const year = new Date().getFullYear();
   return (
-    <footer className="border-line border-t">
-      <div className="text-faint mx-auto flex max-w-5xl flex-col items-center justify-between gap-3 px-6 py-8 text-[12.5px] sm:flex-row md:px-8">
-        <span className="font-mono">
-          © {year} {profile.fullName}
-        </span>
-        <div className="flex items-center gap-2">
-          {footerSocials.map(({ url, label, Icon }) => (
-            <ExternalLink
-              key={label}
-              href={url}
-              aria-label={label}
-              className="hover:text-ink grid size-8 place-items-center rounded-md transition-colors"
-            >
-              <Icon className="size-4" />
-            </ExternalLink>
-          ))}
-        </div>
+    // No top border: the ghosted wordmark below is the boundary. A rule *and* a
+    // mark say "section ends here" twice, and the whole point of ghosting it was
+    // to let it fade in rather than be announced. No top padding either — the
+    // section above already ends in 56px of its own, and stacking a second gap
+    // here just detached the mark from the page.
+    <footer>
+      {/* The wordmark is the whole footer now, so it is NOT aria-hidden: it's the
+          only thing here, and it's the brand rather than ornament. A footer
+          landmark containing nothing announceable would be a dead end. */}
+      <div className="flex justify-center">
+        {/* Ghosted to ~10% — texture, not a statement. It sits under the page
+            rather than shouting, and works in both themes because --ink flips
+            with them. Nudged right of centre so it reads as a placed mark
+            instead of a heading. */}
+        <Wordmark
+          className="text-ink/10 translate-x-[28%] font-semibold select-none"
+          style={{ fontSize: "clamp(104px, 16vw, 208px)" }}
+        />
       </div>
     </footer>
   );

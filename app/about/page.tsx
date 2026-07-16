@@ -11,6 +11,9 @@ import { Testimonials } from "@/components/landing/testimonials";
 export const metadata: Metadata = {
   title: "about",
   alternates: { canonical: "/about" },
+  // Deliberately no `openGraph` block: this page inherits the root card, and a
+  // page-level openGraph replaces the layout's rather than merging, which drops
+  // the inherited image. The layout pins og:title on this page's behalf.
 };
 
 export default function AboutPage() {
