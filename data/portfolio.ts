@@ -92,25 +92,16 @@ export type Project = {
 
 export type WorkExperience = {
   id: number;
-  /** Ends and starts are separate so the rail can stack them end-over-start,
-   *  and so a month can never wrap onto its own line. Newest role first, and
-   *  one role's `start` generally meets the next one's `end`. */
   start: string;
   end: string;
   position: string;
   company: string;
-  /** Where the work happened. City + country only — how it happened is
-   *  `workType`. These were one field ("Remote", "London (hybrid)", "London"),
-   *  which conflated the two and left the remote roles with no city at all. */
-  location: string;
+  location: string; // city + country only; remote/hybrid belongs in workType
   workType: "Remote" | "Hybrid" | "On-site";
   employmentType: string;
   summary: string;
   highlights: string[];
-  /** `lead` is what a scanning reader should see — keep it to one line. `rest`
-   *  is everything else, behind a "+n more". Split rather than sliced, so the
-   *  headline tech is a decision here and not a function of chip widths. */
-  stack: { lead: string[]; rest: string[] };
+  stack: { lead: string[]; rest: string[] }; // lead has to fit one line
 };
 
 export type Education = {
@@ -528,10 +519,6 @@ export const experience: WorkExperience[] = [
       "Co-created an autonomous AI bug-triage system that performs root-cause analysis (temporal ordering, source prioritisation, fingerprinting, cascade detection) and opens clean fix PRs on its own.",
     ],
     stack: {
-      // Supabase and the MCP layer are the headline for this role, so they lead
-      // under short labels. The skills section still spells both out in full —
-      // "Supabase (Postgres, Auth, Storage, Realtime, Edge Fns)" and "Model
-      // Context Protocol (custom MCP servers)" — so no detail is lost.
       lead: [
         "TypeScript",
         "React 18",
@@ -576,7 +563,6 @@ export const experience: WorkExperience[] = [
       "Worked closely with the CEO and Bonamy Grimes on prioritisation and stakeholder framing.",
     ],
     stack: {
-      // Short enough to lead in full — nothing worth hiding.
       lead: [
         "TypeScript",
         "React",
@@ -643,7 +629,7 @@ export const experience: WorkExperience[] = [
     id: 3,
     start: "2020 Nov",
     end: "2022 Apr",
-    position: "Software Engineer",
+    position: "Software Developer",
     company: "Connect4",
     location: "London, UK",
     workType: "Remote",
@@ -664,7 +650,7 @@ export const experience: WorkExperience[] = [
     id: 2,
     start: "2020 May",
     end: "2020 Nov",
-    position: "Software Developer (Intern → JavaScript Developer)",
+    position: "JavaScript Developer",
     company: "Wutzu Technologies",
     location: "London, UK",
     workType: "Hybrid",
@@ -692,7 +678,7 @@ export const experience: WorkExperience[] = [
     id: 1,
     start: "2018 Sep",
     end: "2020 May",
-    position: "Freelance Web Developer",
+    position: "Web Developer",
     company: "Self-employed",
     location: "London, UK",
     workType: "Remote",

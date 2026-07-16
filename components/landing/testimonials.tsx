@@ -18,7 +18,6 @@ export function Testimonials() {
   return (
     <section id="testimonials" className="scroll-mt-20">
       <Kicker label="testimonials" />
-      {/* No items-start: cards stretch to their row so the footers line up. */}
       <div className="grid gap-4 sm:grid-cols-2">
         {ordered.map((t) => {
           const clampable = t.quote.length > CLAMP_OVER;
@@ -53,8 +52,6 @@ export function Testimonials() {
                     {expanded ? "Show less" : "Read more"}
                   </button>
                 )}
-                {/* mt-auto pins the attribution to the bottom, so the dashed
-                  rules line up across a row however long the quotes are. */}
                 <figcaption className="border-line text-ink mt-auto border-t border-dashed pt-3 text-[13px]">
                   <span className="font-semibold">{t.author}</span>
                   <div className="text-faint mt-0.5 font-mono text-[11px]">

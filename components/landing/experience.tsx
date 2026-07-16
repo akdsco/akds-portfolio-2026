@@ -15,9 +15,6 @@ export function Experience() {
             <div className="flex justify-center pt-1.5">
               <span className="bg-hi size-[9px] rounded-[2px] shadow-[0_0_0_4px_var(--base)]" />
             </div>
-            {/* End over start, reading down the way the page reads down, so a
-                scan follows the dates backwards in time. Stacked also means a
-                month can't wrap onto a line of its own. */}
             <div className="text-faint hidden pt-0.5 font-mono text-[11.5px] leading-relaxed sm:block">
               <div className="whitespace-nowrap">{role.end}</div>
               <div aria-hidden className="bg-line my-1 ml-[3px] h-3 w-px" />
@@ -30,16 +27,12 @@ export function Experience() {
               <div className="text-dim mt-0.5 text-[13.5px]">
                 {role.company} · {role.employmentType}
               </div>
-              {/* Where, then how — one pair, always in that order. The rail
-                  carries the dates, except on mobile where it's hidden. */}
               <div className="text-faint mt-1 mb-3 font-mono text-[11px]">
                 <span className="sm:hidden">
                   {role.start} – {role.end} ·{" "}
                 </span>
                 {role.location} · {role.workType}
               </div>
-              {/* Summary sets the scene in one line and stays quiet; the
-                  highlights are what the reader is here for. */}
               <p className="text-faint mb-2.5 text-[13.5px] leading-relaxed text-pretty">
                 {role.summary}
               </p>
