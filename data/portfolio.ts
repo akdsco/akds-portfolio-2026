@@ -523,24 +523,28 @@ export const experience: WorkExperience[] = [
       "Co-created an autonomous AI bug-triage system that performs root-cause analysis (temporal ordering, source prioritisation, fingerprinting, cascade detection) and opens clean fix PRs on its own.",
     ],
     stack: {
+      // Supabase and the MCP layer are the headline for this role, so they lead
+      // under short labels. The skills section still spells both out in full —
+      // "Supabase (Postgres, Auth, Storage, Realtime, Edge Fns)" and "Model
+      // Context Protocol (custom MCP servers)" — so no detail is lost.
       lead: [
         "TypeScript",
         "React 18",
-        "Drizzle ORM",
-        "BullMQ",
+        "Supabase",
         "Vercel AI SDK",
+        "MCP servers",
       ],
       rest: [
         "Vite",
         "Tailwind CSS",
-        "Supabase (Postgres, Auth, Storage, Realtime, Edge Functions)",
+        "Drizzle ORM",
+        "BullMQ",
         "OpenAI",
         "Anthropic Claude",
         "OpenRouter",
         "DeepSeek",
         "Langfuse",
         "ElevenLabs",
-        "Model Context Protocol (custom MCP servers)",
         "Fly.io",
         "Docker",
         "Cypress",
@@ -581,7 +585,7 @@ export const experience: WorkExperience[] = [
   },
   {
     id: 4,
-    start: "2022 Mar",
+    start: "2022 Apr",
     end: "2025 Mar",
     position: "Software Engineer",
     company: "Noah Media Group",
