@@ -61,7 +61,11 @@ What's covered (the regression-prone client logic, not presentation):
 - **Command palette keyboard/a11y** (`command-palette.keyboard.test.tsx`) —
   open/focus, arrow selection, Enter → router, Escape + focus restore.
 - **Collapse** (`collapse.test.tsx`) — `inert` + grid-rows by `open`.
-- **AboutMore** (`about-more.test.tsx`) — reveal on `about:reveal` + scroll.
+- **AboutMore** (`about-more.test.tsx`) — one-way reveal on click / `about:reveal`,
+  and which section each entry point aims at. `lib/scroll-into-view-live` is
+  mocked here: jsdom has no layout, so every rect is `0×0` and asserting where a
+  scroll lands would only measure the mocks. That helper is verified against a
+  real browser instead — it's geometry, not logic.
 - **Data invariants** (`data/portfolio.test.ts`) — unique slugs, resolvable
   `testimonialId`, featured↔caseStudy intent.
 
@@ -78,7 +82,7 @@ deferred follow-up, not built here.
 app/             # App Router routes & layout
 components/      # Shared components (SiteNav, ThemeProvider, ModeToggle, icons)
 components/ui/   # shadcn primitives (button, card, …)
-lib/             # Utilities (cn helper)
+lib/             # Utilities (cn helper, scroll-into-view-live)
 data/            # portfolio.ts — typed content (Project, skills, experience, testimonials…)
 ```
 

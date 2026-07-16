@@ -1,14 +1,28 @@
-import { act, render, screen, waitFor } from "@testing-library/react";
+import { act, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, test, vi } from "vitest";
 
 import { AboutMore } from "@/components/landing/about-more";
+import { scrollIntoViewLive } from "@/lib/scroll-into-view-live";
+
+// The scroll itself is geometry, and jsdom has none — every rect is 0×0, so
+// asserting where it lands here would only measure the mocks. Its behaviour is
+// verified against a real browser instead; what's worth pinning down at this
+// level is which section each entry point aims at.
+vi.mock("@/lib/scroll-into-view-live", () => ({
+  scrollIntoViewLive: vi.fn(() => vi.fn()),
+}));
 
 const TOGGLE_ID = "about-more-toggle";
 
-// scrollIntoView is a shared jsdom stub (vitest.setup.ts); reset its call log
-// between cases so "was it called" assertions are independent.
-beforeEach(() => vi.mocked(Element.prototype.scrollIntoView).mockClear());
+beforeEach(() => vi.mocked(scrollIntoViewLive).mockClear());
+
+// The id of the element we were asked to scroll to.
+function scrolledTo() {
+  return vi
+    .mocked(scrollIntoViewLive)
+    .mock.calls.map(([el]) => (el as Element).id);
+}
 
 function renderAboutMore() {
   return render(
@@ -25,20 +39,13 @@ function fireReveal(id: string) {
   });
 }
 
-// Which element did we scroll to? The stub is on the prototype, so `this` is
-// the target.
-function scrolledIds() {
-  return vi
-    .mocked(Element.prototype.scrollIntoView)
-    .mock.contexts.map((el) => (el as Element).id);
-}
-
 describe("AboutMore", () => {
   test("starts collapsed", () => {
     renderAboutMore();
     const toggle = screen.getByRole("button");
     expect(toggle).toHaveAttribute("aria-expanded", "false");
     expect(toggle).toHaveTextContent("Show more");
+    expect(document.getElementById("about-more")).toHaveAttribute("inert");
   });
 
   test("clicking the toggle opens the panel and scrolls to the first section", async () => {
@@ -46,7 +53,7 @@ describe("AboutMore", () => {
     await userEvent.click(screen.getByRole("button", { name: /show more/i }));
 
     expect(document.getElementById("about-more")).not.toHaveAttribute("inert");
-    await waitFor(() => expect(scrolledIds()).toEqual(["skills"]));
+    expect(scrolledTo()).toEqual(["skills"]);
   });
 
   test("the toggle fades and collapses away for good once opened", async () => {
@@ -62,21 +69,30 @@ describe("AboutMore", () => {
     expect(screen.queryByText(/show less/i)).toBeNull();
   });
 
-  test("reveals and scrolls to the targeted section", async () => {
+  test("reveals and scrolls to the targeted section", () => {
     renderAboutMore();
     fireReveal("experience");
 
     expect(document.getElementById("about-more")).not.toHaveAttribute("inert");
-    await waitFor(() => expect(scrolledIds()).toEqual(["experience"]));
+    expect(scrolledTo()).toEqual(["experience"]);
   });
 
-  test("ignores an unmanaged section id", async () => {
+  test("a second jump while already open still scrolls", () => {
+    renderAboutMore();
+    fireReveal("experience");
+    fireReveal("skills");
+
+    expect(scrolledTo()).toEqual(["experience", "skills"]);
+  });
+
+  test("ignores an unmanaged section id", () => {
     renderAboutMore();
     fireReveal("nope");
 
-    expect(screen.getByRole("button")).toHaveAttribute("aria-expanded", "false");
-    // Give any (unexpected) scheduled scroll a chance to fire.
-    await new Promise((r) => setTimeout(r, 400));
-    expect(Element.prototype.scrollIntoView).not.toHaveBeenCalled();
+    expect(screen.getByRole("button")).toHaveAttribute(
+      "aria-expanded",
+      "false",
+    );
+    expect(scrollIntoViewLive).not.toHaveBeenCalled();
   });
 });

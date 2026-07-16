@@ -170,10 +170,9 @@ export const about: AboutCopy = {
   name: "Arkadiusz Ostrowski",
   tagline: "Software Engineer · Full-Stack · TypeScript · React · Node",
   paragraphs: [
-    "Based in London. Six years building production software, most recently shipping a social-proof OS for sales teams at GrowthNation and an AI research platform at Noah Media Group.",
-    "Comfortable across the stack: TypeScript end-to-end, React/Next on the front, Node + Postgres + BullMQ + multi-provider LLM on the back. Two-year track record of delivering AI-assisted features in production, from a 2023 research tool on GPT-3.5/4 to a 2026 proof engine using the Vercel AI SDK, Anthropic, OpenAI, OpenRouter, and a custom MCP server layer.",
+    "Six years building production software, most recently shipping a social-proof OS for sales teams at GrowthNation and an AI research platform at Noah Media Group.",
+    "Comfortable with the TypeScript stack end-to-end, React/Next on the front, Node + Postgres + BullMQ + multi-provider LLM on the back. Two-year track record of delivering AI-assisted features in production, from a 2023 research tool on GPT-3.5/4 to a 2026 proof engine using the Vercel AI SDK, Anthropic, OpenAI, OpenRouter, and a custom MCP server layer.",
     "Career-changer. Worked in sales for ten years across Poland and the UK before self-teaching into software via OpenClassrooms and the London Java Community. Junior in 2020, mid in 2022, senior/lead by 2025.",
-    "Available for senior / staff / founding-engineer roles. Hybrid or remote.",
   ],
 };
 
