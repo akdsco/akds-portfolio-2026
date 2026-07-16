@@ -17,13 +17,14 @@ describe("Experience", () => {
     expect(link).toHaveAttribute("target", "_blank");
   });
 
-  // The sentinel must render as text, never as a link to nowhere.
+  // The sentinel must render as text, never as a link to nowhere. Connect4's
+  // origin is unreachable, so it's the honest fixture for a dead site.
   it("renders a company with no live site as plain text", () => {
     render(<Experience />);
 
-    expect(screen.getAllByText("Noah Media Group")[0]).toBeInTheDocument();
+    expect(screen.getAllByText("Connect4")[0]).toBeInTheDocument();
     expect(
-      screen.queryByRole("link", { name: "Noah Media Group" }),
+      screen.queryByRole("link", { name: "Connect4" }),
     ).not.toBeInTheDocument();
   });
 

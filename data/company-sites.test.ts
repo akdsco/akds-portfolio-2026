@@ -39,12 +39,14 @@ describe("companySites", () => {
 describe("companyHref", () => {
   it("returns the url for a company that still has a site", () => {
     expect(companyHref("GrowthNation")).toBe("https://growthnation.ai");
+    expect(companyHref("Noah Media Group")).toBe(
+      "https://www.noahmediagroup.com/",
+    );
   });
 
   // The sentinels are the point: absence is recorded as a decision, so it must
   // never leak to the DOM as an href like "url-no-longer-active".
   it("returns null for a company whose site is gone", () => {
-    expect(companyHref("Noah Media Group")).toBeNull();
     expect(companyHref("Connect4")).toBeNull();
     expect(companyHref("Wutzu Technologies")).toBeNull();
   });

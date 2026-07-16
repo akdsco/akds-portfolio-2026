@@ -3,6 +3,7 @@ import { Kicker } from "@/components/kicker";
 import { LinkedText } from "@/components/linked-text";
 import { StackChips } from "@/components/stack-chips";
 import { companyHref, experience } from "@/data/portfolio";
+import { plainText } from "@/lib/inline-links";
 
 export function Experience() {
   return (
@@ -39,7 +40,7 @@ export function Experience() {
                   {role.location} · {role.employmentType}
                 </div>
                 <p className="text-dim mb-3.5 text-[14.5px] leading-relaxed text-pretty">
-                  {role.summary}
+                  <LinkedText text={role.summary} />
                 </p>
                 {role.highlights.length > 0 && (
                   <ul
@@ -48,7 +49,10 @@ export function Experience() {
                   >
                     {role.highlights.map((highlight) => (
                       <li
-                        key={highlight}
+                        // Keyed on the label, not the raw string: a whole
+                        // highlight as a key ships the markup in the RSC payload
+                        // for no benefit.
+                        key={plainText(highlight).slice(0, 24)}
                         className="text-dim grid grid-cols-[10px_1fr] gap-2 text-[13.5px] leading-relaxed text-pretty"
                       >
                         <span

@@ -1,26 +1,21 @@
 import type { ReactNode } from "react";
 
 import { ExternalLink } from "@/components/external-link";
+import { inlineLinkPattern } from "@/lib/inline-links";
 
 /**
- * Markdown-style `[label](href)`. Deliberately the whole grammar — this exists so
- * a highlight can link the product it names, not to grow into a markdown engine.
- * If prose ever needs emphasis or lists, reach for a real parser instead of
- * bolting cases onto this regex.
+ * Renders a prose string, turning any `[label](https://…)` into an external
+ * link. Use this for every prose field that's rendered as its own text node —
+ * summaries, highlights, case-study paragraphs, quotes.
  *
- * The `https://` is inside the pattern rather than validated afterwards, so
- * `[x](javascript:…)` simply isn't a match and falls through as literal text.
- * That makes the safety a property of the grammar instead of a check someone can
- * forget to run. `[^\s)]` keeps the href from swallowing the closing paren.
+ * Two places it must NOT be used, where `plainText()` is the answer instead:
+ * inside another anchor (nested `<a>` is invalid HTML), and in `<meta>` content.
  */
-const LINK = /\[([^\]]+)\]\((https:\/\/[^\s)]+)\)/g;
-
-/** Renders a string, turning any `[label](https://…)` into an external link. */
 export function LinkedText({ text }: { text: string }) {
   const nodes: ReactNode[] = [];
   let cursor = 0;
 
-  for (const match of text.matchAll(LINK)) {
+  for (const match of text.matchAll(inlineLinkPattern())) {
     const [full, label, href] = match;
     // noUncheckedIndexedAccess: groups are `string | undefined` to the compiler
     // even though the pattern guarantees them. Skip rather than assert.

@@ -96,9 +96,8 @@ export type CompanySite =
  */
 export const companySites: Record<CompanyName, CompanySite> = {
   GrowthNation: "https://growthnation.ai",
-  // Owner's call, not a dead domain: noahmediagroup.com still resolves. Recorded
-  // as a deliberate "don't link" so nobody later mistakes it for an oversight.
-  "Noah Media Group": "url-no-longer-active",
+  // www is the canonical host — the bare domain 301s to it.
+  "Noah Media Group": "https://www.noahmediagroup.com/",
   Connect4: "url-no-longer-active", // origin unreachable (523)
   "Wutzu Technologies": "url-no-longer-active", // domain parked for resale
   "Self-employed": "no-public-url",
