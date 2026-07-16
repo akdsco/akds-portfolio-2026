@@ -31,11 +31,11 @@ export type CommandTag = "go" | "external" | "toggle";
 // labels. The palette UI attaches a per-key `run` handler; `filterCommands`
 // matches against this shape. Keeping it module-level makes matching unit-
 // testable without mounting the component.
-export interface CommandMeta {
+export type CommandMeta = {
   key: string;
   label: string;
   tag: CommandTag;
-}
+};
 
 export const commandList: CommandMeta[] = [
   { key: "/projects", label: "Browse all projects", tag: "go" },

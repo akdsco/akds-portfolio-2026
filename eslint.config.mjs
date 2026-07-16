@@ -34,6 +34,10 @@ const eslintConfig = defineConfig([
         "error",
         { allowNumber: true },
       ],
+      // stylisticTypeChecked defaults this to prefer `interface`; the codebase
+      // deliberately uses `type` for its data shapes. Keep the consistency, flip
+      // the direction. (Not a strictness rule — pure style.)
+      "@typescript-eslint/consistent-type-definitions": ["error", "type"],
     },
   },
 

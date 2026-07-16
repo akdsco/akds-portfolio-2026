@@ -17,12 +17,12 @@
 // Types
 // ---------------------------------------------------------------------------
 
-export interface SocialLink {
+export type SocialLink = {
   label: string;
   url: string;
-}
+};
 
-export interface Profile {
+export type Profile = {
   name: string;
   fullName: string;
   title: string;
@@ -32,30 +32,30 @@ export interface Profile {
   cvEmail: string; // kept off the public site, for CV / direct outreach
   brandImage: string;
   socials: SocialLink[];
-}
+};
 
-export interface HeroCopy {
+export type HeroCopy = {
   name: string;
   tagline: string;
   paragraphs: string[];
-}
+};
 
-export interface AboutCopy {
+export type AboutCopy = {
   name: string;
   tagline: string;
   paragraphs: string[];
-}
+};
 
-export interface SkillCategory {
+export type SkillCategory = {
   title: string;
   items: string[];
-}
+};
 
 /**
  * Long-form, section-based case-study body. Each section is an array of
  * plain-text paragraphs (no markdown); the render layer decides presentation.
  */
-export interface CaseStudy {
+export type CaseStudy = {
   sections: {
     problem: string[];
     constraints: string[];
@@ -66,13 +66,13 @@ export interface CaseStudy {
   };
   testimonialId?: number; // pull a relevant testimonial inline, by id
   status?: string; // short honest label shown in the meta card, e.g. "shipped"
-}
+};
 
 /**
  * A single project. Cards on /projects render from the top-level fields; a
  * project with a `caseStudy` also gets a /projects/[slug] detail page.
  */
-export interface Project {
+export type Project = {
   slug: string; // URL segment + stable key
   title: string;
   company: string;
@@ -88,9 +88,9 @@ export interface Project {
   role?: string; // detail meta row (job title)
   period?: string; // detail meta row
   caseStudy?: CaseStudy; // present => has a detail page
-}
+};
 
-export interface WorkExperience {
+export type WorkExperience = {
   id: number;
   period: string;
   position: string;
@@ -100,26 +100,26 @@ export interface WorkExperience {
   summary: string;
   highlights: string[];
   stack: string[];
-}
+};
 
-export interface Education {
+export type Education = {
   id: number;
   period: string;
   qualification: string;
   institution: string;
   details: string;
-}
+};
 
-export interface Certification {
+export type Certification = {
   id: number;
   title: string;
   issuer: string;
   issued: string;
   status: "current" | "legacy";
   note?: string;
-}
+};
 
-export interface Testimonial {
+export type Testimonial = {
   id: number;
   order: number;
   author: string;
@@ -128,7 +128,7 @@ export interface Testimonial {
   date: string;
   quote: string;
   context?: string;
-}
+};
 
 // ---------------------------------------------------------------------------
 // Data
