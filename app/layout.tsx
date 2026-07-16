@@ -29,20 +29,22 @@ export const metadata: Metadata = {
   description:
     "London-based software engineer building production AI-native software end-to-end. Selected work, experience, and case studies.",
   openGraph: {
-    title: "Arkadiusz Ostrowski — Software Engineer",
-    description:
-      "London-based software engineer building production AI-native software end-to-end.",
+    // No title/description here, for the same reason as `twitter` below: Next
+    // only falls back to a page's own `title` when openGraph has none of its
+    // own. Pinning one cascades the site title onto every child — which is why
+    // /projects shared an identical card with /about despite declaring its own
+    // title. These now inherit from each page's `title`/`description`.
     type: "website",
     siteName: "Arkadiusz Ostrowski",
     locale: "en_GB",
     // OG image comes from app/opengraph-image.tsx (file convention).
   },
   twitter: {
+    // Title, description and image are auto-filled from `openGraph` above — but
+    // only while none of them are set here. Pinning a title disables that for
+    // every descendant, which leaves case studies advertising the site title
+    // instead of the project's. Leave this as just the card type.
     card: "summary_large_image",
-    title: "Arkadiusz Ostrowski — Software Engineer",
-    description:
-      "London-based software engineer building production AI-native software end-to-end.",
-    // Twitter image comes from app/twitter-image.tsx (file convention).
   },
 };
 

@@ -46,7 +46,10 @@ export function AboutMore({ children }: { children: ReactNode }) {
   }, []);
 
   return (
-    <div className="mx-auto max-w-[820px] px-6 py-14 md:px-10">
+    // Asymmetric padding: the space above the toggle separates it from the About
+    // copy, but below it only has to reach the footer's ghosted wordmark — which
+    // reads better close, so the mark feels attached to the page.
+    <div className="mx-auto max-w-[820px] px-6 pt-14 pb-6 md:px-10">
       <div className="flex items-center gap-4">
         <div className="border-line flex-1 border-t border-dashed" />
         <button

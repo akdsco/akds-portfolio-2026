@@ -40,11 +40,20 @@ export async function generateMetadata({
     title: `${project.title} — Arkadiusz Ostrowski`,
     description,
     alternates: { canonical: `/projects/${slug}` },
+    // This block REPLACES the layout's openGraph rather than merging into it,
+    // so siteName and locale have to be repeated or they're simply absent.
+    //
+    // Deliberately NO `images` key: this segment owns an opengraph-image.tsx, so
+    // Next injects the per-project card automatically — but only while no level
+    // declares `images` itself. Setting it here would silently override every
+    // case study with the generic card.
     openGraph: {
       title: `${project.title} — Arkadiusz Ostrowski`,
       description,
       type: "article",
       url: `/projects/${slug}`,
+      siteName: "Arkadiusz Ostrowski",
+      locale: "en_GB",
     },
   };
 }

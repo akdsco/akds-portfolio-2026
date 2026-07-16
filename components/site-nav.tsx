@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { ExternalLink } from "@/components/external-link";
 import { GithubIcon, LinkedinIcon } from "@/components/icons";
 import { ModeToggle } from "@/components/mode-toggle";
+import { Wordmark } from "@/components/wordmark";
 import { profile } from "@/data/portfolio";
 import { cn } from "@/lib/utils";
 
@@ -29,13 +30,25 @@ export function SiteNav() {
     href === "/projects" ? pathname.startsWith("/projects") : pathname === href;
 
   return (
-    <header className="border-line bg-base/80 sticky top-0 z-40 border-b backdrop-blur">
+    // overflow-hidden lets the logo below bleed past the bar and get cut by the
+    // bottom border, echoing the footer and the social cards.
+    <header className="border-line bg-base/80 sticky top-0 z-40 overflow-hidden border-b backdrop-blur">
       <nav className="mx-auto flex h-14 w-full max-w-5xl items-center justify-between px-6 md:px-8">
+        {/* self-end puts the mark's bottom on the header's bottom border, so the
+            border itself is what cuts it. */}
         <Link
           href="/about"
-          className="text-ink -mx-2 rounded-md px-2 py-1 text-sm font-semibold tracking-tight"
+          aria-label="akds — home"
+          className="-mx-2 self-end px-2"
         >
-          akds
+          {/* faint, not ink: softened so the mark sits in the bar rather than
+              dominating it. Still a nav link, so it stops well short of the
+              footer's ghost — at 38px bold it clears WCAG's 3:1 for large text
+              in both themes, and brightens to ink on hover. */}
+          <Wordmark
+            className="text-faint hover:text-ink font-semibold transition-colors"
+            style={{ fontSize: 38 }}
+          />
         </Link>
 
         <ul className="flex items-center gap-1 text-[13.5px]">
