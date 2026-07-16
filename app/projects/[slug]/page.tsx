@@ -97,7 +97,7 @@ export default async function CaseStudyPage({
         </p>
       </HeroBand>
 
-      <div className="mx-auto grid max-w-[900px] items-start gap-11 px-6 py-11 md:px-11 lg:grid-cols-[1fr_252px]">
+      <div className="mx-auto grid max-w-[900px] items-start gap-11 px-6 pt-11 pb-6 md:px-11 lg:grid-cols-[1fr_252px]">
         <div className="min-w-0">
           {sections.map((section) => (
             <section
