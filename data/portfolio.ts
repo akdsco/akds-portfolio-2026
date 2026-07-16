@@ -139,7 +139,7 @@ export const profile: Profile = {
   fullName: "Arkadiusz Ostrowski",
   title: "Software Engineer · Full-Stack · TypeScript · React · Node",
   location: "London, UK",
-  availability: "Open to remote or hybrid, senior engineering roles",
+  availability: "Open to senior engineering roles",
   publicEmail: "hire-arkadiusz@pm.me",
   cvEmail: "arkadiusz.ostrowski@protonmail.com",
   brandImage: "/images/brand-image.webp",
@@ -172,7 +172,7 @@ export const about: AboutCopy = {
   paragraphs: [
     "Six years building production software, most recently shipping a social-proof OS for sales teams at GrowthNation and an AI research platform at Noah Media Group.",
     "Comfortable with the TypeScript stack end-to-end, React/Next on the front, Node + Postgres + BullMQ + multi-provider LLM on the back. Two-year track record of delivering AI-assisted features in production, from a 2023 research tool on GPT-3.5/4 to a 2026 proof engine using the Vercel AI SDK, Anthropic, OpenAI, OpenRouter, and a custom MCP server layer.",
-    "Career-changer. Worked in sales for ten years across Poland and the UK before self-teaching into software via OpenClassrooms and the London Java Community. Junior in 2020, mid in 2022, senior/lead by 2025.",
+    "Career-changer. Worked in sales for ten years across Poland and the UK before self-teaching into software via OpenClassrooms and the London Java Community.",
   ],
 };
 
@@ -296,7 +296,7 @@ export const skills: SkillCategory[] = [
       "TDD",
       '"Agent skills produce data" pattern',
       "Pay-on-success cost tracking",
-      "AI-assisted coding with human-in-the-loop quality gates",
+      "AI-assisted programming",
     ],
   },
   {
@@ -611,7 +611,7 @@ export const experience: WorkExperience[] = [
     period: "2020 Nov - 2022 Mar",
     position: "Software Engineer",
     company: "Connect4",
-    location: "Fully remote (pandemic)",
+    location: "Remote",
     employmentType: "Full-time",
     summary:
       "First of three companies working alongside Ben Ritchie, who mentored Akds from junior into mid-level. B2B SaaS for productivity around online meetings: agendas, structured notes, planning, meeting history.",

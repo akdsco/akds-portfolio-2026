@@ -25,8 +25,7 @@ export default function ProjectsPage() {
           Projects
         </h1>
         <p className="text-dim max-w-xl text-lg leading-relaxed text-pretty">
-          Selected work, newest first. Four have full write-ups; the rest are
-          here for completeness.
+          Selected work, newest first.
         </p>
       </HeroBand>
 
