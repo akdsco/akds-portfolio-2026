@@ -56,10 +56,12 @@ export function AboutMore({ children }: { children: ReactNode }) {
   useEffect(() => {
     // Deferred a tick: a hash landing is an async request to open, not state
     // to cascade through the mount render.
-    const mounted = window.setTimeout(() =>
-      reveal(window.location.hash.replace("#", "")),
-    );
-    const onReveal = (e: Event) => reveal((e as CustomEvent<string>).detail);
+    const mounted = window.setTimeout(() => {
+      reveal(window.location.hash.replace("#", ""));
+    });
+    const onReveal = (e: Event) => {
+      reveal((e as CustomEvent<string>).detail);
+    };
     window.addEventListener("about:reveal", onReveal);
     return () => {
       window.removeEventListener("about:reveal", onReveal);

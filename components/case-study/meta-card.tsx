@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 
+import { CompanyLink } from "@/components/company-link";
 import { PulseDot } from "@/components/pulse-dot";
 import { StackChips } from "@/components/stack-chips";
 import type { Project } from "@/data/portfolio";
@@ -25,7 +26,9 @@ export function MetaCard({ project }: { project: Project }) {
       <div className="flex flex-col gap-4 p-4">
         <div>
           <Label>company</Label>
-          <div className="text-ink text-[13.5px]">{project.company}</div>
+          <div className="text-ink text-[13.5px]">
+            <CompanyLink company={project.company} />
+          </div>
         </div>
         {project.role && (
           <div>

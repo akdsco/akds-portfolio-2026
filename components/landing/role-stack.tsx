@@ -25,7 +25,9 @@ export function RoleStack({ lead, rest }: { lead: string[]; rest: string[] }) {
         {rest.length > 0 && (
           <button
             type="button"
-            onClick={() => setOpen((o) => !o)}
+            onClick={() => {
+              setOpen((o) => !o);
+            }}
             aria-expanded={open}
             aria-controls={panelId}
             className={cn(

@@ -19,9 +19,7 @@ beforeEach(() => vi.mocked(scrollIntoViewLive).mockClear());
 
 // The id of the element we were asked to scroll to.
 function scrolledTo() {
-  return vi
-    .mocked(scrollIntoViewLive)
-    .mock.calls.map(([el]) => (el as Element).id);
+  return vi.mocked(scrollIntoViewLive).mock.calls.map(([el]) => el.id);
 }
 
 function renderAboutMore() {

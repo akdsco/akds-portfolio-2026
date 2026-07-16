@@ -34,8 +34,15 @@ export function Collapse({
   // the clip would never lift. A timer settles either way, and covers reduced
   // motion (no transition at all) for free.
   useEffect(() => {
-    const t = setTimeout(() => setSettled(open), open ? ROWS_MS : 0);
-    return () => clearTimeout(t);
+    const t = setTimeout(
+      () => {
+        setSettled(open);
+      },
+      open ? ROWS_MS : 0,
+    );
+    return () => {
+      clearTimeout(t);
+    };
   }, [open]);
 
   return (

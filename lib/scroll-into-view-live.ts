@@ -60,10 +60,12 @@ export function scrollIntoViewLive(el: Element, settleMs: number) {
     // One frame, so the caller's state change has reached the DOM: aiming now
     // would measure a document that hasn't grown yet and clamp short. Reduced
     // motion means no transition to wait out, so one frame is the whole wait.
-    const jump = requestAnimationFrame(() =>
-      window.scrollTo({ top: aim(), behavior: "instant" }),
-    );
-    return () => cancelAnimationFrame(jump);
+    const jump = requestAnimationFrame(() => {
+      window.scrollTo({ top: aim(), behavior: "instant" });
+    });
+    return () => {
+      cancelAnimationFrame(jump);
+    };
   }
 
   const started = performance.now();

@@ -3,10 +3,12 @@ import { notFound } from "next/navigation";
 
 import { HeroPrompt } from "@/components/command-palette";
 import { HeroBand } from "@/components/hero-band";
+import { LinkedText } from "@/components/linked-text";
 import { MetaCard } from "@/components/case-study/meta-card";
 import { Toc } from "@/components/case-study/toc";
 import { Kicker } from "@/components/kicker";
 import { projects, testimonials, type CaseStudy } from "@/data/portfolio";
+import { plainText } from "@/lib/inline-links";
 
 const SECTION_ORDER = [
   { key: "problem", kicker: "the situation", title: "Problem" },
@@ -31,9 +33,19 @@ export async function generateMetadata({
   const { slug } = await params;
   const project = caseStudies.find((p) => p.slug === slug);
   if (!project) return {};
+  // Meta tags are plain text: any inline-link markup in the hook has to collapse
+  // to its label, or og:description ships "[SlateIQ](https://…)" verbatim.
+  const description = plainText(project.hook);
   return {
     title: `${project.title} — Arkadiusz Ostrowski`,
-    description: project.hook,
+    description,
+    alternates: { canonical: `/projects/${slug}` },
+    openGraph: {
+      title: `${project.title} — Arkadiusz Ostrowski`,
+      description,
+      type: "article",
+      url: `/projects/${slug}`,
+    },
   };
 }
 
@@ -70,7 +82,7 @@ export default async function CaseStudyPage({
           {project.title}
         </h1>
         <p className="text-dim max-w-2xl text-xl leading-relaxed text-pretty">
-          {project.hook}
+          <LinkedText text={project.hook} />
         </p>
       </HeroBand>
 
@@ -86,12 +98,14 @@ export default async function CaseStudyPage({
               <h2 className="text-ink mb-3.5 text-2xl font-semibold tracking-tight">
                 {section.title}
               </h2>
-              {section.paragraphs.map((para) => (
+              {/* Keyed by index: static list, and a prose prefix is no longer a
+                  safe key now that paragraphs may open with link markup. */}
+              {section.paragraphs.map((para, index) => (
                 <p
-                  key={para.slice(0, 24)}
+                  key={index}
                   className="text-dim mb-4 text-[16.5px] leading-relaxed text-pretty"
                 >
-                  {para}
+                  <LinkedText text={para} />
                 </p>
               ))}
             </section>

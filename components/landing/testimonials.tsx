@@ -44,9 +44,9 @@ export function Testimonials() {
                 {clampable && (
                   <button
                     type="button"
-                    onClick={() =>
-                      setOpen((prev) => ({ ...prev, [t.id]: !expanded }))
-                    }
+                    onClick={() => {
+                      setOpen((prev) => ({ ...prev, [t.id]: !expanded }));
+                    }}
                     className="text-hi -mx-1 mb-3 block w-fit cursor-pointer rounded-[4px] px-1 py-0.5 font-mono text-[11.5px]"
                   >
                     {expanded ? "Show less" : "Read more"}

@@ -15,12 +15,13 @@ function renderCollapse(open: boolean) {
   return {
     wrapper,
     clipBox: wrapper.firstChild as HTMLElement,
-    setOpen: (next: boolean) =>
+    setOpen: (next: boolean) => {
       rerender(
         <Collapse open={next} id="panel">
           <p>hidden content</p>
         </Collapse>,
-      ),
+      );
+    },
     // The rows are given long enough to finish moving.
     settle: (el: HTMLElement, cls: string) =>
       waitFor(() => expect(el).toHaveClass(cls)),
@@ -59,17 +60,23 @@ describe("Collapse", () => {
     await settle(clipBox, "overflow-visible");
 
     // Must re-clip on the way down, or the content is visible as it shrinks.
-    act(() => setOpen(false));
+    act(() => {
+      setOpen(false);
+    });
     expect(clipBox).toHaveClass("overflow-hidden");
   });
 
   test("re-clips for a second open after closing", async () => {
     const { clipBox, setOpen, settle } = renderCollapse(true);
     await settle(clipBox, "overflow-visible");
-    act(() => setOpen(false));
+    act(() => {
+      setOpen(false);
+    });
     await settle(clipBox, "overflow-hidden");
 
-    act(() => setOpen(true));
+    act(() => {
+      setOpen(true);
+    });
     expect(clipBox).toHaveClass("overflow-hidden");
   });
 });

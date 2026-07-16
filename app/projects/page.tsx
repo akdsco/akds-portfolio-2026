@@ -9,6 +9,7 @@ import { projects } from "@/data/portfolio";
 export const metadata: Metadata = {
   title: "Projects — Arkadiusz Ostrowski",
   description: "Selected engineering work, with full case-study write-ups.",
+  alternates: { canonical: "/projects" },
 };
 
 const featured = projects.filter((p) => p.featured);

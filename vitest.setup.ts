@@ -4,7 +4,9 @@ import { afterEach, vi } from "vitest";
 import { cleanup } from "@testing-library/react";
 
 // Unmount React trees between tests so DOM/state don't leak across cases.
-afterEach(() => cleanup());
+afterEach(() => {
+  cleanup();
+});
 
 // jsdom implements neither of these browser APIs, but several components call
 // them (theme + reduced-motion checks, scroll-spy, collapsibles). Stub them so
@@ -28,9 +30,15 @@ vi.stubGlobal(
 
 // IntersectionObserver / ResizeObserver: no-op classes.
 class NoopObserver {
-  observe() {}
-  unobserve() {}
-  disconnect() {}
+  observe() {
+    /* no-op */
+  }
+  unobserve() {
+    /* no-op */
+  }
+  disconnect() {
+    /* no-op */
+  }
   takeRecords() {
     return [];
   }

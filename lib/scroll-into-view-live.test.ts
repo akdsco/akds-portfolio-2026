@@ -9,7 +9,8 @@ import { scrollIntoViewLive } from "@/lib/scroll-into-view-live";
 // back to the user.
 
 let el: HTMLElement;
-let cancel: () => void;
+// Undefined until a case starts a scroll — afterEach runs either way.
+let cancel: (() => void) | undefined;
 
 beforeEach(() => {
   vi.mocked(window.scrollTo).mockClear();
@@ -25,8 +26,16 @@ afterEach(() => {
 // Let a frame pass, then report whether the glide is still driving the scroll.
 async function stillScrolling() {
   vi.mocked(window.scrollTo).mockClear();
-  await new Promise((r) => requestAnimationFrame(() => r(null)));
-  await new Promise((r) => requestAnimationFrame(() => r(null)));
+  await new Promise((r) =>
+    requestAnimationFrame(() => {
+      r(null);
+    }),
+  );
+  await new Promise((r) =>
+    requestAnimationFrame(() => {
+      r(null);
+    }),
+  );
   return vi.mocked(window.scrollTo).mock.calls.length > 0;
 }
 
@@ -89,7 +98,11 @@ describe("scrollIntoViewLive", () => {
 
     cancel = scrollIntoViewLive(el, 300);
     // One frame to let the caller's state reach the DOM, then a single move.
-    await new Promise((r) => requestAnimationFrame(() => r(null)));
+    await new Promise((r) =>
+      requestAnimationFrame(() => {
+        r(null);
+      }),
+    );
     expect(window.scrollTo).toHaveBeenCalledTimes(1);
     expect(await stillScrolling()).toBe(false);
   });

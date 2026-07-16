@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
+import { ExternalLink } from "@/components/external-link";
 import { GithubIcon, LinkedinIcon } from "@/components/icons";
 import { ModeToggle } from "@/components/mode-toggle";
 import { profile } from "@/data/portfolio";
@@ -57,16 +58,14 @@ export function SiteNav() {
 
         <div className="flex items-center gap-0.5">
           {navSocials.map(({ url, label, Icon }) => (
-            <a
+            <ExternalLink
               key={label}
               href={url}
               aria-label={label}
-              target="_blank"
-              rel="noreferrer noopener"
               className="text-dim hover:text-ink grid size-8 place-items-center rounded-md transition-colors"
             >
               <Icon className="size-4" />
-            </a>
+            </ExternalLink>
           ))}
           <ModeToggle />
         </div>
