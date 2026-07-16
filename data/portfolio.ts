@@ -230,10 +230,28 @@ export const about: AboutCopy = {
   ],
 };
 
+// Order is deliberate, not alphabetical. These render in a 2-column grid, where
+// every row is as tall as its taller cell — so categories are paired both by
+// relevance (what's built / core engineering / platform / how it's built /
+// production surface) and by similar bulk, which keeps the short one from
+// carving a hole beside the tall one. Reordering or adding a category will
+// re-open those gaps; re-measure at desktop width if you do.
 export const skills: SkillCategory[] = [
   {
-    title: "Languages",
-    items: ["TypeScript", "JavaScript", "SQL", "Java (early-career)"],
+    title: "AI / LLM",
+    items: [
+      "Vercel AI SDK",
+      "OpenAI",
+      "Anthropic Claude",
+      "OpenRouter",
+      "DeepSeek",
+      "Langfuse",
+      "Model Context Protocol (custom MCP servers)",
+      "LLM-in-the-loop integration testing",
+      "Firecrawl",
+      "ElevenLabs",
+      "AI-assisted product development",
+    ],
   },
   {
     title: "Frontend",
@@ -255,6 +273,10 @@ export const skills: SkillCategory[] = [
     ],
   },
   {
+    title: "Languages",
+    items: ["TypeScript", "JavaScript", "SQL", "Java (early-career)"],
+  },
+  {
     title: "Backend",
     items: [
       "Node.js",
@@ -267,22 +289,6 @@ export const skills: SkillCategory[] = [
       "Puppeteer",
       "Cheerio",
       "Sharp",
-    ],
-  },
-  {
-    title: "AI / LLM",
-    items: [
-      "Vercel AI SDK",
-      "OpenAI",
-      "Anthropic Claude",
-      "OpenRouter",
-      "DeepSeek",
-      "Langfuse",
-      "Model Context Protocol (custom MCP servers)",
-      "LLM-in-the-loop integration testing",
-      "Firecrawl",
-      "ElevenLabs",
-      "AI-assisted product development",
     ],
   },
   {
@@ -330,18 +336,6 @@ export const skills: SkillCategory[] = [
     ],
   },
   {
-    title: "Observability & Product Analytics",
-    items: [
-      "Sentry",
-      "Better Stack / Logtail",
-      "Winston",
-      "PostHog",
-      "GA4",
-      "Meta Pixel",
-      "Google Search Console",
-    ],
-  },
-  {
     title: "Practices & patterns",
     items: [
       "Functional programming",
@@ -351,6 +345,18 @@ export const skills: SkillCategory[] = [
       '"Agent skills produce data" pattern',
       "Pay-on-success cost tracking",
       "AI-assisted programming",
+    ],
+  },
+  {
+    title: "Observability & Product Analytics",
+    items: [
+      "Sentry",
+      "Better Stack / Logtail",
+      "Winston",
+      "PostHog",
+      "GA4",
+      "Meta Pixel",
+      "Google Search Console",
     ],
   },
   {
