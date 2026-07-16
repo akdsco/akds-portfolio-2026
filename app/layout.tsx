@@ -29,9 +29,11 @@ export const metadata: Metadata = {
   description:
     "London-based software engineer building production AI-native software end-to-end. Selected work, experience, and case studies.",
   openGraph: {
-    title: "Arkadiusz Ostrowski — Software Engineer",
-    description:
-      "London-based software engineer building production AI-native software end-to-end.",
+    // No title/description here, for the same reason as `twitter` below: Next
+    // only falls back to a page's own `title` when openGraph has none of its
+    // own. Pinning one cascades the site title onto every child — which is why
+    // /projects shared an identical card with /about despite declaring its own
+    // title. These now inherit from each page's `title`/`description`.
     type: "website",
     siteName: "Arkadiusz Ostrowski",
     locale: "en_GB",
