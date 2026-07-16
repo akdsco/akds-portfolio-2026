@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import { projects } from "@/data/portfolio";
+import { SITE_BRAND } from "@/lib/site";
 
 import { generateMetadata } from "./page";
 
@@ -30,7 +31,7 @@ describe("case-study generateMetadata", () => {
     const meta = await metadataFor(slug);
 
     expect(meta.openGraph).toMatchObject({
-      siteName: "Arkadiusz Ostrowski",
+      siteName: SITE_BRAND,
       locale: "en_GB",
     });
   });

@@ -7,7 +7,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { PaletteProvider } from "@/components/command-palette";
 import { SiteNav } from "@/components/site-nav";
 import { SiteFooter } from "@/components/site-footer";
-import { SITE_TITLE, SITE_URL } from "@/lib/site";
+import { SITE_BRAND, SITE_URL } from "@/lib/site";
 
 import "./globals.css";
 
@@ -29,23 +29,24 @@ export const metadata: Metadata = {
   // supplies its own segment; `default` only covers routes that set no title of
   // their own (not-found, error), where the full name is more use than "akds".
   title: {
-    template: "akds : %s",
-    default: SITE_TITLE,
+    template: `${SITE_BRAND} : %s`,
+    default: SITE_BRAND,
   },
   description:
     "London-based software engineer building production AI-native software end-to-end. Selected work, experience, and case studies.",
   openGraph: {
-    // og:title is pinned; og:description is not. Next falls og:title back to the
-    // page's own `title`, and those now read as routes ("akds : about") — fine
-    // in a tab, useless in a feed. So the site name is the floor, and any page
-    // wanting better states its own openGraph.title (/projects, case studies).
-    // A page that forgets one shares as the site rather than as "akds : thing".
+    // og:title is pinned; og:description is not. Left unpinned, og:title falls
+    // back to the page's own `title` — which the template has already turned
+    // into "akds : about". The card art is a giant "akds" wordmark, so a title
+    // repeating it says the brand twice and the page not at all. Pages state
+    // their own bare og:title ("about", "Proof Library"); this is only the
+    // floor for anything that doesn't.
     //
-    // Description still inherits per page, which is why it isn't pinned here:
-    // pinning would cascade the site blurb over each page's own.
-    title: SITE_TITLE,
+    // Description stays unpinned: pinning would cascade the site blurb over
+    // each page's own.
+    title: SITE_BRAND,
     type: "website",
-    siteName: "Arkadiusz Ostrowski",
+    siteName: SITE_BRAND,
     locale: "en_GB",
     // OG image comes from app/opengraph-image.tsx (file convention).
   },
