@@ -627,7 +627,7 @@ export const experience: WorkExperience[] = [
     summary:
       "Second engineer in NMG's newly-formed tech arm. Built three products 0→1 across the team's lifetime, worked directly with leadership, and adopted production LLM tooling years ahead of mainstream curve.",
     highlights: [
-      "SlateIQ: film success prediction. Combined IMDB, social, piracy, and market data into a comp-matching tool used in pitch decisions.",
+      "[SlateIQ](https://slateiq.com/): film success prediction. Combined IMDB, social, piracy, and market data into a comp-matching tool used in pitch decisions.",
       "AI-powered research assistant on GPT-3.5/4 in 2023. Integration tests ran live LLM calls with graded responses to stabilise output, years before this became standard practice.",
       "Established currying-based dependency injection as a team pattern (carries through to GrowthNation three years later).",
     ],

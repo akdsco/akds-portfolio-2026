@@ -1,7 +1,8 @@
 import type { ReactNode } from "react";
 
+import { ExternalLink } from "@/components/external-link";
 import { StackChips } from "@/components/stack-chips";
-import type { Project } from "@/data/portfolio";
+import { companyHref, type Project } from "@/data/portfolio";
 
 function Label({ children }: { children: ReactNode }) {
   return (
@@ -13,6 +14,7 @@ function Label({ children }: { children: ReactNode }) {
 
 export function MetaCard({ project }: { project: Project }) {
   const status = project.caseStudy?.status;
+  const href = companyHref(project.company);
   return (
     <div className="border-line bg-panel overflow-hidden rounded-[10px] border">
       <div className="border-line flex items-center gap-2 border-b px-3.5 py-2.5">
@@ -24,7 +26,13 @@ export function MetaCard({ project }: { project: Project }) {
       <div className="flex flex-col gap-4 p-4">
         <div>
           <Label>company</Label>
-          <div className="text-ink text-[13.5px]">{project.company}</div>
+          <div className="text-ink text-[13.5px]">
+            {href ? (
+              <ExternalLink href={href}>{project.company}</ExternalLink>
+            ) : (
+              project.company
+            )}
+          </div>
         </div>
         {project.role && (
           <div>
