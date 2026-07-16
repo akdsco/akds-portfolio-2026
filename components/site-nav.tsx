@@ -20,9 +20,15 @@ const links = [
 
 // Movement needed before the bar reacts. Momentum scrolling and iOS
 // rubber-banding emit a constant dribble of small deltas in both directions; a
-// bar that answers every one of them flickers. Deltas below this accumulate
+// bar that answers every one of them flickers. Deltas below these accumulate
 // instead of being acted on, so it takes a deliberate push either way.
-const SCROLL_THRESHOLD_PX = 10;
+//
+// Coming back asks for more than leaving. Reading downwards is a long committed
+// motion, so 10px of it clearly means "down". Upward movement is noisier —
+// thumb settling, a bounce at the end of a fling — and a bar that reappears on
+// every twitch is worse than one that waits to be asked.
+const HIDE_THRESHOLD_PX = 10;
+const SHOW_THRESHOLD_PX = 15;
 // Near the top the bar always shows: overscroll at the top of the document
 // reads as downward movement, which would otherwise hide it exactly where it's
 // most wanted.
@@ -44,7 +50,8 @@ function useScrollingDown() {
         const delta = y - last;
         // Leave `last` alone below the threshold so slow movement accumulates
         // rather than being discarded a pixel at a time.
-        if (Math.abs(delta) < SCROLL_THRESHOLD_PX) return;
+        const needed = delta > 0 ? HIDE_THRESHOLD_PX : SHOW_THRESHOLD_PX;
+        if (Math.abs(delta) < needed) return;
         last = y;
         setDown(y > TOP_ZONE_PX && delta > 0);
       });
@@ -80,7 +87,12 @@ export function SiteNav() {
     <header
       className={cn(
         "border-line bg-base/80 sticky top-0 z-40 overflow-hidden border-b backdrop-blur",
-        "transition-transform duration-300 ease-out motion-reduce:transition-none",
+        "transition-transform ease-out motion-reduce:transition-none",
+        // The duration is keyed off the state it's moving *to*, so the right one
+        // is already on the element when the transform flips. Leaving is brisk;
+        // arriving takes its time, which is what reads as smooth rather than
+        // snapped-back.
+        scrollingDown ? "duration-300" : "duration-[380ms]",
         // Gone while reading down the page, back on any upward intent. It
         // returns for focus too: a tabbed-to link inside a bar that's slid
         // off-screen is a focus ring nobody can see.
