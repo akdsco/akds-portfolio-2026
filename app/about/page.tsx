@@ -9,8 +9,8 @@ export default function AboutPage() {
     <>
       <Hero />
       <AboutMore>
-        <Skills />
         <Experience />
+        <Skills />
         <Testimonials />
       </AboutMore>
     </>

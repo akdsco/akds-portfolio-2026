@@ -13,9 +13,11 @@ import { Collapse } from "@/components/collapse";
 import { scrollIntoViewLive } from "@/lib/scroll-into-view-live";
 import { cn } from "@/lib/utils";
 
-// The toggle reveals everything but scrolls to the top of the first section.
-const FIRST_SECTION = "skills";
-const MANAGED = [FIRST_SECTION, "experience", "testimonials"];
+const MANAGED = ["skills", "experience", "testimonials"];
+// querySelector returns the first match in *document* order, so this asks the
+// page which section comes first instead of hardcoding it here — about/page.tsx
+// owns the running order and has already changed it once.
+const MANAGED_SELECTOR = MANAGED.map((id) => `#${id}`).join(", ");
 const PANEL_ID = "about-more";
 const TOGGLE_ID = "about-more-toggle";
 // How long the reveal takes to stop moving the layout around. Keep in sync
@@ -41,6 +43,15 @@ export function AboutMore({ children }: { children: ReactNode }) {
     cancelScroll.current?.();
     cancelScroll.current = scrollIntoViewLive(el, COLLAPSE_MS);
   }, []);
+
+  // The toggle reveals everything, and lands on whichever section is on top.
+  const revealFirst = useCallback(() => {
+    const first = document
+      .getElementById(PANEL_ID)
+      ?.querySelector(MANAGED_SELECTOR);
+    if (first) reveal(first.id);
+    else setOpen(true);
+  }, [reveal]);
 
   useEffect(() => {
     // Deferred a tick: a hash landing is an async request to open, not state
@@ -72,7 +83,7 @@ export function AboutMore({ children }: { children: ReactNode }) {
           <div className="border-line flex-1 border-t border-dashed" />
           <button
             type="button"
-            onClick={() => reveal(FIRST_SECTION)}
+            onClick={revealFirst}
             aria-expanded={open}
             aria-controls={PANEL_ID}
             className="border-line bg-chip text-dim hover:text-ink hover:border-hi inline-flex cursor-pointer items-center gap-2 rounded-[7px] border px-3.5 py-1.5 font-mono text-xs transition-colors"

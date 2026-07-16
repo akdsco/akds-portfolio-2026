@@ -56,6 +56,21 @@ describe("AboutMore", () => {
     expect(scrolledTo()).toEqual(["skills"]);
   });
 
+  // The page decides the section order, so "first" has to be read off the DOM.
+  // Hardcoding it here means a reorder in about/page.tsx silently aims the
+  // toggle at the wrong section.
+  test("follows the page's order rather than a hardcoded first section", async () => {
+    render(
+      <AboutMore>
+        <section id="experience">experience content</section>
+        <section id="skills">skills content</section>
+      </AboutMore>,
+    );
+    await userEvent.click(screen.getByRole("button", { name: /show more/i }));
+
+    expect(scrolledTo()).toEqual(["experience"]);
+  });
+
   test("the toggle fades and collapses away for good once opened", async () => {
     renderAboutMore();
     const toggle = screen.getByRole("button", { name: /show more/i });
