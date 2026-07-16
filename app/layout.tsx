@@ -36,10 +36,16 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // data-scroll-behavior tells the router it may switch off the
+  // `scroll-behavior: smooth` globals.css sets (for hash jumps) while it scrolls
+  // to the top on a route change. Without it the router's scrollTo(0) inherits
+  // the smooth animation, the incoming page's render cuts it short, and the new
+  // page opens part-scrolled.
   return (
     <html
       lang="en"
       suppressHydrationWarning
+      data-scroll-behavior="smooth"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body suppressHydrationWarning className="flex min-h-full flex-col">
