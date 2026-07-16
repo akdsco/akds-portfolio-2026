@@ -3,7 +3,7 @@
 import { useId, useState } from "react";
 
 import { Collapse } from "@/components/collapse";
-import { chipClass } from "@/components/stack-chips";
+import { chipClass, chipHoverClass } from "@/components/stack-chips";
 import { cn } from "@/lib/utils";
 
 // A role's tech, led by the few worth scanning. The rest sits behind a toggle
@@ -12,7 +12,7 @@ import { cn } from "@/lib/utils";
 export function RoleStack({ lead, rest }: { lead: string[]; rest: string[] }) {
   const [open, setOpen] = useState(false);
   const panelId = useId();
-  const chip = cn(chipClass, "hover:border-hi hover:text-ink");
+  const chip = cn(chipClass, chipHoverClass);
 
   return (
     <div>

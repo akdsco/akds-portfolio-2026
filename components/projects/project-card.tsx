@@ -8,10 +8,12 @@ import { cn } from "@/lib/utils";
 
 export function ProjectCard({ project }: { project: Project }) {
   const linked = Boolean(project.caseStudy);
+  // The lift is the site's tell for "this goes somewhere", so only a card that
+  // does gets it. An earlier-work card that rose under the cursor promised a
+  // detail page it doesn't have.
   const className = cn(
-    "border-line bg-panel group-hover:border-hi relative flex h-full flex-col gap-3.5 rounded-[11px] border p-5",
-    cardLift,
-    !linked && "opacity-90",
+    "border-line bg-panel relative flex h-full flex-col gap-3.5 rounded-[11px] border p-5",
+    linked ? cn("group-hover:border-hi", cardLift) : "opacity-90",
   );
 
   const body = (
@@ -41,7 +43,7 @@ export function ProjectCard({ project }: { project: Project }) {
   // The wrapper is the hover target and keeps the card's resting footprint, so
   // the lift can't pull the card out from under the cursor. See lib/card-lift.
   return (
-    <div className={cn(cardLiftWrap, "h-full")}>
+    <div className={cn("h-full", linked && cardLiftWrap)}>
       {linked ? (
         <Link href={`/projects/${project.slug}`} className={className}>
           {body}

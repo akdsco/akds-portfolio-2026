@@ -5,7 +5,7 @@ import { HeroBand } from "@/components/hero-band";
 import { EarlierWork } from "@/components/projects/earlier-work";
 import { ProjectCard } from "@/components/projects/project-card";
 import { projects } from "@/data/portfolio";
-import { SITE_BRAND } from "@/lib/site";
+import { OG_SHARED } from "@/lib/site";
 
 const description =
   "Selected engineering work, with full case-study write-ups.";
@@ -18,12 +18,11 @@ export const metadata: Metadata = {
   // "akds : projects". No `images`: this segment owns an opengraph-image.tsx,
   // which only applies while no level declares `images` itself.
   openGraph: {
+    ...OG_SHARED,
     title: "projects",
     description,
     type: "website",
     url: "/projects",
-    siteName: SITE_BRAND,
-    locale: "en_GB",
   },
 };
 

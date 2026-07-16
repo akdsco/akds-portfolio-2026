@@ -9,7 +9,7 @@ import { Toc } from "@/components/case-study/toc";
 import { Kicker } from "@/components/kicker";
 import { projects, testimonials, type CaseStudy } from "@/data/portfolio";
 import { plainText } from "@/lib/inline-links";
-import { SITE_BRAND } from "@/lib/site";
+import { OG_SHARED } from "@/lib/site";
 
 const SECTION_ORDER = [
   { key: "problem", kicker: "the situation", title: "Problem" },
@@ -51,12 +51,11 @@ export async function generateMetadata({
     // declares `images` itself. Setting it here would silently override every
     // case study with the generic card.
     openGraph: {
+      ...OG_SHARED,
       title: project.title,
       description,
       type: "article",
       url: `/projects/${slug}`,
-      siteName: SITE_BRAND,
-      locale: "en_GB",
     },
   };
 }

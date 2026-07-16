@@ -5,7 +5,8 @@ const EASE = 0.15;
 const FRAME_MS = 1000 / 60;
 // The tail of an ease-out asks for steps finer than a device pixel, which the
 // scroll position quantizes straight back to where it was — leaving it stuck a
-// pixel short for good. Keep a floor under the step, and snap the last sliver.
+// pixel short for good. Keep a floor under the step, never larger than what's
+// left to travel, and snap the last sliver.
 const MIN_STEP_PX = 0.5;
 const SNAP_PX = 1;
 const GIVE_UP_MS = 2000;
@@ -97,11 +98,15 @@ export function scrollIntoViewLive(el: Element, settleMs: number) {
     // 60Hz and 120Hz.
     const rate = 1 - Math.pow(1 - EASE, (now - last) / FRAME_MS);
     last = now;
-    const move = gap * rate;
+    // Floor the move so it can't stall, but cap it at what's left so it can't
+    // cross the target and ping-pong back on the next frame. Magnitudes only —
+    // `gap` is negative scrolling up.
+    const move = Math.min(
+      Math.max(Math.abs(gap * rate), MIN_STEP_PX),
+      Math.abs(gap),
+    );
     window.scrollTo({
-      top:
-        window.scrollY +
-        (Math.abs(move) < MIN_STEP_PX ? Math.sign(gap) * MIN_STEP_PX : move),
+      top: window.scrollY + Math.sign(gap) * move,
       behavior: "instant",
     });
     frame = requestAnimationFrame(step);

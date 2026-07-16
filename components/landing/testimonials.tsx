@@ -2,7 +2,6 @@
 
 import { useEffect, useId, useState } from "react";
 
-import { COLLAPSE_MS } from "@/components/collapse";
 import { Kicker } from "@/components/kicker";
 import { testimonials, type Testimonial } from "@/data/portfolio";
 import { cardLift, cardLiftWrap } from "@/lib/card-lift";
@@ -10,6 +9,11 @@ import { cn } from "@/lib/utils";
 
 // Quotes run 162–327 chars; clamp the long ones with a Read more toggle.
 const CLAMP_OVER = 200;
+// Drives the height transition AND the clamp that has to outlast it. One
+// constant because the two must be equal: re-clamping before the height has
+// finished kills the collapse animation outright. Inline-styled rather than a
+// `duration-*` class so a literal can't drift away from the timer.
+const UNROLL_MS = 300;
 
 const ordered = [...testimonials].sort((a, b) => a.order - b.order);
 
@@ -24,14 +28,14 @@ function Quote({ t }: { t: Testimonial }) {
   // and the ellipsis appears at the end.
   const [textClamped, setTextClamped] = useState(true);
   useEffect(() => {
-    const t = setTimeout(
+    const timer = setTimeout(
       () => {
         setTextClamped(!expanded);
       },
-      expanded ? 0 : COLLAPSE_MS,
+      expanded ? 0 : UNROLL_MS,
     );
     return () => {
-      clearTimeout(t);
+      clearTimeout(timer);
     };
   }, [expanded]);
   const boxClamped = clampable && !expanded;
@@ -57,10 +61,11 @@ function Quote({ t }: { t: Testimonial }) {
           id={quoteId}
           className={cn(
             "mt-3.5 mb-3.5 overflow-hidden text-[14.5px] leading-relaxed",
-            "transition-[height] duration-300 ease-out [interpolate-size:allow-keywords] motion-reduce:transition-none",
+            "transition-[height] ease-out [interpolate-size:allow-keywords] motion-reduce:transition-none",
             // h-[4lh] must match line-clamp-4 below.
             boxClamped ? "h-[4lh]" : "h-auto",
           )}
+          style={{ transitionDuration: `${UNROLL_MS}ms` }}
         >
           <blockquote
             className={cn(

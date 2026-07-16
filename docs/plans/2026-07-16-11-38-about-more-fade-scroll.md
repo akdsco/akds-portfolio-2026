@@ -24,30 +24,41 @@ actually produced layout, scroll the first revealed section to the top.
 
 - **One-way open.** Drop the `open` → `closed` path and the "Show less" label.
   Reopening is a page refresh.
-- **Fade, then unmount the whole row.** The dashed rules either side of the
-  button exist only to host it, so the button + rules fade together (opacity,
-  ~200ms) and then leave the layout entirely. Keeping the button mounted-but-
-  invisible would leave an orphan dashed line with a gap punched in the middle,
-  which reads as a rendering fault rather than a divider. Unmounting at 200ms
-  also lands the ~34px layout shift *before* the scroll at 300ms, so the scroll
-  target is computed against settled layout.
-- **Scroll after the collapse settles.** `Collapse` animates
-  `grid-template-rows` over 300ms. Scrolling on a double rAF (today's code)
-  aims at an element that is still mid-animation, so smooth scroll locks onto a
-  stale target. Wait the collapse duration instead. When the panel is *already*
-  open (a palette jump after opening) there's nothing to wait for — scroll on
-  the next tick.
-- **Scroll target.** Button click → first managed section present in the DOM
-  (`skills`). Palette / hash reveal → the targeted section, unchanged.
+- **Fade the toggle, then collapse it away.** The dashed rules either side of
+  the button exist only to host it, so the row fades (opacity, ~200ms) and gives
+  its space back.
+- **Scroll on the click.**
+- **Scroll target.** Button click → first managed section present in the DOM.
+  Palette / hash reveal → the targeted section, unchanged.
 - Children are always rendered (`Collapse` clips them rather than unmounting),
   so `getElementById` resolves whether or not the panel is open.
 
+### What actually shipped, and why it differs
+
+Two things in the plan above were wrong, and the code went the other way. Kept
+here because the reasoning is the point:
+
+- **The toggle collapses; it does not unmount.** Unmounting the row dropped
+  ~34px out of the layout in one frame, and the content below jerked up under
+  the cursor before the scroll had started. It now sits in its own `Collapse`
+  and gives its space back on the same 300ms curve the panel expands on —
+  measured, the largest single-frame move of `#skills` went from ~34px to 4px.
+- **The scroll does not wait for the collapse to settle.** It can't: native
+  `scrollIntoView({behavior:"smooth"})` fixes its target on the call, and at
+  click time the panel hasn't expanded, so the document is too short for the
+  target to exist — it clamps and lands 538px short (measured). Waiting instead
+  costs a dead beat where the click does nothing. `lib/scroll-into-view-live`
+  re-aims every frame, so motion starts ~15ms after the click and follows the
+  layout as it grows. `COLLAPSE_MS` is passed in as `settleMs`: not a delay
+  before scrolling, but the point after which an apparently-closed gap can be
+  trusted as arrival.
+
 ## Increments (test-first)
 
-1. test: clicking "Show more" opens the panel, fades + removes the button, and
-   scrolls `skills` to the top; the button never returns as "Show less" (red)
-   → impl: one-way `open` state, `rowGone` fade timer, click → reveal first
-   managed section (green).
+1. test: clicking "Show more" opens the panel, fades the toggle away, and
+   scrolls to the first section; the button never returns as "Show less" (red)
+   → impl: one-way `open` state, toggle in its own `Collapse`, click → reveal
+   first managed section (green).
 2. test: `about:reveal` for a managed section still opens + scrolls to *that*
    section, and an unmanaged id is still ignored (red — should already pass,
    guards the refactor) → impl: unify both paths through one `reveal(id)`
@@ -55,9 +66,10 @@ actually produced layout, scroll the first revealed section to the top.
 
 ## Notes
 
-- `MANAGED` becomes an ordered array (it was a `Set`) so "first section" has a
-  defined meaning.
-- `COLLAPSE_MS` must stay in sync with `duration-300` in `components/collapse.tsx`.
-- Reduced motion: `Collapse` already sets `motion-reduce:transition-none`, and
-  the scroll keeps its existing `prefers-reduced-motion` → `behavior: "auto"`
-  branch. The timers still run; they just wait on an instant layout.
+- "First section" is read off the DOM (`querySelector` returns document order),
+  not hardcoded — `about/page.tsx` owns the running order and has changed it.
+- `COLLAPSE_MS` lives in `components/collapse.tsx` beside the `duration-300` it
+  describes, and is exported to whoever needs to outlast that animation.
+- Reduced motion: `Collapse` sets `motion-reduce:transition-none`, and
+  `scrollIntoViewLive` jumps rather than glides — one frame late, so the jump
+  measures a document that has actually grown.

@@ -9,16 +9,17 @@
 //    bottom few px. The wrapper keeps the card's resting footprint, so the
 //    hover state is stable wherever the cursor sits.
 // 2. The shadow fades a pseudo-element's opacity instead of animating
-//    box-shadow. Animating the shadow itself repaints a 34px blur every frame;
-//    opacity composites. Only transform and opacity move here.
+//    box-shadow. Animating a 34px blur repaints it every frame; opacity
+//    composites. border-color is still paint, but it's a 1px edge — the
+//    composite-only rule is there to keep the blur off the paint path.
 //
 // Reduced motion keeps the shadow fade (opacity is not travel) and drops the
 // lift.
 //
-// Note the transition names `translate`, not `transform`: Tailwind v4 emits
+// The transition names `translate`, not `transform`: Tailwind v4 emits
 // `-translate-y-1` as the standalone `translate` property. Listing `transform`
 // (as this did before) transitions a property nothing is animating, so the lift
-// snaps 4px instantly while the shadow eases — which is what read as "jumpy".
+// snapped 4px instantly while the shadow eased — which is what read as "jumpy".
 
 /** Goes on the static wrapper — the element the cursor actually hovers. */
 export const cardLiftWrap = "group";

@@ -7,7 +7,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { PaletteProvider } from "@/components/command-palette";
 import { SiteNav } from "@/components/site-nav";
 import { SiteFooter } from "@/components/site-footer";
-import { SITE_BRAND, SITE_URL } from "@/lib/site";
+import { OG_SHARED, SITE_BRAND, SITE_URL } from "@/lib/site";
 
 import "./globals.css";
 
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   // Tab titles read as the route: "akds : about", "akds : projects". Each page
   // supplies its own segment; `default` only covers routes that set no title of
-  // their own (not-found, error), where the full name is more use than "akds".
+  // their own (not-found, error), which get the bare brand.
   title: {
     template: `${SITE_BRAND} : %s`,
     default: SITE_BRAND,
@@ -44,10 +44,9 @@ export const metadata: Metadata = {
     //
     // Description stays unpinned: pinning would cascade the site blurb over
     // each page's own.
+    ...OG_SHARED,
     title: SITE_BRAND,
     type: "website",
-    siteName: SITE_BRAND,
-    locale: "en_GB",
     // OG image comes from app/opengraph-image.tsx (file convention).
   },
   twitter: {
