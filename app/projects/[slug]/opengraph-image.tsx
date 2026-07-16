@@ -1,3 +1,5 @@
+import { notFound } from "next/navigation";
+
 import { projects } from "@/data/portfolio";
 import { ALT, CONTENT_TYPE, SIZE, renderOgCard } from "@/lib/og-card";
 
@@ -22,5 +24,9 @@ export default async function OpengraphImage({
 }) {
   const { slug } = await params;
   const project = caseStudies.find((p) => p.slug === slug);
-  return renderOgCard(project?.title ?? "Software Engineer · London");
+  // Match page.tsx rather than falling back to a generic card: an unknown slug
+  // 404s as a page, so its card must 404 too. A card that resolves for a page
+  // that doesn't is incoherent, and `?? "…"` would hide the mismatch.
+  if (!project) notFound();
+  return renderOgCard(project.title);
 }

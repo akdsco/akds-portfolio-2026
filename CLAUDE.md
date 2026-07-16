@@ -131,28 +131,52 @@ Two patterns that work, in order of preference:
 
 ## Metadata
 
-The production origin and the social-card descriptor live in `lib/site.ts`
-(`SITE_URL`, `SOCIAL_IMAGE`) — a domain move is a one-line edit there. Canonical
-URLs are set **per page, never on the layout**: a layout canonical cascades to
-every route, and `/` redirects to `/about`. The OG card is rendered by
-`app/opengraph-image.tsx` and re-exported by `app/twitter-image.tsx`.
+The production origin lives in `lib/site.ts` (`SITE_URL`) — a domain move is a
+one-line edit there. Canonical URLs are set **per page, never on the layout**: a
+layout canonical cascades to every route, and `/` redirects to `/about`.
 
-Two merge rules in Next's metadata resolution are counter-intuitive, invisible in
-the source, and have each shipped as a bug here:
+**Social cards** are rendered by `lib/og-card.tsx` and mounted by the file
+convention at three segments — `app/` (role caption), `app/projects/` ("Projects")
+and `app/projects/[slug]/` (the project name). Each `twitter-image.tsx` re-exports
+its sibling `opengraph-image.tsx`. `/about` and `/` inherit the root card.
+
+Three rules in Next's metadata resolution are counter-intuitive, invisible in the
+source, and have each shipped as a bug here:
 
 1. **A page-level `openGraph` replaces the layout's — it does not merge into it.**
-   The file-convention image is only injected at the segment owning
-   `opengraph-image.tsx`, so any page declaring its own `openGraph` must repeat
-   `siteName`/`locale`/`images` or it ships with no `og:image` at all.
-2. **`twitter` title/description auto-fill from `openGraph` only while unset.**
-   Pinning a title on the layout silently gives every child page the generic site
-   title instead of its own.
+   Anything it omits (`siteName`, `locale`) is simply absent from the page.
+2. **`twitter` and `openGraph` titles auto-fill from the page's `title` only while
+   unset.** Pinning either on the layout silently gives every child page the
+   generic site title instead of its own — that's twice now, once per block.
+3. **The inverse of 1 for images:** the file-convention image is only injected at
+   the segment owning `opengraph-image.tsx`, *and only while no level declares
+   `images` itself*. Since `[slug]` now owns a card, declaring `images` there
+   would silently swap every case study's card for the generic one — with the
+   tags still looking correct.
 
-Unit tests guard both (`app/layout.metadata.test.ts`,
+Unit tests guard these (`app/layout.metadata.test.ts`,
 `app/projects/[slug]/page.metadata.test.ts` — note they assert an *absence*, so
 don't "tidy them up"). The real check is a build plus a grep of the emitted HTML
-in `.next/server/app/`: Next's own resolution is where both bugs lived, and the
-metadata objects can look correct while the rendered tags aren't.
+in `.next/server/app/`: Next's own resolution is where every one of these bugs
+lived, and the metadata objects can look correct while the rendered tags aren't.
+
+## Wordmark
+
+The cropped "akds" mark appears in the nav, the footer and the social cards.
+
+- **The crop is a ratio of font size**, never a pixel offset — `WORDMARK_VISIBLE`
+  in `lib/wordmark.ts` is the only place it's set. The three surfaces render at
+  38px / ~208px / 460px; hand-tuned offsets drifted them to 76% / 56% / 74%.
+- **Use `components/wordmark.tsx`**, don't hand-roll the clip. `line-height: 1`
+  has to sit on the *clip container*, not just the text: without it the container
+  inherits Tailwind's 1.5 strut, whose half-leading shifts the glyphs down inside
+  the box, and two call sites with an identical ratio cut at visibly different
+  depths.
+- **Satori reads ttf/otf/woff, not woff2** — which is all `next/font/google`
+  emits. That's why `lib/fonts/*.ttf` is committed and loaded explicitly, and why
+  a `fontFamily` Satori hasn't been given is silently ignored rather than erroring.
+- Colour splits by job: the footer mark is decorative (`ink/10`), the nav mark is
+  a link and the card mark is the brand, so both sit at `faint`.
 
 ## Notes for future work
 

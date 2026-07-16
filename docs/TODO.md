@@ -7,12 +7,6 @@ value in a graveyard of ticked boxes.
 
 ## Open
 
-- **OG card renders in the wrong typeface.** `app/opengraph-image.tsx` sets
-  `fontFamily: "monospace"` on the `$ whoami` prompt and the footer, but Satori
-  (the `ImageResponse` renderer) ships only a default sans and silently ignores
-  fonts it hasn't been given — so the terminal motif isn't actually landing. Fix
-  is to load a mono font file and pass it via the `fonts` option. Cosmetic, and
-  invisible unless you compare the card against the site.
 - **`app/sitemap.ts` emits no `lastModified`.** Crawlers use it to prioritise
   recrawls. Needs a real source of truth — a hand-maintained date per project in
   `data/portfolio.ts`, or git commit times at build. Skipped so far because a

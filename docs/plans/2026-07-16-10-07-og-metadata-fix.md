@@ -75,3 +75,32 @@ was read from Next's source (`node_modules/next/dist/lib/metadata/`):
 - Full gate before pushing: `typecheck`, `lint`, `test`, **`format:check`**, and
   `build`. `format:check` is a separate CI gate and broke CI on PR #5 — do not
   skip it again.
+
+## What changed after the plan
+
+The branch sat unmerged while `company-links` shipped, then grew well past its
+original scope. Rebased onto that work; `page.tsx` conflicted only on imports, and
+the two fixes compose — `description` now comes from `plainText(hook)` (so link
+markup can't leak into `og:description`) *and* carries `siteName`/`locale`.
+
+- **A third instance of the same root cause.** The layout pinned `openGraph.title`
+  exactly as it had pinned `twitter.title`, so `/projects` shared a byte-identical
+  card *and title* with `/about` despite declaring its own. Found by reading the
+  rendered tags per page rather than the source.
+- **The card was redesigned** to a cropped "akds" wordmark, on the owner's call:
+  these are read a couple of hundred pixels wide in a chat thread, where the old
+  `$ whoami` layout was unreadable. That forced the Satori font work — the old
+  card's `fontFamily: "monospace"` had never rendered, because Satori can't read
+  the woff2 `next/font/google` emits and ignores fonts it wasn't handed.
+- **Per-segment cards replaced the `images: [SOCIAL_IMAGE]` workaround.** With
+  `[slug]` owning an `opengraph-image.tsx`, the file convention injects the card
+  itself — so the explicit `images` key went, and `SOCIAL_IMAGE` with it. It's now
+  a trap in reverse: declaring `images` there would suppress the per-project card.
+- **The mark spread to the nav and footer**, which is where the crop had to become
+  a shared ratio rather than three hand-tuned offsets. The subtle part wasn't the
+  ratio — it was `line-height` on the clip container; see `components/wordmark.tsx`.
+- **Review caught two of my own claims.** `outputFileTracingIncludes` was dead
+  config whose comment asserted the cards would 500 without it: rebuilt without it
+  and all six routes still traced both fonts, because @vercel/nft resolves the
+  `join()` and the cards prerender anyway. And an unknown slug returned 200 for its
+  card while the page 404'd.

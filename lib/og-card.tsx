@@ -37,8 +37,12 @@ const COLORS = {
  *
  * Read from disk rather than `fetch(new URL(..., import.meta.url))`: these are
  * Node-runtime routes, where that resolves to a `file://` URL and Node's fetch
- * rejects it ("not implemented... yet..."). `next.config.ts` traces `lib/fonts`
- * into the deployment, since a runtime `join()` is invisible to the bundler.
+ * rejects it outright ("not implemented... yet...").
+ *
+ * No `outputFileTracingIncludes` needed for the .ttf files: @vercel/nft resolves
+ * this `join()` statically, and every card route prerenders anyway, so the fonts
+ * are only read at build. Verified 2026-07-16 by building with the tracing config
+ * removed — all six routes still traced both files.
  */
 async function loadFonts() {
   const dir = join(process.cwd(), "lib/fonts");
