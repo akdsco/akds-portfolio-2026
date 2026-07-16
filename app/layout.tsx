@@ -25,7 +25,13 @@ export const metadata: Metadata = {
   // Absolute base for OG/Twitter images, canonical URLs, and the sitemap ref.
   // All relative URLs in child metadata resolve against this.
   metadataBase: new URL(SITE_URL),
-  title: "Arkadiusz Ostrowski — Software Engineer",
+  // Tab titles read as the route: "akds : about", "akds : projects". Each page
+  // supplies its own segment; `default` only covers routes that set no title of
+  // their own (not-found, error), where the full name is more use than "akds".
+  title: {
+    template: "akds : %s",
+    default: "Arkadiusz Ostrowski — Software Engineer",
+  },
   description:
     "London-based software engineer building production AI-native software end-to-end. Selected work, experience, and case studies.",
   openGraph: {

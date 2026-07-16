@@ -37,7 +37,9 @@ export async function generateMetadata({
   // to its label, or og:description ships "[SlateIQ](https://…)" verbatim.
   const description = plainText(project.hook);
   return {
-    title: `${project.title} — Arkadiusz Ostrowski`,
+    // The slug, so the tab mirrors the URL: "akds : proof-library". og:title
+    // stays the readable name — a shared card is read by people, not walked.
+    title: slug,
     description,
     alternates: { canonical: `/projects/${slug}` },
     openGraph: {

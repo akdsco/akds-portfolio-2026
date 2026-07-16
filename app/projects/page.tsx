@@ -7,7 +7,7 @@ import { ProjectCard } from "@/components/projects/project-card";
 import { projects } from "@/data/portfolio";
 
 export const metadata: Metadata = {
-  title: "Projects — Arkadiusz Ostrowski",
+  title: "projects",
   description: "Selected engineering work, with full case-study write-ups.",
   alternates: { canonical: "/projects" },
 };
@@ -26,7 +26,7 @@ export default function ProjectsPage() {
           Projects
         </h1>
         <p className="text-dim max-w-xl text-lg leading-relaxed text-pretty">
-          Selected work, newest first.
+          Selected work, latest first.
         </p>
       </HeroBand>
 
