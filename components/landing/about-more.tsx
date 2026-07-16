@@ -1,67 +1,97 @@
 "use client";
 
 import { ChevronDown } from "lucide-react";
-import { useEffect, useState, type ReactNode } from "react";
+import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 
 import { Collapse } from "@/components/collapse";
 import { cn } from "@/lib/utils";
 
-const MANAGED = new Set(["skills", "experience", "testimonials"]);
+// The toggle reveals everything but scrolls to the top of the first section.
+const FIRST_SECTION = "skills";
+const MANAGED = [FIRST_SECTION, "experience", "testimonials"];
 const PANEL_ID = "about-more";
+// Keep in sync with Collapse's duration-300: scrolling before the grid rows
+// have settled aims smooth-scroll at a stale position.
+const COLLAPSE_MS = 300;
+const FADE_MS = 200;
 
 // Collapses the deeper About sections (skills, experience, testimonials) behind
-// one toggle, mirroring the Projects "show earlier work" pattern.
+// one toggle, mirroring the Projects "show earlier work" pattern. Opening is
+// one-way — once the detail is asked for it stays out until a reload.
 export function AboutMore({ children }: { children: ReactNode }) {
   const [open, setOpen] = useState(false);
+  // The toggle fades, then leaves the layout; the dashed rules either side of
+  // it exist only to host it, so they go too.
+  const [rowGone, setRowGone] = useState(false);
+  const openRef = useRef(false);
+  const timers = useRef<number[]>([]);
+  const later = (fn: () => void, ms: number) =>
+    timers.current.push(window.setTimeout(fn, ms));
 
-  // Reveal + scroll when a section is targeted (command palette jump, or a
-  // /about#section hash from another page), so the jump isn't broken while
-  // collapsed.
+  // Open and scroll to a section, whether targeted by the toggle, the command
+  // palette, or an /about#section hash from another page. Children are always
+  // rendered (Collapse clips rather than unmounts), so the element resolves
+  // even while closed.
+  const reveal = useCallback((id: string) => {
+    if (!MANAGED.includes(id)) return;
+    const wasOpen = openRef.current;
+    openRef.current = true;
+    setOpen(true);
+    if (!wasOpen) later(() => setRowGone(true), FADE_MS);
+    later(
+      () => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        const reduce = window.matchMedia(
+          "(prefers-reduced-motion: reduce)",
+        ).matches;
+        el.scrollIntoView({
+          behavior: reduce ? "auto" : "smooth",
+          block: "start",
+        });
+      },
+      // Already open? Nothing to wait for.
+      wasOpen ? 0 : COLLAPSE_MS,
+    );
+  }, []);
+
   useEffect(() => {
-    const reveal = (id: string) => {
-      if (!MANAGED.has(id)) return;
-      setOpen(true);
-      requestAnimationFrame(() =>
-        requestAnimationFrame(() => {
-          const el = document.getElementById(id);
-          if (!el) return;
-          const reduce = window.matchMedia(
-            "(prefers-reduced-motion: reduce)",
-          ).matches;
-          el.scrollIntoView({
-            behavior: reduce ? "auto" : "smooth",
-            block: "start",
-          });
-        }),
-      );
-    };
-    reveal(window.location.hash.replace("#", ""));
+    // Deferred a tick: a hash landing is an async request to open, not state
+    // to cascade through the mount render.
+    later(() => reveal(window.location.hash.replace("#", "")), 0);
     const onReveal = (e: Event) => reveal((e as CustomEvent<string>).detail);
     window.addEventListener("about:reveal", onReveal);
-    return () => window.removeEventListener("about:reveal", onReveal);
-  }, []);
+    const pending = timers.current;
+    return () => {
+      window.removeEventListener("about:reveal", onReveal);
+      // Don't let a queued fade/scroll outlive the component.
+      pending.forEach((t) => clearTimeout(t));
+    };
+  }, [reveal]);
 
   return (
     <div className="mx-auto max-w-[820px] px-6 py-14 md:px-10">
-      <div className="flex items-center gap-4">
-        <div className="border-line flex-1 border-t border-dashed" />
-        <button
-          type="button"
-          onClick={() => setOpen((o) => !o)}
-          aria-expanded={open}
-          aria-controls={PANEL_ID}
-          className="border-line bg-chip text-dim hover:text-ink hover:border-hi inline-flex cursor-pointer items-center gap-2 rounded-[7px] border px-3.5 py-1.5 font-mono text-xs transition-colors"
+      {!rowGone && (
+        <div
+          className={cn(
+            "flex items-center gap-4 transition-opacity duration-200 motion-reduce:transition-none",
+            open && "pointer-events-none opacity-0",
+          )}
         >
-          {open ? "Show less" : "Show more"}
-          <ChevronDown
-            className={cn(
-              "size-3.5 transition-transform",
-              open && "rotate-180",
-            )}
-          />
-        </button>
-        <div className="border-line flex-1 border-t border-dashed" />
-      </div>
+          <div className="border-line flex-1 border-t border-dashed" />
+          <button
+            type="button"
+            onClick={() => reveal(FIRST_SECTION)}
+            aria-expanded={open}
+            aria-controls={PANEL_ID}
+            className="border-line bg-chip text-dim hover:text-ink hover:border-hi inline-flex cursor-pointer items-center gap-2 rounded-[7px] border px-3.5 py-1.5 font-mono text-xs transition-colors"
+          >
+            Show more
+            <ChevronDown className="size-3.5" />
+          </button>
+          <div className="border-line flex-1 border-t border-dashed" />
+        </div>
+      )}
       <Collapse open={open} id={PANEL_ID}>
         <div className="space-y-14 pt-14">{children}</div>
       </Collapse>
