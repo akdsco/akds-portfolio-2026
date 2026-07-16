@@ -10,19 +10,16 @@ import { cn } from "@/lib/utils";
 const FIRST_SECTION = "skills";
 const MANAGED = [FIRST_SECTION, "experience", "testimonials"];
 const PANEL_ID = "about-more";
+const TOGGLE_ID = "about-more-toggle";
 // Keep in sync with Collapse's duration-300: scrolling before the grid rows
 // have settled aims smooth-scroll at a stale position.
 const COLLAPSE_MS = 300;
-const FADE_MS = 200;
 
 // Collapses the deeper About sections (skills, experience, testimonials) behind
 // one toggle, mirroring the Projects "show earlier work" pattern. Opening is
 // one-way — once the detail is asked for it stays out until a reload.
 export function AboutMore({ children }: { children: ReactNode }) {
   const [open, setOpen] = useState(false);
-  // The toggle fades, then leaves the layout; the dashed rules either side of
-  // it exist only to host it, so they go too.
-  const [rowGone, setRowGone] = useState(false);
   const openRef = useRef(false);
   const timers = useRef<number[]>([]);
   const later = (fn: () => void, ms: number) =>
@@ -37,7 +34,6 @@ export function AboutMore({ children }: { children: ReactNode }) {
     const wasOpen = openRef.current;
     openRef.current = true;
     setOpen(true);
-    if (!wasOpen) later(() => setRowGone(true), FADE_MS);
     later(
       () => {
         const el = document.getElementById(id);
@@ -64,18 +60,20 @@ export function AboutMore({ children }: { children: ReactNode }) {
     const pending = timers.current;
     return () => {
       window.removeEventListener("about:reveal", onReveal);
-      // Don't let a queued fade/scroll outlive the component.
+      // Don't let a queued scroll outlive the component.
       pending.forEach((t) => clearTimeout(t));
     };
   }, [reveal]);
 
   return (
     <div className="mx-auto max-w-[820px] px-6 py-14 md:px-10">
-      {!rowGone && (
+      {/* The toggle collapses on the same curve as the panel expands, rather
+          than unmounting mid-flight and jerking the content up under it. */}
+      <Collapse open={!open} id={TOGGLE_ID}>
         <div
           className={cn(
             "flex items-center gap-4 transition-opacity duration-200 motion-reduce:transition-none",
-            open && "pointer-events-none opacity-0",
+            open && "opacity-0",
           )}
         >
           <div className="border-line flex-1 border-t border-dashed" />
@@ -91,9 +89,9 @@ export function AboutMore({ children }: { children: ReactNode }) {
           </button>
           <div className="border-line flex-1 border-t border-dashed" />
         </div>
-      )}
+      </Collapse>
       <Collapse open={open} id={PANEL_ID}>
-        <div className="space-y-14 pt-14">{children}</div>
+        <div className="space-y-14">{children}</div>
       </Collapse>
     </div>
   );

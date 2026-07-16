@@ -4,6 +4,8 @@ import { beforeEach, describe, expect, test, vi } from "vitest";
 
 import { AboutMore } from "@/components/landing/about-more";
 
+const TOGGLE_ID = "about-more-toggle";
+
 // scrollIntoView is a shared jsdom stub (vitest.setup.ts); reset its call log
 // between cases so "was it called" assertions are independent.
 beforeEach(() => vi.mocked(Element.prototype.scrollIntoView).mockClear());
@@ -47,15 +49,16 @@ describe("AboutMore", () => {
     await waitFor(() => expect(scrolledIds()).toEqual(["skills"]));
   });
 
-  test("the toggle fades out and leaves for good once opened", async () => {
+  test("the toggle fades and collapses away for good once opened", async () => {
     renderAboutMore();
     const toggle = screen.getByRole("button", { name: /show more/i });
     await userEvent.click(toggle);
 
-    // The row (toggle + its dashed rules) fades first, still occupying layout,
-    // then unmounts — it never comes back as a "Show less" affordance.
+    // The row (toggle + its dashed rules) fades, and its own collapse takes the
+    // space back on the same curve the panel expands on — no jump. `inert`
+    // takes it out of reach immediately; it never returns as "Show less".
     expect(toggle.parentElement).toHaveClass("opacity-0");
-    await waitFor(() => expect(screen.queryByRole("button")).toBeNull());
+    expect(document.getElementById(TOGGLE_ID)).toHaveAttribute("inert");
     expect(screen.queryByText(/show less/i)).toBeNull();
   });
 
