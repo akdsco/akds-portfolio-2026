@@ -9,6 +9,21 @@ const FRAME_MS = 1000 / 60;
 const MIN_STEP_PX = 0.5;
 const SNAP_PX = 1;
 const GIVE_UP_MS = 2000;
+// Keys that scroll the page, and so mean "I'll take it from here". Anything
+// else must not cancel: the command palette dispatches its jump *from* an Enter
+// keydown that is still bubbling up to window, so treating every key as a
+// takeover cancels the scroll on the very keystroke that asked for it.
+const SCROLL_KEYS = new Set([
+  "ArrowUp",
+  "ArrowDown",
+  "ArrowLeft",
+  "ArrowRight",
+  "PageUp",
+  "PageDown",
+  "Home",
+  "End",
+  " ",
+]);
 
 /**
  * Smooth-scroll `el` into view (honouring its `scroll-margin-top`), re-aiming
@@ -54,12 +69,15 @@ export function scrollIntoViewLive(el: Element, settleMs: number) {
   const started = performance.now();
   let last = started;
   let frame = 0;
+  const onKey = (e: KeyboardEvent) => {
+    if (SCROLL_KEYS.has(e.key)) stop();
+  };
   const stop = () => {
     cancelAnimationFrame(frame);
     // Whoever is scrolling now, it isn't us.
     window.removeEventListener("wheel", stop);
     window.removeEventListener("touchstart", stop);
-    window.removeEventListener("keydown", stop);
+    window.removeEventListener("keydown", onKey);
   };
   const step = (now: number) => {
     const want = aim();
@@ -89,6 +107,6 @@ export function scrollIntoViewLive(el: Element, settleMs: number) {
   frame = requestAnimationFrame(step);
   window.addEventListener("wheel", stop, { passive: true });
   window.addEventListener("touchstart", stop, { passive: true });
-  window.addEventListener("keydown", stop);
+  window.addEventListener("keydown", onKey);
   return stop;
 }

@@ -235,7 +235,7 @@ export const skills: SkillCategory[] = [
     title: "Databases & Data",
     items: [
       "PostgreSQL",
-      "Supabase (Postgres, Auth, Storage, Realtime, Edge Functions)",
+      "Supabase (Auth, Storage, Realtime, Edge Fns)",
       "MongoDB",
       "Upstash Redis",
       "pgvector-ready architectures",
@@ -245,6 +245,7 @@ export const skills: SkillCategory[] = [
     title: "Infrastructure & DevOps",
     items: [
       "Vercel",
+      "Cloudflare",
       "Fly.io",
       "Heroku",
       "AWS",
@@ -266,9 +267,8 @@ export const skills: SkillCategory[] = [
       "Playwright",
       "Supertest",
       "Testing Library",
-      "Integration tests against live LLMs with graded responses",
+      "LLM Integration Tests",
       "ESLint (custom in-repo rules)",
-      "Prettier",
       "Husky",
       "lint-staged",
       "Knip",
@@ -278,7 +278,7 @@ export const skills: SkillCategory[] = [
   {
     title: "Observability & Product Analytics",
     items: [
-      "Sentry (typed wrapper with discriminated severity unions)",
+      "Sentry",
       "Better Stack / Logtail",
       "Winston",
       "PostHog",
