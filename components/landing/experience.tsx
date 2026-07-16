@@ -28,13 +28,15 @@ export function Experience() {
                 {role.position}
               </div>
               <div className="text-dim mt-0.5 text-[13.5px]">
-                {role.company}
+                {role.company} · {role.employmentType}
               </div>
+              {/* Where, then how — one pair, always in that order. The rail
+                  carries the dates, except on mobile where it's hidden. */}
               <div className="text-faint mt-1 mb-3 font-mono text-[11px]">
                 <span className="sm:hidden">
                   {role.start} – {role.end} ·{" "}
                 </span>
-                {role.location} · {role.employmentType}
+                {role.location} · {role.workType}
               </div>
               {/* Summary sets the scene in one line and stays quiet; the
                   highlights are what the reader is here for. */}

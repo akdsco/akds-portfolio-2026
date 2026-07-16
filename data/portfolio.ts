@@ -99,7 +99,11 @@ export type WorkExperience = {
   end: string;
   position: string;
   company: string;
+  /** Where the work happened. City + country only — how it happened is
+   *  `workType`. These were one field ("Remote", "London (hybrid)", "London"),
+   *  which conflated the two and left the remote roles with no city at all. */
   location: string;
+  workType: "Remote" | "Hybrid" | "On-site";
   employmentType: string;
   summary: string;
   highlights: string[];
@@ -341,7 +345,7 @@ export const projects: Project[] = [
     ],
     hook: "Owned the proof store behind a sales-AI product: ingestion, a user-facing dashboard with search, and a tagging layer that kept every customer's library organized on its own.",
     featured: true,
-    role: "Senior Software Engineer / Product Engineer (contract)",
+    role: "Product Engineer (contract)",
     period: "Jul 2025 to Jun 2026",
     caseStudy: {
       status: "shipped",
@@ -511,9 +515,10 @@ export const experience: WorkExperience[] = [
     id: 6,
     start: "2025 Jul",
     end: "2026 Jun",
-    position: "Senior Software Engineer / Product Engineer",
+    position: "Product Engineer",
     company: "GrowthNation",
-    location: "Remote",
+    location: "London, UK",
+    workType: "Remote",
     employmentType: "Contract (12 months)",
     summary:
       "Founding-team engineer on a social-proof OS for sales teams, through a CEO-driven pivot.",
@@ -561,7 +566,8 @@ export const experience: WorkExperience[] = [
     end: "2025 Sep",
     position: "Lead Product Engineer",
     company: "Noah Media Group",
-    location: "London (hybrid)",
+    location: "London, UK",
+    workType: "Hybrid",
     employmentType: "Full-time",
     summary:
       "Promoted to lead as the sole remaining technical IC after the CTO's departure, and drove product until the tech arm wound down.",
@@ -586,10 +592,11 @@ export const experience: WorkExperience[] = [
   {
     id: 4,
     start: "2022 Apr",
-    end: "2025 Mar",
+    end: "2025 Apr",
     position: "Software Engineer",
     company: "Noah Media Group",
-    location: "London (hybrid)",
+    location: "London, UK",
+    workType: "Hybrid",
     employmentType: "Full-time",
     summary:
       "Second engineer in NMG's newly-formed tech arm, building three products 0→1 over three years.",
@@ -635,10 +642,11 @@ export const experience: WorkExperience[] = [
   {
     id: 3,
     start: "2020 Nov",
-    end: "2022 Mar",
+    end: "2022 Apr",
     position: "Software Engineer",
     company: "Connect4",
-    location: "Remote",
+    location: "London, UK",
+    workType: "Remote",
     employmentType: "Full-time",
     summary:
       "B2B SaaS for online-meeting productivity, and the first of three companies alongside Ben Ritchie, who mentored Akds from junior to mid-level.",
@@ -658,7 +666,8 @@ export const experience: WorkExperience[] = [
     end: "2020 Nov",
     position: "Software Developer (Intern → JavaScript Developer)",
     company: "Wutzu Technologies",
-    location: "London",
+    location: "London, UK",
+    workType: "Hybrid",
     employmentType: "Full-time",
     summary: '"Deliveroo for small independent London shops."',
     highlights: [
@@ -681,11 +690,12 @@ export const experience: WorkExperience[] = [
   },
   {
     id: 1,
-    start: "2018",
-    end: "2019",
+    start: "2018 Sep",
+    end: "2020 May",
     position: "Freelance Web Developer",
     company: "Self-employed",
-    location: "London",
+    location: "London, UK",
+    workType: "Remote",
     employmentType: "Freelance",
     summary:
       "Community sites and paid client work, through the London Java Community.",
