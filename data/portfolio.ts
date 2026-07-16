@@ -68,6 +68,54 @@ export type CaseStudy = {
   status?: string; // short honest label shown in the meta card, e.g. "shipped"
 };
 
+/** Every company (or self-directed stint) that appears in the work history. */
+export type CompanyName =
+  | "GrowthNation"
+  | "Noah Media Group"
+  | "Connect4"
+  | "Wutzu Technologies"
+  | "Self-employed"
+  | "Self-initiated (iOS)";
+
+/**
+ * A company's site, or the reason there isn't one. Deliberately required and not
+ * an optional `url?`: a company rendering without a link should be a decision on
+ * record, not something nobody got around to filling in. The two sentinels are
+ * distinct because they mean different things — "sold, domain gone" is not the
+ * same as "a solo project never had a site", and flattening both to `undefined`
+ * loses that.
+ */
+export type CompanySite =
+  | `https://${string}`
+  | "url-no-longer-active"
+  | "no-public-url";
+
+/**
+ * Keyed by `CompanyName`, so this is exhaustive: add a company to the union
+ * without deciding its site and it won't compile. Checked live 2026-07-16.
+ */
+export const companySites: Record<CompanyName, CompanySite> = {
+  GrowthNation: "https://growthnation.ai",
+  // www is the canonical host — the bare domain 301s to it.
+  "Noah Media Group": "https://www.noahmediagroup.com/",
+  Connect4: "url-no-longer-active", // origin unreachable (523)
+  "Wutzu Technologies": "url-no-longer-active", // domain parked for resale
+  "Self-employed": "no-public-url",
+  "Self-initiated (iOS)": "no-public-url",
+};
+
+const isUrl = (site: CompanySite): site is `https://${string}` =>
+  site.startsWith("https://");
+
+/**
+ * The company's link, or `null` when there deliberately isn't one. Narrowing
+ * here is what stops a sentinel ever reaching the DOM as an href.
+ */
+export function companyHref(company: CompanyName): string | null {
+  const site = companySites[company];
+  return isUrl(site) ? site : null;
+}
+
 /**
  * A single project. Cards on /projects render from the top-level fields; a
  * project with a `caseStudy` also gets a /projects/[slug] detail page.
@@ -75,7 +123,7 @@ export type CaseStudy = {
 export type Project = {
   slug: string; // URL segment + stable key
   title: string;
-  company: string;
+  company: CompanyName;
   stack: string[];
   /**
    * One line: the card blurb and the detail-page lede. Its only job is to earn
@@ -94,10 +142,14 @@ export type WorkExperience = {
   id: number;
   period: string;
   position: string;
-  company: string;
+  company: CompanyName;
   location: string;
   employmentType: string;
   summary: string;
+  /**
+   * Bullets under the summary. Supports inline `[text](url)` links — see
+   * `components/linked-text.tsx`. Only https URLs are linkified.
+   */
   highlights: string[];
   stack: string[];
 };
@@ -574,7 +626,7 @@ export const experience: WorkExperience[] = [
     summary:
       "Second engineer in NMG's newly-formed tech arm. Built three products 0→1 across the team's lifetime, worked directly with leadership, and adopted production LLM tooling years ahead of mainstream curve.",
     highlights: [
-      "SlateIQ: film success prediction. Combined IMDB, social, piracy, and market data into a comp-matching tool used in pitch decisions.",
+      "[SlateIQ](https://slateiq.com/): film success prediction. Combined IMDB, social, piracy, and market data into a comp-matching tool used in pitch decisions.",
       "AI-powered research assistant on GPT-3.5/4 in 2023. Integration tests ran live LLM calls with graded responses to stabilise output, years before this became standard practice.",
       "Established currying-based dependency injection as a team pattern (carries through to GrowthNation three years later).",
     ],

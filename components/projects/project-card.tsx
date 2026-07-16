@@ -2,6 +2,7 @@ import Link from "next/link";
 
 import { StackChips } from "@/components/stack-chips";
 import type { Project } from "@/data/portfolio";
+import { plainText } from "@/lib/inline-links";
 import { cn } from "@/lib/utils";
 
 export function ProjectCard({ project }: { project: Project }) {
@@ -24,8 +25,10 @@ export function ProjectCard({ project }: { project: Project }) {
           {project.company}
         </div>
       </div>
+      {/* plainText, not LinkedText: the whole card is wrapped in a <Link> below,
+          so an anchor here would nest <a> inside <a>. The label still reads. */}
       <p className="text-dim line-clamp-3 text-sm leading-relaxed">
-        {project.hook}
+        {plainText(project.hook)}
       </p>
       <div className="mt-auto">
         <StackChips items={project.stack} />
