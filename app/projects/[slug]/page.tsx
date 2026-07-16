@@ -10,6 +10,7 @@ import { Kicker } from "@/components/kicker";
 import { projects, testimonials, type CaseStudy } from "@/data/portfolio";
 import { plainText } from "@/lib/inline-links";
 import { OG_SHARED } from "@/lib/site";
+import { cn } from "@/lib/utils";
 
 const SECTION_ORDER = [
   { key: "problem", kicker: "the situation", title: "Problem" },
@@ -138,7 +139,29 @@ export default async function CaseStudyPage({
           )}
         </div>
 
-        <aside className="flex flex-col gap-3.5 lg:sticky lg:top-20">
+        {/* top-20 is clearance for the sticky nav; when the nav slides away the
+            rail takes that space back, and gives it up when the nav returns —
+            see `data-nav-hidden` in components/site-nav.tsx. It moves rather
+            than hides: the TOC is a scroll-spy, so it earns its place exactly
+            while you're reading down the page.
+
+            `top`, not a transform, and the difference is the whole trick: top
+            does nothing on a sticky element until it actually sticks. A
+            transform moved the rail the moment the nav went, while it was still
+            in flow under the hero — so it jumped up into space it didn't own,
+            before it had a nav to clear. This waits for the section above.
+
+            Gated on motion-safe rather than undone by a motion-reduce override:
+            `in-data-*` compiles after `motion-reduce` and would win the cascade.
+            The nav itself doesn't move under reduced motion, so the rail has
+            nothing to follow and stays put. */}
+        <aside
+          className={cn(
+            "flex flex-col gap-3.5 lg:sticky lg:top-20",
+            "transition-[top] duration-[380ms] ease-out motion-reduce:transition-none",
+            "in-data-nav-hidden:duration-300 in-data-nav-hidden:motion-safe:lg:top-6",
+          )}
+        >
           <MetaCard project={project} />
           {sections.length > 1 && <Toc sections={sections} />}
         </aside>

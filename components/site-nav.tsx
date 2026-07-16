@@ -38,6 +38,14 @@ const TOP_ZONE_PX = 80;
 function useScrollingDown() {
   const [down, setDown] = useState(false);
 
+  // Published to <html> so anything else pinned below the bar can follow it
+  // without threading state through the tree — the case-study rail is rendered
+  // by a server component and only needs the answer in CSS. Set from an effect,
+  // so SSR and first paint show the bar where it belongs: present.
+  useEffect(() => {
+    document.documentElement.toggleAttribute("data-nav-hidden", down);
+  }, [down]);
+
   useEffect(() => {
     let last = window.scrollY;
     let queued = false;
