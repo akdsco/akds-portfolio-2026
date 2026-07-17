@@ -397,7 +397,7 @@ export const projects: Project[] = [
     ],
     hook: "Owned the proof store behind a sales-AI product: ingestion, a user-facing dashboard with search, and a tagging layer that kept every customer's library organized on its own.",
     featured: true,
-    role: "Product Engineer (contract)",
+    role: "Product Engineer",
     period: "Jul 2025 to Jun 2026",
     caseStudy: {
       status: "shipped",
@@ -433,6 +433,37 @@ export const projects: Project[] = [
     },
   },
   {
+    slug: "routes-wallet",
+    title: "RoutesWallet",
+    company: "Self-initiated (iOS)",
+    stack: ["React Native", "iOS", "TypeScript"],
+    hook: "Solo-shipped an iOS app to test whether cyclists wanted one home for routes scattered across Garmin, Strava, Komoot, and club Google Docs, then killed it when the market said no.",
+    featured: true,
+    role: "Solo build",
+    period: "Mar to Jun 2025",
+    caseStudy: {
+      status: "canned",
+      sections: {
+        problem: [
+          "Cycling routes end up scattered: Garmin, Strava, Komoot, Ride with GPS, and the inevitable Google Docs a club keeps maintaining by hand. The bet was that riders wanted a single wallet to hold all of them. The real question was whether that demand actually existed.",
+        ],
+        constraints: [
+          "A solo, self-funded side project built to answer one thing: is this worth pursuing? Genuine uncertainty about demand, and no team or budget to hide behind.",
+        ],
+        approach: [
+          "Built the app solo in React Native for iOS, then ran a real market test with my cycling club rather than guessing from the outside.",
+        ],
+        contribution: ["Everything: the concept, design, build and test."],
+        outcome: [
+          "The cyclist reaction was weak, exposed to 20 people, only one used and found it insightful, another one struggled to get it going with their odd Strava account, getting them to care enough to install the app was not easy, killed the project on that signal instead of pushing past it.",
+        ],
+        reflection: [
+          "This is product judgement under uncertainty. The discipline was validating cheaply and stopping on the evidence, not defending a sunk cost.",
+        ],
+      },
+    },
+  },
+  {
     slug: "slate-iq",
     title: "SlateIQ",
     company: "Noah Media Group",
@@ -454,13 +485,14 @@ export const projects: Project[] = [
           "Pulled five-plus third-party sources into one pipeline: IMDB via its GraphQL API, Muso for piracy data, Audiense and SocialBlade and DemographicsPRO for social and audience, and bespoke Cheerio and Puppeteer scraping for the rest. Combined those into a comp view an analyst could read, and kept the actual comparison human-driven rather than dressing it up as an ML prediction.",
         ],
         contribution: [
-          "Built the integrations and the tool end to end and shipped a working prototype.",
+          "Built the integrations and the tool end to end, and shipped a working prototype with one other engineer and a CTO who was only partially hands-on.",
+          "The part that stuck with me wasn't mine. The senior engineer brought BullMQ in, and pairing with him on it is where I learned what a job queue is actually for: every third-party pull and Puppeteer scrape is slow, rate-limited, and fails on someone else's schedule, so none of it belongs on the request path. Getting the why and the where from someone who had already made those calls, rather than just the how, is what I took off this project. BullMQ has been on my stack ever since, GrowthNation included.",
         ],
         outcome: [
           "Used in real pitch decisions. The bigger takeaway landed at the org level: documentary funding turned out to be driven by human storytelling, not statistics, which fed a strategic pivot away from data-led greenlighting. The tool did its job; the lesson was about the limits of the data.",
         ],
         reflection: [
-          "Knowing what not to build is the signal here. Skipping the semantic-search layer kept the thing shippable and honest about where the real judgement sat.",
+          "Knowing what not to build is the signal here. Predicting the future is hard if not impossible. Trying to decipher future from past performance data Skipping the semantic-search layer kept the thing shippable and honest about where the real judgement sat.",
         ],
       },
     },
@@ -501,37 +533,6 @@ export const projects: Project[] = [
         ],
         reflection: [
           "The durable artifact is the graded-LLM integration test pattern, built well ahead of the curve. The temporal signal (production LLM work in 2023) matters more than the tool that got shelved.",
-        ],
-      },
-    },
-  },
-  {
-    slug: "routes-wallet",
-    title: "Routes Wallet",
-    company: "Self-initiated (iOS)",
-    stack: ["React Native", "iOS", "TypeScript"],
-    hook: "Solo-shipped an iOS app to test whether cyclists wanted one home for routes scattered across Garmin, Strava, Komoot, and club Google Docs, then killed it when the market said no.",
-    featured: true,
-    role: "Solo build",
-    period: "Mar to Jun 2025",
-    caseStudy: {
-      status: "killed on the data",
-      sections: {
-        problem: [
-          "Cycling routes end up scattered: Garmin, Strava, Komoot, Ride with GPS, and the inevitable Google Docs a club keeps maintaining by hand. The bet was that riders wanted a single wallet to hold all of them. The real question was whether that demand actually existed.",
-        ],
-        constraints: [
-          "A solo, self-funded side project built to answer one thing: is this worth pursuing? Genuine uncertainty about demand, and no team or budget to hide behind.",
-        ],
-        approach: [
-          "Built the app solo in React Native for iOS, then ran a real market test with a London cycling club rather than guessing from the outside.",
-        ],
-        contribution: ["Everything: the build and the test design."],
-        outcome: [
-          'The club\'s honest answer was "we have three apps already." Killed the project on that signal instead of pushing past it.',
-        ],
-        reflection: [
-          "This is product judgement under uncertainty. The discipline was validating cheaply and stopping on the evidence, not defending a sunk cost. Shipping it, testing it, and killing it is a stronger story than quietly shelving it would have been.",
         ],
       },
     },
@@ -829,17 +830,6 @@ export const testimonials: Testimonial[] = [
   {
     id: 3,
     order: 3,
-    author: "Hevar Abrihem",
-    designation: "Product & Growth Operator",
-    relationship: "Wutzu colleague, same team",
-    date: "Apr 28, 2021",
-    quote:
-      "Arkadiusz's efforts at Wutzu were crucial to the first deployment of our new stores panel. Given the heavy task of unwinding the Wutzu codebase and refactoring the MVP, Arkadiusz stepped up to the challenge and handed back a well-documented & efficient application that is still in use in some areas to this day.",
-    context: "Validates Wutzu output and legitimises the short tenure.",
-  },
-  {
-    id: 4,
-    order: 4,
     author: "Simon Maple",
     designation: "Head of Developer Relations at Tessl",
     relationship: "Client (LJC Unconference website)",
@@ -850,8 +840,8 @@ export const testimonials: Testimonial[] = [
       "Named industry figure (Snyk, Tessl); validates the freelance era.",
   },
   {
-    id: 5,
-    order: 5,
+    id: 4,
+    order: 4,
     author: "Barry Cranford",
     designation: "Founder of RecWorks (Tech Talent Agency, London)",
     relationship: "Client",
@@ -862,8 +852,8 @@ export const testimonials: Testimonial[] = [
       "Recruiter-targeted social proof. Barry runs a London tech recruitment agency.",
   },
   {
-    id: 6,
-    order: 6,
+    id: 5,
+    order: 5,
     author: "David McLeary",
     designation: "Group IT Development Manager at Greencore",
     relationship:
