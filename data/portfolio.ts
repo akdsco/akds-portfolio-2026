@@ -42,7 +42,10 @@ export type HeroCopy = {
 
 export type AboutCopy = {
   name: string;
-  tagline: string;
+  /** Chunks that wrap as whole units. As one string the browser broke it
+   *  wherever it liked and stranded a "·" at the line end; each chunk now stays
+   *  intact and the renderer supplies the separator between them. */
+  tagline: string[];
   paragraphs: string[];
 };
 
@@ -96,10 +99,9 @@ export type CompanySite =
  */
 export const companySites: Record<CompanyName, CompanySite> = {
   GrowthNation: "https://growthnation.ai",
-  // www is the canonical host — the bare domain 301s to it.
   "Noah Media Group": "https://www.noahmediagroup.com/",
-  Connect4: "url-no-longer-active", // origin unreachable (523)
-  "Wutzu Technologies": "url-no-longer-active", // domain parked for resale
+  Connect4: "url-no-longer-active",
+  "Wutzu Technologies": "url-no-longer-active",
   "Self-employed": "no-public-url",
   "Self-initiated (iOS)": "no-public-url",
 };
@@ -140,10 +142,12 @@ export type Project = {
 
 export type WorkExperience = {
   id: number;
-  period: string;
+  start: string;
+  end: string;
   position: string;
   company: CompanyName;
-  location: string;
+  location: string; // city + country only; remote/hybrid belongs in workType
+  workType: "Remote" | "Hybrid" | "On-site";
   employmentType: string;
   summary: string;
   /**
@@ -151,7 +155,7 @@ export type WorkExperience = {
    * `components/linked-text.tsx`. Only https URLs are linkified.
    */
   highlights: string[];
-  stack: string[];
+  stack: { lead: string[]; rest: string[] }; // lead has to fit one line
 };
 
 export type Education = {
@@ -191,8 +195,7 @@ export const profile: Profile = {
   fullName: "Arkadiusz Ostrowski",
   title: "Software Engineer · Full-Stack · TypeScript · React · Node",
   location: "London, UK",
-  availability:
-    "Open to senior / staff / founding-engineer roles. Hybrid or remote.",
+  availability: "Open to senior engineering roles",
   publicEmail: "hire-arkadiusz@pm.me",
   cvEmail: "arkadiusz.ostrowski@protonmail.com",
   brandImage: "/images/brand-image.webp",
@@ -221,19 +224,37 @@ export const hero: HeroCopy = {
 
 export const about: AboutCopy = {
   name: "Arkadiusz Ostrowski",
-  tagline: "Software Engineer · Full-Stack · TypeScript · React · Node",
+  // Role, then stack — the two halves a reader would split it into anyway.
+  tagline: ["Software Engineer · Full-Stack", "TypeScript · React · Node"],
   paragraphs: [
-    "Based in London. Six years building production software, most recently shipping a social-proof OS for sales teams at GrowthNation and an AI research platform at Noah Media Group.",
-    "Comfortable across the stack: TypeScript end-to-end, React/Next on the front, Node + Postgres + BullMQ + multi-provider LLM on the back. Two-year track record of delivering AI-assisted features in production, from a 2023 research tool on GPT-3.5/4 to a 2026 proof engine using the Vercel AI SDK, Anthropic, OpenAI, OpenRouter, and a custom MCP server layer.",
-    "Career-changer. Worked in sales for ten years across Poland and the UK before self-teaching into software via OpenClassrooms and the London Java Community. Junior in 2020, mid in 2022, senior/lead by 2025.",
-    "Available for senior / staff / founding-engineer roles. Hybrid or remote.",
+    "Six years building production software, most recently shipping a social-proof OS for sales teams at GrowthNation and an AI research platform at Noah Media Group.",
+    "Two-year track record of delivering AI-assisted features in production, from a 2023 research tool on GPT-3.5/4 to a 2026 proof engine using the Vercel AI SDK, Anthropic, OpenAI, OpenRouter, and a custom MCP server layer. Comfortable with the TypeScript stack end-to-end.",
+    "Career-changer. Worked in sales for ten years across Poland and the UK before self-teaching into software via OpenClassrooms, the London Java Community and countless online courses and certifications.",
   ],
 };
 
+// Order is deliberate, not alphabetical. These render in a 2-column grid, where
+// every row is as tall as its taller cell — so categories are paired both by
+// relevance (what's built / core engineering / platform / how it's built /
+// production surface) and by similar bulk, which keeps the short one from
+// carving a hole beside the tall one. Reordering or adding a category will
+// re-open those gaps; re-measure at desktop width if you do.
 export const skills: SkillCategory[] = [
   {
-    title: "Languages",
-    items: ["TypeScript", "JavaScript", "SQL", "Java (early-career)"],
+    title: "AI / LLM",
+    items: [
+      "Vercel AI SDK",
+      "OpenAI",
+      "Anthropic Claude",
+      "OpenRouter",
+      "DeepSeek",
+      "Langfuse",
+      "Model Context Protocol (custom MCP servers)",
+      "LLM-in-the-loop integration testing",
+      "Firecrawl",
+      "ElevenLabs",
+      "AI-assisted product development",
+    ],
   },
   {
     title: "Frontend",
@@ -255,6 +276,10 @@ export const skills: SkillCategory[] = [
     ],
   },
   {
+    title: "Languages",
+    items: ["TypeScript", "JavaScript", "SQL", "Java (early-career)"],
+  },
+  {
     title: "Backend",
     items: [
       "Node.js",
@@ -270,26 +295,10 @@ export const skills: SkillCategory[] = [
     ],
   },
   {
-    title: "AI / LLM",
-    items: [
-      "Vercel AI SDK",
-      "OpenAI",
-      "Anthropic Claude",
-      "OpenRouter",
-      "DeepSeek",
-      "Langfuse",
-      "Model Context Protocol (custom MCP servers)",
-      "LLM-in-the-loop integration testing",
-      "Firecrawl",
-      "ElevenLabs",
-      "AI-assisted product development",
-    ],
-  },
-  {
     title: "Databases & Data",
     items: [
       "PostgreSQL",
-      "Supabase (Postgres, Auth, Storage, Realtime, Edge Functions)",
+      "Supabase (Auth, Storage, Realtime, Edge Fns)",
       "MongoDB",
       "Upstash Redis",
       "pgvector-ready architectures",
@@ -299,6 +308,7 @@ export const skills: SkillCategory[] = [
     title: "Infrastructure & DevOps",
     items: [
       "Vercel",
+      "Cloudflare",
       "Fly.io",
       "Heroku",
       "AWS",
@@ -320,25 +330,12 @@ export const skills: SkillCategory[] = [
       "Playwright",
       "Supertest",
       "Testing Library",
-      "Integration tests against live LLMs with graded responses",
+      "LLM Integration Tests",
       "ESLint (custom in-repo rules)",
-      "Prettier",
       "Husky",
       "lint-staged",
       "Knip",
       "Storybook",
-    ],
-  },
-  {
-    title: "Observability & Product Analytics",
-    items: [
-      "Sentry (typed wrapper with discriminated severity unions)",
-      "Better Stack / Logtail",
-      "Winston",
-      "PostHog",
-      "GA4",
-      "Meta Pixel",
-      "Google Search Console",
     ],
   },
   {
@@ -350,7 +347,19 @@ export const skills: SkillCategory[] = [
       "TDD",
       '"Agent skills produce data" pattern',
       "Pay-on-success cost tracking",
-      "AI-assisted coding with human-in-the-loop quality gates",
+      "AI-assisted programming",
+    ],
+  },
+  {
+    title: "Observability & Product Analytics",
+    items: [
+      "Sentry",
+      "Better Stack / Logtail",
+      "Winston",
+      "PostHog",
+      "GA4",
+      "Meta Pixel",
+      "Google Search Console",
     ],
   },
   {
@@ -388,7 +397,7 @@ export const projects: Project[] = [
     ],
     hook: "Owned the proof store behind a sales-AI product: ingestion, a user-facing dashboard with search, and a tagging layer that kept every customer's library organized on its own.",
     featured: true,
-    role: "Senior Software Engineer / Product Engineer (contract)",
+    role: "Product Engineer",
     period: "Jul 2025 to Jun 2026",
     caseStudy: {
       status: "shipped",
@@ -418,7 +427,38 @@ export const projects: Project[] = [
           "The store, dashboard, and tagging layer shipped and ran for every workspace on the platform. Real customers used it, some of them outside the US. The product was demoed at a conference in June 2026, and the company had earlier reached the top 10% of a YC application round. My twelve-month contract finished on schedule.",
         ],
         reflection: [
-          "What made this work wasn't output speed. It was reading a founder-level ask, breaking it into layers, and making one call, tag on the way in and re-tag on change, that dealt with the empty-library problem and the drift problem together. The other half was staying honest about what the AI produced instead of shipping its guesses. A line from my manager stuck with me: you're allowed to have a conversation with uncertainty as an engineer, but you're not allowed to dress uncertainty up as certainty.",
+          "The engineering that mattered wasn't speed, it was judgement: reading a founder-level ask, splitting it into layers, and making the one call, tag on the way in and re-tag on change, that solved the empty-library and the drift problems at once. On a team shipping fast on heavy AI assistance, the rest of the value was knowing when the AI was wrong. A line from my manager stuck: you're allowed to have a conversation with uncertainty as an engineer, but you're not allowed to dress uncertainty up as certainty.",
+        ],
+      },
+    },
+  },
+  {
+    slug: "routes-wallet",
+    title: "RoutesWallet",
+    company: "Self-initiated (iOS)",
+    stack: ["React Native", "iOS", "TypeScript"],
+    hook: "Solo-shipped an iOS app to test whether cyclists wanted one home for routes scattered across Garmin, Strava, Komoot, and club Google Docs, then killed it when the market said no.",
+    featured: true,
+    role: "All hats were mine",
+    period: "Mar to Jun 2025",
+    caseStudy: {
+      status: "canned",
+      sections: {
+        problem: [
+          "Cycling routes end up scattered: Garmin, Strava, Komoot, Ride with GPS, and the inevitable Google Docs a club keeps maintaining by hand. The bet was that riders wanted a single wallet to hold all of them. The real question was whether that demand actually existed.",
+        ],
+        constraints: [
+          "A solo, self-funded side project built to answer one thing: is this worth pursuing? Genuine uncertainty about demand, and no team or budget to hide behind.",
+        ],
+        approach: [
+          "Built the app solo in React Native for iOS, then ran a real market test with my cycling club rather than guessing from the outside.",
+        ],
+        contribution: ["Everything: the concept, design, build and test."],
+        outcome: [
+          "I put it in front of about 20 riders from my cycling club. The reaction was weak: one used it and found it genuinely useful, one couldn't get past an unusual Strava account, and most never cared enough to install it at all. The signal was clear, so I killed the project rather than push past it.",
+        ],
+        reflection: [
+          'The build was the cheap part. The point of a solo, self-funded project like this is to buy a real answer to "does anyone want this" before spending a year finding out, and the answer was no. Shipping something is easy to be proud of; stopping on the evidence is the harder discipline, and the one I\'d trust more on the next idea.',
         ],
       },
     },
@@ -445,13 +485,14 @@ export const projects: Project[] = [
           "Pulled five-plus third-party sources into one pipeline: IMDB via its GraphQL API, Muso for piracy data, Audiense and SocialBlade and DemographicsPRO for social and audience, and bespoke Cheerio and Puppeteer scraping for the rest. Combined those into a comp view an analyst could read, and kept the actual comparison human-driven rather than dressing it up as an ML prediction.",
         ],
         contribution: [
-          "Built the integrations and the tool end to end and shipped a working prototype.",
+          "Built the integrations and the tool end to end, and shipped a working prototype with one other engineer and a CTO who was only partially hands-on.",
+          "The part that stuck with me wasn't mine. The senior engineer brought BullMQ in, and pairing with him on it is where I learned what a job queue is actually for: every third-party pull and Puppeteer scrape is slow, rate-limited, and fails on someone else's schedule, so none of it belongs on the request path. Getting the why and the where from someone who had already made those calls, rather than just the how, is what I took off this project. BullMQ has been on my stack ever since, GrowthNation included.",
         ],
         outcome: [
           "Used in real pitch decisions. The bigger takeaway landed at the org level: documentary funding turned out to be driven by human storytelling, not statistics, which fed a strategic pivot away from data-led greenlighting. The tool did its job; the lesson was about the limits of the data.",
         ],
         reflection: [
-          "Knowing what not to build is the signal here. Skipping the semantic-search layer kept the thing shippable and honest about where the real judgement sat.",
+          "The lesson is knowing what not to build, and it showed up twice. In the code, skipping the semantic-search layer kept the tool shippable and honest about where the judgement really sat: in a human reading comps, not a model. In the product, the modest version worked, reading past data to see what not to bet on. The ambition underneath it, predicting the next film, never could, because past performance describes what happened and not what's coming.",
         ],
       },
     },
@@ -470,251 +511,226 @@ export const projects: Project[] = [
     ],
     hook: "Co-built a documentary research assistant on GPT-3.5/4 in 2023, before AI-assisted tooling was a category: give it a subject, it returned biographical leads and story angles worth chasing.",
     featured: true,
-    role: "Software Engineer (paired with the CTO)",
+    role: "Software Engineer",
     period: "2023",
     caseStudy: {
       status: "sunset",
       sections: {
         problem: [
-          "The documentary research team spent real time finding leads and angles on a new subject. The question was whether an early LLM could surface threads worth pursuing and give researchers a faster starting point.",
+          "Documentary research is slow by nature: a new subject means days of reading before anyone knows whether there is a story in it, and that time caps how many subjects ever get looked at. The obvious question was whether an early LLM could shorten it. The better one was whether it could widen it, surfacing angles a researcher would not have thought to go looking for. The target was not a faster researcher. It was a researcher with a wider net.",
         ],
         constraints: [
           "This was 2023, on GPT-3.5 and GPT-4, before there were patterns to copy. Early models were unreliable, and an internal creative team has a high bar for what it will trust. Getting output stable enough to be useful was the hard part.",
         ],
         approach: [
-          "Input a subject name, get back biographical leads, story angles, and threads to pull. Paired with the CTO on architecture and prompt strategy, and owned significant chunks of the implementation. Built integration tests that run live OpenAI calls with graded responses, keeping output inside tolerance bands. That harness came years before checking LLMs in CI was standard, and the same pattern carried through to GrowthNation three years later.",
+          "Input a subject name, get back biographical leads, story angles, and threads to pull. Built integration tests that run live OpenAI calls with graded responses, keeping output inside tolerance bands. That harness came years before checking LLMs in CI was standard, and the same pattern carried through to GrowthNation three years later.",
         ],
         contribution: [
-          "A paired role, stated honestly: the CTO drove it, I paired and owned significant implementation chunks, including the graded-LLM test harness.",
+          "The CTO drove the project and we paired on architecture and prompt strategy. The build was mine: the frontend, the data ingestion, the API connections, and the prompting layer, which refused to sit still. It started as prompt engineering and became tool calling when OpenAI shipped it partway through the build, with the model pulling the specific facts we needed out of what the pipeline fetched. Every research run went out and got fresh data.",
+          "Stabilising it is where the engineering was. The graded-LLM test harness came out of that, and canned data feeds alongside it: a prompt change can only be judged against a fixed input, or you cannot tell whether the output moved because you improved something or because the web did.",
         ],
         outcome: [
-          'A capable, working tool. It was sunset because the creative research team preferred its traditional workflow, with the head of research objecting to "AI slop." The tech worked; adoption was blocked by preference, not capability.',
+          'A capable, working tool that went unused. The research team preferred its traditional workflow and the head of research objected to "AI slop". Underneath the objection sat a positioning problem: a studio built on high-end, long-form documentary had no appetite for stories mined and told at volume, so the thing the tool was good at was the thing they did not want. The tech worked; adoption was blocked by preference, not capability.',
         ],
         reflection: [
-          "The durable artifact is the graded-LLM integration test pattern, built well ahead of the curve. The temporal signal (production LLM work in 2023) matters more than the tool that got shelved.",
+          "The part that outlived the tool is the graded-LLM test harness, and the fact of shipping production LLM work in 2023 at all. That is the transferable engineering. The tool itself I file under timing: it did what a wave of YouTube channels turned into a format three years later, and it still died in-house, because being right too early is hard to tell apart from being wrong.",
         ],
       },
     },
-  },
-  {
-    slug: "routes-wallet",
-    title: "Routes Wallet",
-    company: "Self-initiated (iOS)",
-    stack: ["React Native", "iOS", "TypeScript"],
-    hook: "Solo-shipped an iOS app to test whether cyclists wanted one home for routes scattered across Garmin, Strava, Komoot, and club Google Docs, then killed it when the market said no.",
-    featured: true,
-    role: "Solo build",
-    period: "Mar to Jun 2025",
-    caseStudy: {
-      status: "killed on the data",
-      sections: {
-        problem: [
-          "Cycling routes end up scattered: Garmin, Strava, Komoot, Ride with GPS, and the inevitable Google Docs a club keeps maintaining by hand. The bet was that riders wanted a single wallet to hold all of them. The real question was whether that demand actually existed.",
-        ],
-        constraints: [
-          "A solo, self-funded side project built to answer one thing: is this worth pursuing? Genuine uncertainty about demand, and no team or budget to hide behind.",
-        ],
-        approach: [
-          "Built the app solo in React Native for iOS, then ran a real market test with a London cycling club rather than guessing from the outside.",
-        ],
-        contribution: ["Everything: the build and the test design."],
-        outcome: [
-          'The club\'s honest answer was "we have three apps already." Killed the project on that signal instead of pushing past it.',
-        ],
-        reflection: [
-          "This is product judgement under uncertainty. The discipline was validating cheaply and stopping on the evidence, not defending a sunk cost. Shipping it, testing it, and killing it is a stronger story than quietly shelving it would have been.",
-        ],
-      },
-    },
-  },
-  {
-    slug: "film-production-tracking",
-    title: "Film production tracking platform",
-    company: "Noah Media Group",
-    stack: ["TypeScript", "React", "Node", "MongoDB"],
-    hook: "Drove database design and early prototypes with the CEO and Skyscanner co-founder Bonamy Grimes, giving leadership visibility into production progress.",
-    featured: false,
-  },
-  {
-    slug: "connect4-meetings",
-    title: "Meeting productivity platform",
-    company: "Connect4",
-    stack: ["React", "Meteor.js", "WebSockets"],
-    hook: "Ported the Blaze front-end to React and shipped agenda drag-and-drop plus recurring meeting templates.",
-    featured: false,
-  },
-  {
-    slug: "wutzu-stores-panel",
-    title: "Stores panel",
-    company: "Wutzu Technologies",
-    stack: ["JavaScript", "Node", "Payments API"],
-    hook: "Refactored the MVP and shipped the first production stores panel, still in use in some areas to this day.",
-    featured: false,
   },
 ];
 
 export const experience: WorkExperience[] = [
   {
     id: 6,
-    period: "2025 Jul - 2026 Jun",
-    position: "Senior Software Engineer / Product Engineer",
+    start: "2025 Jul",
+    end: "2026 Jun",
+    position: "Product Engineer",
     company: "GrowthNation",
-    location: "Remote",
+    location: "London, UK",
+    workType: "Remote",
     employmentType: "Contract (12 months)",
     summary:
-      "Joined a small founding team building a social-proof OS for sales teams. Built and ran the proof-store product across a CEO-driven pivot, from ingestion through dashboard to delivery summaries.",
+      "Founding-team engineer on a social-proof OS for sales teams, through a CEO-driven pivot.",
     highlights: [
-      "Built the Proof Library / Proof Store: ingestion (URL scrape, file upload, AI-vision screenshot extraction), dashboard with coverage matrix, and MCP/agentic access.",
-      "Server-side LLM tagging as an architectural unlock. Every new quote, stat, or case study is tagged against the workspace's ICPs and pain points before save returns, with fan-out re-tag on edits.",
-      "Co-created an autonomous AI bug-triage system that performs root-cause analysis (temporal ordering, source prioritisation, fingerprinting, cascade detection) and opens clean fix PRs on its own.",
+      'Joined during the initial product build for marketing function, helping SME\'s and Agencies streamline their AIO/SEO tactics, I built user auth, custom integrations and setup "code factory" workflow with the CTO to enable build contributions from all team members (product/design)',
+      "Built the Proof Library: ingestion (domain scrape, file upload, AI-vision screenshot extraction), dashboard with coverage matrix, and MCP/agentic access.",
+      "Server-side LLM tagging, every new quote, stat, or case study was tagged against the workspace's ICPs and pain points before save returns, with fan-out re-tag on edits.",
+      "Co-created an autonomous AI bug-triage system that performs root-cause analysis (temporal ordering, source prioritisation, fingerprinting, cascade detection) and opens clean fix PRs with plans and implementations on its own.",
     ],
-    stack: [
-      "TypeScript",
-      "React 18",
-      "Vite",
-      "Tailwind CSS",
-      "Supabase (Postgres, Auth, Storage, Realtime, Edge Functions)",
-      "Drizzle ORM",
-      "BullMQ",
-      "Vercel AI SDK",
-      "OpenAI",
-      "Anthropic Claude",
-      "OpenRouter",
-      "DeepSeek",
-      "Langfuse",
-      "ElevenLabs",
-      "Model Context Protocol (custom MCP servers)",
-      "Fly.io",
-      "Docker",
-      "Cypress",
-      "Vitest",
-      "PostHog",
-      "Sentry",
-      "Better Stack",
-    ],
+    stack: {
+      lead: [
+        "TypeScript",
+        "React 18",
+        "Supabase",
+        "Vercel AI SDK",
+        "MCP servers",
+      ],
+      rest: [
+        "Vite",
+        "Tailwind CSS",
+        "Drizzle ORM",
+        "BullMQ",
+        "OpenAI",
+        "Anthropic Claude",
+        "OpenRouter",
+        "DeepSeek",
+        "Langfuse",
+        "ElevenLabs",
+        "Fly.io",
+        "Docker",
+        "Cypress",
+        "Vitest",
+        "PostHog",
+        "Sentry",
+        "Better Stack",
+      ],
+    },
   },
   {
     id: 5,
-    period: "2025 Apr - 2025 Sep",
+    start: "2025 Apr",
+    end: "2025 Sep",
     position: "Lead Product Engineer",
     company: "Noah Media Group",
-    location: "London (hybrid)",
+    location: "London, UK",
+    workType: "Hybrid",
     employmentType: "Full-time",
     summary:
-      "Promoted to Lead Product Engineer as the sole remaining technical IC after the CTO's departure. Continued to drive product work directly with the CEO and Skyscanner co-founder Bonamy Grimes until the tech arm wound down.",
+      "Promoted to lead as the sole remaining technical IC after the CTO's departure, and iterated on the new product until the tech arm wound down.",
     highlights: [
       "Built the film production tracking platform: database design, problem definition, early prototypes.",
-      "Worked closely with the CEO and Bonamy Grimes on prioritisation and stakeholder framing.",
+      "Worked closely with the CEO and the former Skyscanner CTO, Bonamy Grimes on prioritisation and stakeholder framing.",
     ],
-    stack: [
-      "TypeScript",
-      "React",
-      "Node",
-      "Express",
-      "MongoDB",
-      "BullMQ",
-      "OpenAI",
-    ],
+    stack: {
+      lead: [
+        "TypeScript",
+        "React",
+        "Node",
+        "Express",
+        "MongoDB",
+        "BullMQ",
+        "OpenAI",
+      ],
+      rest: [],
+    },
   },
   {
     id: 4,
-    period: "2022 Mar - 2025 Mar",
+    start: "2022 Apr",
+    end: "2025 Apr",
     position: "Software Engineer",
     company: "Noah Media Group",
-    location: "London (hybrid)",
+    location: "London, UK",
+    workType: "Hybrid",
     employmentType: "Full-time",
     summary:
-      "Second engineer in NMG's newly-formed tech arm. Built three products 0→1 across the team's lifetime, worked directly with leadership, and adopted production LLM tooling years ahead of mainstream curve.",
+      "First engineer in NMG's newly formed tech arm, building two products from scratch over three years.",
     highlights: [
       "[SlateIQ](https://slateiq.com/): film success prediction. Combined IMDB, social, piracy, and market data into a comp-matching tool used in pitch decisions.",
       "AI-powered research assistant on GPT-3.5/4 in 2023. Integration tests ran live LLM calls with graded responses to stabilise output, years before this became standard practice.",
-      "Established currying-based dependency injection as a team pattern (carries through to GrowthNation three years later).",
+      "Established currying-based dependency injection as a team pattern, saving us from elaborate testing effort",
     ],
-    stack: [
-      "TypeScript",
-      "React 17",
-      "Redux Toolkit + RTK Query",
-      "TanStack Query",
-      "Material UI",
-      "styled-components",
-      "Node.js",
-      "Express",
-      "MongoDB",
-      "BullMQ",
-      "OpenAI (GPT-3.5 + GPT-4)",
-      "IMDB GraphQL",
-      "Muso",
-      "Audiense",
-      "SocialBlade",
-      "DemographicsPRO",
-      "Cheerio",
-      "Puppeteer",
-      "Heroku",
-      "Google Cloud",
-      "AWS",
-      "Redis",
-      "Jest",
-      "Cypress",
-      "Sentry",
-      "Winston",
-      "GitHub Actions",
-    ],
+    stack: {
+      lead: [
+        "TypeScript",
+        "React 17",
+        "Node.js",
+        "MongoDB",
+        "OpenAI (GPT-3.5 + GPT-4)",
+      ],
+      rest: [
+        "Redux Toolkit + RTK Query",
+        "TanStack Query",
+        "Material UI",
+        "styled-components",
+        "Express",
+        "BullMQ",
+        "IMDB GraphQL",
+        "Muso",
+        "Audiense",
+        "SocialBlade",
+        "DemographicsPRO",
+        "Cheerio",
+        "Puppeteer",
+        "Heroku",
+        "Google Cloud",
+        "AWS",
+        "Redis",
+        "Jest",
+        "Cypress",
+        "Sentry",
+        "Winston",
+        "GitHub Actions",
+      ],
+    },
   },
   {
     id: 3,
-    period: "2020 Nov - 2022 Mar",
-    position: "Software Engineer",
+    start: "2020 Nov",
+    end: "2022 Apr",
+    position: "Software Developer",
     company: "Connect4",
-    location: "Fully remote (pandemic)",
+    location: "London, UK",
+    workType: "Remote",
     employmentType: "Full-time",
     summary:
-      "First of three companies working alongside Ben Ritchie, who mentored Akds from junior into mid-level. B2B SaaS for productivity around online meetings: agendas, structured notes, planning, meeting history.",
+      "B2B SaaS for online-meeting productivity. Hired as the first employee developer to take over after the initial contract prototype build.",
     highlights: [
-      "Ported the Blaze front-end to React without breaking production.",
-      "Built agenda creation with drag-and-drop and recurring meeting templates.",
-      "Internalised unidirectional data flow and reactive DB-driven background refresh patterns.",
+      "Ported the error prone Blaze front-end to React, reducing frontend error rate roughly by 30% and without breaking production.",
+      "Internalised unidirectional data flow and reactive DB-driven background refresh patterns to eliminate backend/frontend data sync issues",
+      "Built agenda creation feature with drag-and-drop and recurring meeting templates.",
     ],
-    stack: ["Meteor.js", "Blaze", "React", "WebSockets", "MongoDB"],
+    stack: {
+      lead: ["Meteor.js", "Blaze", "React", "WebSockets", "MongoDB"],
+      rest: [],
+    },
   },
   {
     id: 2,
-    period: "2020 May - 2020 Nov",
-    position: "Software Developer (Intern → JavaScript Developer)",
+    start: "2020 May",
+    end: "2020 Nov",
+    position: "JavaScript Developer",
     company: "Wutzu Technologies",
-    location: "London",
+    location: "London, UK",
+    workType: "Hybrid",
     employmentType: "Full-time",
     summary:
-      '"Deliveroo for small independent London shops." Worked on order / basket creation and external payment integration via API. Intern → developer in 7 months.',
+      '"Deliveroo for small independent London shops." Hired as the second of two engineers on the product.',
     highlights: [
-      'Refactored the MVP codebase and shipped the first production stores panel (Hevar Abrihem: "still in use in some areas to this day").',
+      "Refactored the MVP codebase and shipped the first production stores panel.",
       "Built order and basket flows with external payment-API integration.",
-      "Promoted from Intern to JavaScript Developer in seven months.",
     ],
-    stack: [
-      "JavaScript",
-      "React",
-      "Node",
-      "Firebase",
-      "Redux",
-      "Webpack",
-      "Payments API",
-    ],
+    stack: {
+      lead: [
+        "JavaScript",
+        "React",
+        "Node",
+        "Firebase",
+        "Redux",
+        "Webpack",
+        "Payments API",
+      ],
+      rest: [],
+    },
   },
   {
     id: 1,
-    period: "2018 - 2019",
-    position: "Freelance Web Developer",
+    start: "2018 Sep",
+    end: "2020 May",
+    position: "Web Developer",
     company: "Self-employed",
-    location: "London",
+    location: "London, UK",
+    workType: "Remote",
     employmentType: "Freelance",
     summary:
-      "Built websites for the London Java Community and Meet a Mentor; took a few paid freelance projects; mentored junior devs into their first roles via LJC.",
+      "Community sites and paid client work, through the London Java Community.",
     highlights: [
       "Built websites for the London Java Community and Meet a Mentor (referenced by Martijn Verburg and Simon Maple).",
       "Mentored junior developers into their first software roles via LJC, having started as a mentee in the same community.",
       "Took paid client work including the LJC Unconference site and a project for RecWorks (Barry Cranford).",
     ],
-    stack: ["HTML5", "CSS3", "JavaScript"],
+    stack: { lead: ["HTML5", "CSS3", "JavaScript"], rest: [] },
   },
 ];
 
@@ -791,17 +807,6 @@ export const testimonials: Testimonial[] = [
   {
     id: 3,
     order: 3,
-    author: "Hevar Abrihem",
-    designation: "Product & Growth Operator",
-    relationship: "Wutzu colleague, same team",
-    date: "Apr 28, 2021",
-    quote:
-      "Arkadiusz's efforts at Wutzu were crucial to the first deployment of our new stores panel. Given the heavy task of unwinding the Wutzu codebase and refactoring the MVP, Arkadiusz stepped up to the challenge and handed back a well-documented & efficient application that is still in use in some areas to this day.",
-    context: "Validates Wutzu output and legitimises the short tenure.",
-  },
-  {
-    id: 4,
-    order: 4,
     author: "Simon Maple",
     designation: "Head of Developer Relations at Tessl",
     relationship: "Client (LJC Unconference website)",
@@ -812,8 +817,8 @@ export const testimonials: Testimonial[] = [
       "Named industry figure (Snyk, Tessl); validates the freelance era.",
   },
   {
-    id: 5,
-    order: 5,
+    id: 4,
+    order: 4,
     author: "Barry Cranford",
     designation: "Founder of RecWorks (Tech Talent Agency, London)",
     relationship: "Client",
@@ -824,8 +829,8 @@ export const testimonials: Testimonial[] = [
       "Recruiter-targeted social proof. Barry runs a London tech recruitment agency.",
   },
   {
-    id: 6,
-    order: 6,
+    id: 5,
+    order: 5,
     author: "David McLeary",
     designation: "Group IT Development Manager at Greencore",
     relationship:

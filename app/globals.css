@@ -367,12 +367,21 @@
 }
 
 @layer utilities {
-  /* Subtle CRT scanline overlay for hero bands. */
+  /* Subtle CRT scanline overlay for hero bands.
+   *
+   * One 5px tile repeated, not a `repeating-linear-gradient` spanning the whole
+   * band. A gradient is rasterised into a texture sized to the element it
+   * paints; on a tall hero, WebKit downsamples that texture and 1px stripes 5px
+   * apart are precisely what disappears. On iOS the short /projects hero kept
+   * its lines while the taller /about and case-study heroes lost most of theirs
+   * — same class, same CSS, different heights.
+   *
+   * background-size hands the compositor a 5px tile to repeat instead, so what
+   * gets rasterised stays 5px tall no matter how long the band is. */
   .scanline {
-    background-image: repeating-linear-gradient(
-      var(--ink) 0 1px,
-      transparent 1px 5px
-    );
+    background-image: linear-gradient(var(--ink) 0 1px, transparent 1px);
+    background-size: 100% 5px;
+    background-repeat: repeat-y;
     opacity: 0.035;
   }
 }

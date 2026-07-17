@@ -19,7 +19,7 @@ const WORDMARK_FONT_SIZE = 460;
  */
 export const SIZE = { width: 1200, height: 630 };
 export const CONTENT_TYPE = "image/png";
-export const ALT = "akds — Arkadiusz Ostrowski, Software Engineer";
+export const ALT = "akds : Software Engineer, London";
 
 /** Dark palette from app/theme.css as hex — Satori doesn't parse oklch. */
 const COLORS = {

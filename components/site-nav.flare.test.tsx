@@ -1,12 +1,28 @@
 import { act, render, screen } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
 
+import { PaletteProvider } from "@/components/command-palette";
 import { SiteNav } from "@/components/site-nav";
 import { DWELL_MS } from "@/lib/use-dwell-flare";
 
 vi.mock("next/navigation", () => ({
   usePathname: () => "/about",
+  useRouter: () => ({ push: vi.fn() }),
 }));
+
+// The palette provider carries a /theme command backed by next-themes.
+vi.mock("next-themes", () => ({
+  useTheme: () => ({ resolvedTheme: "dark", setTheme: vi.fn() }),
+}));
+
+// SiteNav reads the palette context (the command-palette button), so it has to
+// render inside its provider.
+const renderNav = () =>
+  render(
+    <PaletteProvider>
+      <SiteNav />
+    </PaletteProvider>,
+  );
 
 const logo = () => screen.getByRole("link", { name: /home/i });
 const mark = () => logo().firstElementChild as HTMLElement;
@@ -42,7 +58,7 @@ afterEach(() => {
 
 describe("SiteNav wordmark flare", () => {
   test("sits still until the pointer has dwelled", () => {
-    render(<SiteNav />);
+    renderNav();
     expect(mark()).not.toHaveAttribute("data-wave");
 
     act(() => {
@@ -53,7 +69,7 @@ describe("SiteNav wordmark flare", () => {
   });
 
   test("flares once the pointer has dwelled, and stops when it leaves", () => {
-    render(<SiteNav />);
+    renderNav();
     act(() => {
       logo().dispatchEvent(new PointerEvent("pointerover", { bubbles: true }));
     });

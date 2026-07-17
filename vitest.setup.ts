@@ -48,3 +48,7 @@ vi.stubGlobal("ResizeObserver", NoopObserver);
 
 // scrollIntoView isn't implemented in jsdom; AboutMore calls it on reveal.
 Element.prototype.scrollIntoView = vi.fn();
+
+// window.scrollTo isn't implemented either (jsdom logs "Not implemented" and
+// leaves scrollY alone); lib/scroll-into-view-live drives it per frame.
+vi.stubGlobal("scrollTo", vi.fn());
