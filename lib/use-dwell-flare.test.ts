@@ -110,7 +110,7 @@ describe("useDwellFlare", () => {
     expect(result.current.runId).toBeGreaterThan(0);
   });
 
-  // A 3s press on a phone fires pointerenter too; the flare is a hover easter
+  // A press on a phone fires pointerenter too; the flare is a hover easter
   // egg, not something to trigger by holding the logo.
   test("never fires without a real hovering pointer", () => {
     stubMedia({ hover: false });

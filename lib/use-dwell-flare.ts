@@ -3,8 +3,9 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
 /** How long the pointer has to sit still on the mark before it flares. Long
- *  enough that nobody passing through the nav trips it. */
-export const DWELL_MS = 3000;
+ *  enough that a pointer passing through the nav doesn't trip it, short enough
+ *  that a deliberate pause is quickly rewarded. */
+export const DWELL_MS = 1000;
 
 /**
  * "Has the pointer been parked on this thing for a while?" — the trigger for the
@@ -29,7 +30,7 @@ export function useDwellFlare() {
   }, []);
 
   const onPointerEnter = useCallback(() => {
-    // A hover easter egg. On touch a 3s press fires pointerenter just the same,
+    // A hover easter egg. On touch a press fires pointerenter just the same,
     // which is not a gesture anyone means as "hover".
     if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches)
       return;
