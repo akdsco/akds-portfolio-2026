@@ -130,17 +130,18 @@ export function SiteNav() {
       )}
     >
       <nav className="mx-auto flex h-14 w-full max-w-5xl items-center justify-between px-6 md:px-8">
-        {/* self-end puts the mark's bottom on the header's bottom border, so the
-            border itself is what cuts it. */}
-        {/* The focus ring is an outline, which follows its element's own radius,
-            so the top corners round to match the nav links. The bottom corners
-            stay square on purpose: the ring's bottom edge sits below the bar and
-            is cut by it, so the sides run off the way the mark does. Rounding
-            them curves them back above the cut and closes the shape into a pill
-            floating over a mark that carries on past it.
+        {/* self-end lands the mark's crop on the bar's bottom border, so the two
+            coincide and the border reads as what cuts it. It isn't: Wordmark
+            crops itself, and the glyphs carry on below the box either way.
 
-            Nothing here may make this box taller than the bar. overflow-hidden
-            makes the header a scroll container, so focus landing on a box that
+            The focus ring is an outline, which follows its element's own radius.
+            The top corners round to match the nav links; the bottom ones stay
+            square, because the ring's bottom edge falls past the bar and is cut
+            by it, leaving the sides to run off the way the mark does. Round them
+            and they curve back above the cut, closing the shape into a pill.
+
+            Nothing may make this box taller than the bar. overflow-hidden makes
+            the header a scroll container, so focus landing on a box that
             overflows it scrolls the bar to reveal it — lifting the mark and
             shoving the nav links up, and staying that way. */}
         <Link
