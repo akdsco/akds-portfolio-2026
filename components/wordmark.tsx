@@ -1,6 +1,7 @@
 import {
   WORDMARK,
   WORDMARK_CLIP_HEIGHT,
+  WORDMARK_HOVER_LIFT_HEIGHT,
   WORDMARK_LIFT_HEIGHT,
   WORDMARK_TRACKING,
 } from "@/lib/wordmark";
@@ -33,6 +34,7 @@ export function Wordmark({
   flare = false,
   runId = 0,
   play = false,
+  hoverLift = false,
 }: {
   className?: string;
   style?: React.CSSProperties;
@@ -42,27 +44,53 @@ export function Wordmark({
   runId?: number;
   /** Footer trigger: run the wave once (no replay). */
   play?: boolean;
+  /** Raise the whole word as one on hover (see `.wordmark-hoverlift` in
+   *  globals.css). Reserves its own headroom on top of the flare's, so a
+   *  hover-lift that overlaps the wave still can't clip the glyph tops. */
+  hoverLift?: boolean;
 }) {
+  // The box grows upward by the sum of every lift it must contain, so the bottom
+  // cut — the edge the nav border lines up with — never moves, and the tallest
+  // stack (wave peak while hovered) still lands inside the clip.
+  const headroom = [
+    flare ? WORDMARK_LIFT_HEIGHT : null,
+    hoverLift ? WORDMARK_HOVER_LIFT_HEIGHT : null,
+  ].filter((v): v is string => v !== null);
+  const hasHeadroom = headroom.length > 0;
+  // Flat, single-level calc (`0.67em + 0.08em + 0.08em`), never a calc nested in
+  // a calc: the flat form is what folds to one length, which the crop-depth test
+  // reads back as a number.
+  const headroomSum = headroom.join(" + ");
+
   return (
     <span
       // shrink-0: this is a flex item, and letting it shrink below the mark's
       // width means `overflow-hidden` (the crop) clips the last letter sideways.
       // Kept at content width, the crop only ever bites the bottom, as intended.
-      className={cn("flex shrink-0 overflow-hidden", className)}
+      className={cn(
+        "flex shrink-0 overflow-hidden",
+        hoverLift && "wordmark-hoverlift",
+        className,
+      )}
       // Absent until a trigger actually fires, so the letters sit still on mount.
       data-wave={flare && (runId > 0 || play) ? "" : undefined}
       style={{
-        height: flare
-          ? `calc(${WORDMARK_CLIP_HEIGHT} + ${WORDMARK_LIFT_HEIGHT})`
+        height: hasHeadroom
+          ? `calc(${WORDMARK_CLIP_HEIGHT} + ${headroomSum})`
           : WORDMARK_CLIP_HEIGHT,
-        // The headroom the lift travels through. The box grows upward by exactly
+        // The headroom the lifts travel through. The box grows upward by exactly
         // what the text is pushed down by, so the bottom cut — the edge the nav
         // border lines up with — does not move.
-        ...(flare && {
-          paddingTop: WORDMARK_LIFT_HEIGHT,
-          // Same constant drives the keyframe, so the letters can't rise further
-          // than the headroom bought for them.
-          "--wordmark-lift": WORDMARK_LIFT_HEIGHT,
+        ...(hasHeadroom && {
+          paddingTop:
+            headroom.length > 1 ? `calc(${headroomSum})` : headroomSum,
+        }),
+        // Same constant drives the keyframe, so the wave's letters can't rise
+        // further than the flare's share of the headroom.
+        ...(flare && { "--wordmark-lift": WORDMARK_LIFT_HEIGHT }),
+        // And the hover transform can't exceed its own share.
+        ...(hoverLift && {
+          "--wordmark-hover-lift": WORDMARK_HOVER_LIFT_HEIGHT,
         }),
         lineHeight: 1,
         // Splitting text into spans drops kerning across the boundaries, which
@@ -75,7 +103,7 @@ export function Wordmark({
     >
       {/* The single flex child that holds every letter. `wordmark-inner` is the
           hook a surface can lift as one block — see `.wordmark-hoverlift` in
-          globals.css, where the footer raises the whole word on hover while the
+          globals.css, where the nav raises the whole word on hover while the
           per-letter wave still transforms each letter on top. */}
       <span
         className="wordmark-inner"

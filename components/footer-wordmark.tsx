@@ -112,7 +112,7 @@ export function FooterWordmark({
     <Wordmark
       flare
       play={play}
-      className={cn("wordmark-signoff wordmark-hoverlift", className)}
+      className={cn("wordmark-signoff", className)}
       style={{ ...FOOTER_FLARE_STYLE, ...style }}
     />
   );
