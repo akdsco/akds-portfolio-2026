@@ -166,9 +166,14 @@ export function SiteNav() {
                 href={href}
                 className={cn(
                   "rounded-md px-2.5 py-1.5 transition-colors",
+                  // The pill is where you are, not what you're doing, so it
+                  // stays quiet. Coral is the site's "this is happening now" —
+                  // hover, focus, press — and a permanent coral pill would both
+                  // outshout the hero's highlight and sit under a coral focus
+                  // ring on every page.
                   isActive(href)
                     ? "bg-chip text-ink"
-                    : "text-dim hover:text-ink",
+                    : "text-dim hover:text-hi",
                 )}
               >
                 {label}
@@ -187,7 +192,7 @@ export function SiteNav() {
             type="button"
             onClick={open}
             aria-label="Open command palette"
-            className="text-dim hover:text-ink grid size-8 cursor-pointer place-items-center rounded-md transition-colors min-[500px]:hidden"
+            className="text-dim hover:text-hi grid size-8 cursor-pointer place-items-center rounded-md transition-colors min-[500px]:hidden"
           >
             <Command className="size-4" />
           </button>
@@ -198,7 +203,7 @@ export function SiteNav() {
                 key={label}
                 href={url}
                 aria-label={label}
-                className="text-dim hover:text-ink grid size-8 place-items-center rounded-md transition-colors"
+                className="text-dim hover:text-hi grid size-8 place-items-center rounded-md transition-colors"
               >
                 <Icon className="size-4" />
               </ExternalLink>

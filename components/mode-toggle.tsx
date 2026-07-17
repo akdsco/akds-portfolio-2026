@@ -19,7 +19,7 @@ export function ModeToggle() {
       onClick={() => {
         setTheme(resolvedTheme === "dark" ? "light" : "dark");
       }}
-      className="text-dim hover:text-ink relative grid size-8 cursor-pointer place-items-center rounded-md transition-colors"
+      className="text-dim hover:text-hi relative grid size-8 cursor-pointer place-items-center rounded-md transition-colors"
     >
       <Sun className="size-4 scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90" />
       <Moon className="absolute size-4 scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0" />
