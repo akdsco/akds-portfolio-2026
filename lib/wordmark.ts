@@ -25,11 +25,29 @@ export const WORDMARK_VISIBLE = 0.67;
 export const WORDMARK_TRACKING = "-0.055em";
 
 /**
+ * How far a letter rises at the peak of the nav's hover flare — a ratio of font
+ * size, for the same reason the crop is (3px is a hop at 38px and invisible at
+ * 460px).
+ *
+ * The mark has no headroom by default: the text sits flush at the top of a box
+ * that clips, so a letter animated upward gets its head cut off rather than
+ * lifted. The clip box grows by exactly this much and the text is pushed down to
+ * match, which buys travel while leaving the bottom cut — the thing the nav
+ * border lines up with — exactly where it was.
+ */
+export const WORDMARK_LIFT = 0.08;
+
+/**
  * CSS height for a clip container: `74%` of its own font size. Requires the
  * container to set `font-size` and `overflow: hidden`, with the text inside at
- * `line-height: 1` so the em box and the line box agree.
+ * `line-height: 1` so the em box and the line box agree. The container must not
+ * shrink below its content width (`shrink-0` when it's a flex item), or the
+ * overflow clip bites the mark sideways instead of only cropping the bottom.
  */
 export const WORDMARK_CLIP_HEIGHT = `${WORDMARK_VISIBLE}em`;
+
+/** CSS length of the flare's lift, for the clip box's headroom and the keyframe. */
+export const WORDMARK_LIFT_HEIGHT = `${WORDMARK_LIFT}em`;
 
 /** Pixel height of the clip container for a given font size — for Satori, which
  *  needs concrete numbers rather than `em`. */

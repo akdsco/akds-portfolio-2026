@@ -1,4 +1,4 @@
-import { Wordmark } from "@/components/wordmark";
+import { FooterWordmark } from "@/components/footer-wordmark";
 
 export function SiteFooter() {
   return (
@@ -15,9 +15,12 @@ export function SiteFooter() {
         {/* Ghosted to ~10% — texture, not a statement. It sits under the page
             rather than shouting, and works in both themes because --ink flips
             with them. Nudged right of centre so it reads as a placed mark
-            instead of a heading. */}
-        <Wordmark
-          className="text-ink/10 translate-x-[28%] font-semibold select-none"
+            instead of a heading — but only a little on mobile, where the mark
+            nearly fills the width and the full nudge shoves the "s" off the
+            edge. The font stops scaling below ~650px (clamp floor), so the
+            offset has to give way there, not the desktop look. */}
+        <FooterWordmark
+          className="text-ink/10 translate-x-[9%] font-semibold select-none md:translate-x-[28%]"
           style={{ fontSize: "clamp(104px, 16vw, 208px)" }}
         />
       </div>

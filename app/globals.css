@@ -295,6 +295,77 @@
   }
 }
 
+/* Wordmark flare: the letters light coral left to right, each lifting and
+ * dropping back as the next takes over. The nav runs it as a hover easter egg
+ * (park the pointer on the logo); the footer runs it once, as a sign-off, when
+ * the reader reaches the bottom. Same wave both places — only the colour
+ * differs, so the footer's giant ghost shimmers instead of blaring.
+ *
+ * The colour holds without a hover rule fighting it: the keyframe runs
+ * rest -> peak -> rest with fill-mode `both`, so a letter waiting out its delay
+ * is frozen at the FIRST keyframe — already the resting colour. Nothing flickers
+ * mid-sweep. The endpoints are variables so each surface sets its own: the nav
+ * defaults to ink -> hi (full coral on a small mark); the footer overrides both
+ * to its ghost and a softened coral.
+ *
+ * The lift needs the headroom Wordmark's `flare` adds; without it the letters
+ * would rise into their own clip edge and lose their tops. --wordmark-lift is
+ * set inline from the same constant that sizes that headroom. */
+@keyframes wordmark-flare {
+  0% {
+    color: var(--flare-rest, var(--ink));
+    transform: translateY(0);
+  }
+  35% {
+    color: var(--flare-peak, var(--hi));
+    transform: translateY(calc(-1 * var(--wordmark-lift)));
+  }
+  100% {
+    color: var(--flare-rest, var(--ink));
+    transform: translateY(0);
+  }
+}
+/* Footer sign-off: the same wave, but restrained for a ~200px mark. Instead of
+ * flooding each glyph with coral it lights up only the OUTLINE (a thin coral
+ * stroke over the ghost fill), and the swell is symmetric — apex at 50% with an
+ * ease-in-out either side — so it breathes in and out rather than snapping to a
+ * peak and slowly dying, which read as a dead middle. Colour and lift are the
+ * only things that move; the fill stays the ghost throughout.
+ *
+ * The illumination is a text-shadow glow (a halo that follows the glyphs), not a
+ * box-shadow, which would just box each letter. Blur is held constant at both
+ * ends so only the colour animates — transparent -> coral -> transparent
+ * interpolates as a colour, where `none` -> a shadow would not. */
+@keyframes wordmark-signoff {
+  0%,
+  100% {
+    text-shadow: 0 0 var(--flare-glow, 12px) transparent;
+    transform: translateY(0);
+  }
+  50% {
+    text-shadow: 0 0 var(--flare-glow, 12px) var(--flare-peak, var(--hi));
+    transform: translateY(calc(-1 * var(--wordmark-lift)));
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  /* 180ms stagger against a 360ms letter: each one is dropping back as the next
+   * lights, which is what makes it read as one wave rather than four blinks.
+   * Duration and stagger are variables so the footer can run the same wave
+   * slower on its much bigger mark, where the nav's snappy pace feels frantic. */
+  [data-wave] .wordmark-letter {
+    display: inline-block;
+    animation: wordmark-flare var(--flare-duration, 360ms) ease-out both;
+    animation-delay: calc(var(--i) * var(--flare-stagger, 180ms));
+  }
+  /* Footer variant: swap the fill flare for the glow swell. Only the animation
+   * name and easing change; duration/stagger/fill-mode ride along from the rule
+   * above. */
+  .wordmark-signoff[data-wave] .wordmark-letter {
+    animation-name: wordmark-signoff;
+    animation-timing-function: ease-in-out;
+  }
+}
+
 @layer utilities {
   /* Subtle CRT scanline overlay for hero bands.
    *
