@@ -517,19 +517,20 @@ export const projects: Project[] = [
       status: "sunset",
       sections: {
         problem: [
-          "The documentary research team spent real time finding leads and angles on a new subject. The question was whether an early LLM could surface threads worth pursuing and give researchers a faster starting point.",
+          "Documentary research is slow by nature: a new subject means days of reading before anyone knows whether there is a story in it, and that time caps how many subjects ever get looked at. The obvious question was whether an early LLM could shorten it. The better one was whether it could widen it, surfacing angles a researcher would not have thought to go looking for. The target was not a faster researcher. It was a researcher with a wider net.",
         ],
         constraints: [
           "This was 2023, on GPT-3.5 and GPT-4, before there were patterns to copy. Early models were unreliable, and an internal creative team has a high bar for what it will trust. Getting output stable enough to be useful was the hard part.",
         ],
         approach: [
-          "Input a subject name, get back biographical leads, story angles, and threads to pull. Paired with the CTO on architecture and prompt strategy, and owned significant chunks of the implementation. Built integration tests that run live OpenAI calls with graded responses, keeping output inside tolerance bands. That harness came years before checking LLMs in CI was standard, and the same pattern carried through to GrowthNation three years later.",
+          "Input a subject name, get back biographical leads, story angles, and threads to pull. Built integration tests that run live OpenAI calls with graded responses, keeping output inside tolerance bands. That harness came years before checking LLMs in CI was standard, and the same pattern carried through to GrowthNation three years later.",
         ],
         contribution: [
-          "A paired role, stated honestly: the CTO drove it, I paired and owned significant implementation chunks, including the graded-LLM test harness.",
+          "The CTO drove the project and we paired on architecture and prompt strategy. The build was mine: the frontend, the data ingestion, the API connections, and the prompting layer, which refused to sit still. It started as prompt engineering, became tool calling when OpenAI shipped it partway through the build, and settled on feeding the model canned data and having it extract the specific facts we needed, rather than trusting it to recall them. The graded-LLM test harness came out of the same work.",
         ],
         outcome: [
-          'A capable, working tool. It was sunset because the creative research team preferred its traditional workflow, with the head of research objecting to "AI slop." The tech worked; adoption was blocked by preference, not capability.',
+          'A capable, working tool that went unused. The research team preferred its traditional workflow and the head of research objected to "AI slop". Underneath the objection sat a positioning problem: a studio built on high-end, long-form documentary had no appetite for stories mined and told at volume, so the thing the tool was good at was the thing they did not want. The tech worked; adoption was blocked by preference, not capability.',
+          "The postscript is that the format was right and the audience was there, just not for that studio. YouTube is now full of channels doing exactly this, digging out an unusual angle and building the narrative and the visuals with AI: how London grew from nothing to its present size, each era animated.",
         ],
         reflection: [
           "The durable artifact is the graded-LLM integration test pattern, built well ahead of the curve. The temporal signal (production LLM work in 2023) matters more than the tool that got shelved.",
