@@ -13,11 +13,11 @@ import { OG_SHARED } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
 const SECTION_ORDER = [
-  { key: "problem", kicker: "the situation", title: "Problem" },
-  { key: "constraints", kicker: "the guardrails", title: "Constraints" },
+  { key: "problem", kicker: "where it started", title: "Problem" },
+  { key: "constraints", kicker: "what made it hard", title: "Constraints" },
   { key: "approach", kicker: "how it was built", title: "Approach" },
   { key: "contribution", kicker: "my lane", title: "Contribution" },
-  { key: "outcome", kicker: "the result", title: "Outcome" },
+  { key: "outcome", kicker: "how it landed", title: "Outcome" },
   { key: "reflection", kicker: "what mattered", title: "Reflection" },
 ] as const;
 
