@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 
 import { Wordmark } from "@/components/wordmark";
+import { cn } from "@/lib/utils";
 
 /** Marks this browsing session's footer sign-off as spent. sessionStorage, not
  *  localStorage: "once per visit" is a session, so a tab close resets it and a
@@ -19,15 +20,31 @@ export const FOOTER_ENTER_DELAY_MS = 400;
 const BOTTOM_SLOP_PX = 2;
 
 /**
- * Rest and peak colours for the footer's coral wave. It runs the SAME flare as
- * the nav, but the nav mark is 38px and this one is ~200px, so full coral would
- * blare; the peak is dialled back to a translucent coral and the rest matches
- * the mark's own `text-ink/10` ghost, so the wave shimmers through and settles
- * back invisibly. Both track their theme tokens (`--hi`, `--ink`).
+ * The footer's dialled-down wave. Same gesture as the nav, but a ~200px mark
+ * can't take the nav's treatment:
+ *  - it lights the glyphs with a soft glow, not a fill (`.wordmark-signoff`
+ *    swaps the keyframe for a text-shadow swell) — `--flare-peak` is the glow's
+ *    coral, `--flare-glow` its blur;
+ *  - slower and wider-spaced, so the wave breathes across the mark;
+ *  - a fraction of the lift, since a big glyph rising far reads as a lurch
+ *    (`--wordmark-lift` overrides the value Wordmark sets from the headroom; a
+ *    smaller lift stays well within that room).
+ * `--flare-peak` tracks the `--hi` token, so it follows the theme.
  */
 const FOOTER_FLARE_STYLE: React.CSSProperties = {
-  "--flare-rest": "color-mix(in oklab, var(--ink) 10%, transparent)",
-  "--flare-peak": "color-mix(in oklab, var(--hi) 55%, transparent)",
+  // A faint coral backlight behind the glyphs — the percentage is how much coral
+  // shows, so a low value keeps it barely-there, a hint of warmth not a fill.
+  "--flare-peak": "color-mix(in oklab, var(--hi) 25%, transparent)",
+  // Ever so slight: a tight blur haloes the glyph edges (behind, not bleeding
+  // into the letter faces) without turning into a smear.
+  "--flare-glow": "6px",
+  // Tight stagger against the duration keeps ~3-4 letters lit at once, so the
+  // glow reads as one band of light flowing across the word rather than four
+  // separate blinks. Quicker than before, and the lift is shaved again — on this
+  // mark even a few px of growth is plenty, the illumination carries it.
+  "--flare-duration": "620ms",
+  "--flare-stagger": "175ms",
+  "--wordmark-lift": "0.02em",
 } as React.CSSProperties;
 
 /**
@@ -95,7 +112,7 @@ export function FooterWordmark({
     <Wordmark
       flare
       play={play}
-      className={className}
+      className={cn("wordmark-signoff", className)}
       style={{ ...FOOTER_FLARE_STYLE, ...style }}
     />
   );
