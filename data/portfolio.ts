@@ -492,7 +492,7 @@ export const projects: Project[] = [
           "Used in real pitch decisions. The bigger takeaway landed at the org level: documentary funding turned out to be driven by human storytelling, not statistics, which fed a strategic pivot away from data-led greenlighting. The tool did its job; the lesson was about the limits of the data.",
         ],
         reflection: [
-          "Knowing what not to build is the signal here. Predicting the future is hard if not impossible. Trying to decipher future from past performance data Skipping the semantic-search layer kept the thing shippable and honest about where the real judgement sat.",
+          "Knowing what not to build is the signal here, and it applied at two levels. In the code, skipping the semantic-search layer kept the thing shippable and honest about where the real judgement sat. In the product, the ask that looked smart was answerable: read past data to see what not to do, notice that comparable titles drew a small audience, don't bet that way. That part worked. But underneath it sat a quieter ambition to predict the next film, and no dataset does that. Past performance describes what happened; it doesn't tell you what's coming.",
         ],
       },
     },
