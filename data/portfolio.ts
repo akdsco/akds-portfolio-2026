@@ -697,7 +697,7 @@ export const experience: WorkExperience[] = [
     workType: "Remote",
     employmentType: "Full-time",
     summary:
-      "B2B SaaS for online-meeting productivity, and the first of three companies alongside Ben Ritchie, who mentored Akds from junior to mid-level.",
+      "B2B SaaS for online-meeting productivity. Hired as the first employee developer to take over after the initial contract prototype build.",
     highlights: [
       "Ported the error prone Blaze front-end to React, reducing frontend error rate roughly by 30% and without breaking production.",
       "Internalised unidirectional data flow and reactive DB-driven background refresh patterns to eliminate backend/frontend data sync issues",
