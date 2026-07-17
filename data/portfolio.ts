@@ -531,10 +531,9 @@ export const projects: Project[] = [
         ],
         outcome: [
           'A capable, working tool that went unused. The research team preferred its traditional workflow and the head of research objected to "AI slop". Underneath the objection sat a positioning problem: a studio built on high-end, long-form documentary had no appetite for stories mined and told at volume, so the thing the tool was good at was the thing they did not want. The tech worked; adoption was blocked by preference, not capability.',
-          "The postscript is that the format was right and the audience was there, just not for that studio. YouTube is now full of channels doing exactly this, digging out an unusual angle and building the narrative and the visuals with AI: how London grew from nothing to its present size, each era animated.",
         ],
         reflection: [
-          "The durable artifact is the graded-LLM integration test pattern, built well ahead of the curve. The temporal signal (production LLM work in 2023) matters more than the tool that got shelved.",
+          "The part that outlived the tool is the graded-LLM test harness, and the fact of shipping production LLM work in 2023 at all. That is the transferable engineering. The tool itself I file under timing: it did what a wave of YouTube channels turned into a format three years later, and it still died in-house, because being right too early is hard to tell apart from being wrong.",
         ],
       },
     },
