@@ -55,6 +55,18 @@ function useScrollingDown() {
       requestAnimationFrame(() => {
         queued = false;
         const y = window.scrollY;
+
+        // Rubber-banding isn't reading. Drag past either end on iOS and the
+        // page keeps reporting scroll — out past the bottom, then back as it
+        // springs home — so the bar read the bounce as a genuine change of
+        // direction and flapped open and shut under a held finger. Beyond the
+        // document's real range there is no direction to have an opinion about:
+        // sit still and don't move `last`, so the spring back doesn't register
+        // as a deliberate pull upward either.
+        const furthest =
+          document.documentElement.scrollHeight - window.innerHeight;
+        if (y < 0 || y > furthest) return;
+
         const delta = y - last;
         // Leave `last` alone below the threshold so slow movement accumulates
         // rather than being discarded a pixel at a time.
