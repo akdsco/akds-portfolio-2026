@@ -376,7 +376,7 @@
     transition: transform 280ms ease-out;
   }
   .wordmark-hoverlift:hover .wordmark-inner {
-    transform: translateY(calc(-1 * var(--wordmark-hover-lift, 0.05em)));
+    transform: translateY(calc(-1 * var(--wordmark-hover-lift, 0.08em)));
   }
 }
 
