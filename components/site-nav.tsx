@@ -8,6 +8,7 @@ import { GithubIcon, LinkedinIcon } from "@/components/icons";
 import { ModeToggle } from "@/components/mode-toggle";
 import { Wordmark } from "@/components/wordmark";
 import { profile } from "@/data/portfolio";
+import { useDwellFlare } from "@/lib/use-dwell-flare";
 import { cn } from "@/lib/utils";
 
 const links = [
@@ -26,6 +27,7 @@ const navSocials = profile.socials
 
 export function SiteNav() {
   const pathname = usePathname();
+  const flare = useDwellFlare();
   const isActive = (href: string) =>
     href === "/projects" ? pathname.startsWith("/projects") : pathname === href;
 
@@ -36,16 +38,22 @@ export function SiteNav() {
       <nav className="mx-auto flex h-14 w-full max-w-5xl items-center justify-between px-6 md:px-8">
         {/* self-end puts the mark's bottom on the header's bottom border, so the
             border itself is what cuts it. */}
+        {/* The dwell lives on the link, not the mark: the mark is only ~25px of
+            a 38px hit area, and a pointer resting in the padding is still
+            resting on the logo. */}
         <Link
           href="/about"
           aria-label="akds — home"
           className="-mx-2 self-end px-2"
+          {...flare.handlers}
         >
           {/* faint, not ink: softened so the mark sits in the bar rather than
               dominating it. Still a nav link, so it stops well short of the
               footer's ghost — at 38px bold it clears WCAG's 3:1 for large text
               in both themes, and brightens to ink on hover. */}
           <Wordmark
+            animated
+            runId={flare.runId}
             className="text-faint hover:text-ink font-semibold transition-colors"
             style={{ fontSize: 38 }}
           />
