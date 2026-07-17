@@ -20,15 +20,20 @@ const BOTTOM_SLACK_PX = 2;
  * the top of the viewport got each of them wrong, because it can only report
  * what is crossing and has nothing to say at either end of the document:
  *
- * - Sections at the foot of a short case study never reach a line near the top
- *   of the viewport: the document runs out of scroll while they are still
- *   halfway down the screen. On a case study with no endorsement to lengthen it,
- *   two of six sections could not light at any scroll position, and the TOC sat
- *   on Contribution while the reader was looking at Reflection. Padding the page
- *   until they can reach the line costs most of a viewport of dead space and
- *   scales with viewport height, so no fixed number is right. Being at the
- *   bottom is its own answer: there is nothing below, so the last section is
- *   where the reader is.
+ * - A section can only reach a line near the top of the viewport if the document
+ *   has enough scroll left below it, and the last one never does: the page runs
+ *   out while it is still halfway down the screen. It is the taller viewport
+ *   that suffers, since a tall one leaves less to scroll — on a case study with
+ *   no endorsement to lengthen it, Reflection needs a viewport under ~515px to
+ *   light on its own, so on any desktop the TOC sat on the section before it
+ *   while the reader was looking at Reflection. Padding the page until the tail
+ *   can reach the line costs most of a viewport of dead space and scales with
+ *   viewport height, so no fixed number is right. Being at the bottom is its own
+ *   answer: there is nothing below, so the last section is where the reader is.
+ *
+ *   This rescues the last section, not the tail in general. On the same page a
+ *   viewport over ~840px tall leaves Outcome unable to reach the line either,
+ *   and nothing lights it. That needs a longer page rather than a cleverer spy.
  * - Above the first heading nothing has crossed the line, which the observer
  *   read as "no news" and left the previous section lit, so scrolling back to
  *   the top kept Approach highlighted. Falling back to the first section is what
