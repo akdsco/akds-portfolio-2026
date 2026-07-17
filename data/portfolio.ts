@@ -539,30 +539,6 @@ export const projects: Project[] = [
       },
     },
   },
-  {
-    slug: "film-production-tracking",
-    title: "Film production tracking platform",
-    company: "Noah Media Group",
-    stack: ["TypeScript", "React", "Node", "MongoDB"],
-    hook: "Drove database design and early prototypes with the CEO and Skyscanner co-founder Bonamy Grimes, giving leadership visibility into production progress.",
-    featured: false,
-  },
-  {
-    slug: "connect4-meetings",
-    title: "Meeting productivity platform",
-    company: "Connect4",
-    stack: ["React", "Meteor.js", "WebSockets"],
-    hook: "Ported the Blaze front-end to React and shipped agenda drag-and-drop plus recurring meeting templates.",
-    featured: false,
-  },
-  {
-    slug: "wutzu-stores-panel",
-    title: "Stores panel",
-    company: "Wutzu Technologies",
-    stack: ["JavaScript", "Node", "Payments API"],
-    hook: "Refactored the MVP and shipped the first production stores panel, still in use in some areas to this day.",
-    featured: false,
-  },
 ];
 
 export const experience: WorkExperience[] = [
