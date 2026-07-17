@@ -82,6 +82,15 @@ describe("FooterWordmark", () => {
     expect(el).not.toHaveAttribute("data-wave");
   });
 
+  // The hover lift is pure CSS (`:hover` on `.wordmark-hoverlift`, see
+  // globals.css) and jsdom has no hover or layout to exercise it — but the class
+  // is the contract the rule hangs off, so guard that it's actually applied.
+  test("opts into the hover lift", () => {
+    const el = mark(<FooterWordmark />);
+    expect(el).toHaveClass("wordmark-hoverlift");
+    expect(el.querySelector(".wordmark-inner")).not.toBeNull();
+  });
+
   test("stays still while the reader is mid-page", () => {
     const el = mark(<FooterWordmark />);
     setScroll({ scrollY: 1200 }); // partway down a 3000px page

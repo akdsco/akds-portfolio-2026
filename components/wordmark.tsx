@@ -73,7 +73,14 @@ export function Wordmark({
         ...style,
       }}
     >
-      <span style={{ lineHeight: 1, letterSpacing: WORDMARK_TRACKING }}>
+      {/* The single flex child that holds every letter. `wordmark-inner` is the
+          hook a surface can lift as one block — see `.wordmark-hoverlift` in
+          globals.css, where the footer raises the whole word on hover while the
+          per-letter wave still transforms each letter on top. */}
+      <span
+        className="wordmark-inner"
+        style={{ lineHeight: 1, letterSpacing: WORDMARK_TRACKING }}
+      >
         {flare
           ? Array.from(WORDMARK).map((letter, i) => (
               <span

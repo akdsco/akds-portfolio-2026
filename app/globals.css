@@ -364,6 +364,20 @@
     animation-name: wordmark-signoff;
     animation-timing-function: ease-in-out;
   }
+
+  /* Hover lift: the whole word rises as one on pointer-over, then sinks back
+   * into the crop line when the pointer leaves. The transform is on the inner
+   * block (all letters together, a plain transition — not the staggered wave),
+   * so the per-letter sign-off wave transforms each glyph ON TOP of this and the
+   * two compose without fighting. It rides the flare headroom the box already
+   * reserves (--wordmark-lift, 0.08em): the lift below stays under it, so raised
+   * glyph tops never reach the clip edge. */
+  .wordmark-hoverlift .wordmark-inner {
+    transition: transform 280ms ease-out;
+  }
+  .wordmark-hoverlift:hover .wordmark-inner {
+    transform: translateY(calc(-1 * var(--wordmark-hover-lift, 0.05em)));
+  }
 }
 
 @layer utilities {
