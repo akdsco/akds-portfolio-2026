@@ -52,7 +52,7 @@ export function SiteNav() {
               footer's ghost — at 38px bold it clears WCAG's 3:1 for large text
               in both themes, and brightens to ink on hover. */}
           <Wordmark
-            animated
+            flare
             runId={flare.runId}
             className="text-faint hover:text-ink font-semibold transition-colors"
             style={{ fontSize: 38 }}
