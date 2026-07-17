@@ -717,7 +717,8 @@ export const experience: WorkExperience[] = [
     location: "London, UK",
     workType: "Hybrid",
     employmentType: "Full-time",
-    summary: '"Deliveroo for small independent London shops."',
+    summary:
+      '"Deliveroo for small independent London shops." Hired as the second of two engineers on the product.',
     highlights: [
       "Refactored the MVP codebase and shipped the first production stores panel.",
       "Built order and basket flows with external payment-API integration.",
