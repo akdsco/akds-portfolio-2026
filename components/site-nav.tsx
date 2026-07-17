@@ -11,6 +11,7 @@ import { GithubIcon, LinkedinIcon } from "@/components/icons";
 import { ModeToggle } from "@/components/mode-toggle";
 import { Wordmark } from "@/components/wordmark";
 import { profile } from "@/data/portfolio";
+import { useDwellFlare } from "@/lib/use-dwell-flare";
 import { cn } from "@/lib/utils";
 
 const links = [
@@ -96,6 +97,7 @@ const navSocials = profile.socials
 
 export function SiteNav() {
   const pathname = usePathname();
+  const flare = useDwellFlare();
   const { open } = usePalette();
   const scrollingDown = useScrollingDown();
   const isActive = (href: string) =>
@@ -143,17 +145,24 @@ export function SiteNav() {
             Nothing may make this box taller than the bar. overflow-hidden makes
             the header a scroll container, so focus landing on a box that
             overflows it scrolls the bar to reveal it — lifting the mark and
-            shoving the nav links up, and staying that way. */}
+            shoving the nav links up, and staying that way.
+
+            The dwell handlers live on the link, not the mark: the mark is only
+            ~25px of a 38px hit area, and a pointer resting in the padding is
+            still resting on the logo. */}
         <Link
           href="/about"
           aria-label="akds — home"
           className="-mx-2 self-end rounded-t-md px-2"
+          {...flare.handlers}
         >
           {/* faint, not ink: softened so the mark sits in the bar rather than
               dominating it. Still a nav link, so it stops well short of the
               footer's ghost — at 38px bold it clears WCAG's 3:1 for large text
               in both themes, and brightens to ink on hover. */}
           <Wordmark
+            flare
+            runId={flare.runId}
             className="text-faint hover:text-ink font-semibold transition-colors"
             style={{ fontSize: 38 }}
           />
