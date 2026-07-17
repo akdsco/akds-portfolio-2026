@@ -49,7 +49,12 @@ export function Wordmark({
         // The headroom the lift travels through. The box grows upward by exactly
         // what the text is pushed down by, so the bottom cut — the edge the nav
         // border lines up with — does not move.
-        ...(animated && { paddingTop: WORDMARK_LIFT_HEIGHT }),
+        ...(animated && {
+          paddingTop: WORDMARK_LIFT_HEIGHT,
+          // Same constant drives the keyframe, so the letters can't rise further
+          // than the headroom that was bought for them.
+          "--wordmark-lift": WORDMARK_LIFT_HEIGHT,
+        }),
         lineHeight: 1,
         // Splitting text into spans drops kerning across the boundaries, which
         // would leave the animated mark a hair wider than the plain one. The

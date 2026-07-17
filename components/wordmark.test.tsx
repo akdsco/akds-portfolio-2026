@@ -59,6 +59,16 @@ describe("Wordmark", () => {
     expect(ems(box.style.paddingTop)).toBeCloseTo(WORDMARK_LIFT);
   });
 
+  // The keyframe rises by --wordmark-lift. If it could exceed the headroom the
+  // letters would climb into their own clip edge and lose their tops, which is
+  // the bug the headroom exists to prevent.
+  test("never lets the lift outrun the headroom", () => {
+    const box = clipBox(<Wordmark animated />);
+    expect(box.style.getPropertyValue("--wordmark-lift")).toBe(
+      box.style.paddingTop,
+    );
+  });
+
   test("takes no headroom when not animated", () => {
     const box = clipBox(<Wordmark />);
     expect(box.style.height).toBe(WORDMARK_CLIP_HEIGHT);

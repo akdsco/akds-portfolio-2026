@@ -295,6 +295,44 @@
   }
 }
 
+/* Nav wordmark flare: park the pointer on the logo for a few seconds and the
+ * letters light coral left to right, each lifting and dropping back as the next
+ * takes over. An easter egg for whoever lingers, so it stays quiet: nothing
+ * announces it, and one sweep per dwell rather than a loop that would pull the
+ * eye off the page.
+ *
+ * The colour holds without a hover rule fighting it. The keyframe runs ink ->
+ * hi -> ink with fill-mode `both`, so a letter waiting out its delay is frozen
+ * at the FIRST keyframe — already the hover colour. Nothing flickers back to
+ * faint mid-sweep.
+ *
+ * The lift needs the headroom Wordmark adds (`animated`); without it the letters
+ * would rise into their own clip edge and lose their tops. --wordmark-lift is
+ * set inline from the same constant that sizes that headroom. */
+@keyframes wordmark-flare {
+  0% {
+    color: var(--ink);
+    transform: translateY(0);
+  }
+  35% {
+    color: var(--hi);
+    transform: translateY(calc(-1 * var(--wordmark-lift)));
+  }
+  100% {
+    color: var(--ink);
+    transform: translateY(0);
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  /* 180ms stagger against a 360ms letter: each one is dropping back as the next
+   * lights, which is what makes it read as one wave rather than four blinks. */
+  [data-wave] .wordmark-letter {
+    display: inline-block;
+    animation: wordmark-flare 360ms ease-out both;
+    animation-delay: calc(var(--i) * 180ms);
+  }
+}
+
 @layer utilities {
   /* Subtle CRT scanline overlay for hero bands. */
   .scanline {
