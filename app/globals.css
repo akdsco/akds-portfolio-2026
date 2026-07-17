@@ -295,31 +295,33 @@
   }
 }
 
-/* Nav wordmark flare: park the pointer on the logo for a few seconds and the
- * letters light coral left to right, each lifting and dropping back as the next
- * takes over. An easter egg for whoever lingers, so it stays quiet: nothing
- * announces it, and one sweep per dwell rather than a loop that would pull the
- * eye off the page.
+/* Wordmark flare: the letters light coral left to right, each lifting and
+ * dropping back as the next takes over. The nav runs it as a hover easter egg
+ * (park the pointer on the logo); the footer runs it once, as a sign-off, when
+ * the reader reaches the bottom. Same wave both places — only the colour
+ * differs, so the footer's giant ghost shimmers instead of blaring.
  *
- * The colour holds without a hover rule fighting it. The keyframe runs ink ->
- * hi -> ink with fill-mode `both`, so a letter waiting out its delay is frozen
- * at the FIRST keyframe — already the hover colour. Nothing flickers back to
- * faint mid-sweep.
+ * The colour holds without a hover rule fighting it: the keyframe runs
+ * rest -> peak -> rest with fill-mode `both`, so a letter waiting out its delay
+ * is frozen at the FIRST keyframe — already the resting colour. Nothing flickers
+ * mid-sweep. The endpoints are variables so each surface sets its own: the nav
+ * defaults to ink -> hi (full coral on a small mark); the footer overrides both
+ * to its ghost and a softened coral.
  *
- * The lift needs the headroom Wordmark adds (`animated`); without it the letters
+ * The lift needs the headroom Wordmark's `flare` adds; without it the letters
  * would rise into their own clip edge and lose their tops. --wordmark-lift is
  * set inline from the same constant that sizes that headroom. */
 @keyframes wordmark-flare {
   0% {
-    color: var(--ink);
+    color: var(--flare-rest, var(--ink));
     transform: translateY(0);
   }
   35% {
-    color: var(--hi);
+    color: var(--flare-peak, var(--hi));
     transform: translateY(calc(-1 * var(--wordmark-lift)));
   }
   100% {
-    color: var(--ink);
+    color: var(--flare-rest, var(--ink));
     transform: translateY(0);
   }
 }
@@ -330,33 +332,6 @@
     display: inline-block;
     animation: wordmark-flare 360ms ease-out both;
     animation-delay: calc(var(--i) * 180ms);
-  }
-}
-
-/* Footer wordmark assemble: the first time the ghosted mark scrolls into view
- * in a visit, its letters rise into place left to right — a quiet sign-off at
- * the foot of the page. Once per visit (a sessionStorage flag in
- * FooterWordmark), so it reads as a moment rather than nagging on every scroll.
- *
- * Rises from BELOW into rest, so unlike the nav flare it needs no headroom: the
- * letters start lower (further into the bottom crop) and fade up to where they
- * always sit. `both` holds them at the hidden first frame through their delay,
- * so the stagger reads as one settle rather than four blinks. */
-@keyframes wordmark-assemble {
-  from {
-    opacity: 0;
-    transform: translateY(0.12em);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-@media (prefers-reduced-motion: no-preference) {
-  [data-assemble] .wordmark-letter {
-    display: inline-block;
-    animation: wordmark-assemble 0.55s ease-out both;
-    animation-delay: calc(var(--i) * 110ms);
   }
 }
 
