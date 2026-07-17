@@ -42,7 +42,10 @@ export type HeroCopy = {
 
 export type AboutCopy = {
   name: string;
-  tagline: string;
+  /** Chunks that wrap as whole units. As one string the browser broke it
+   *  wherever it liked and stranded a "·" at the line end; each chunk now stays
+   *  intact and the renderer supplies the separator between them. */
+  tagline: string[];
   paragraphs: string[];
 };
 
@@ -222,7 +225,8 @@ export const hero: HeroCopy = {
 
 export const about: AboutCopy = {
   name: "Arkadiusz Ostrowski",
-  tagline: "Software Engineer · Full-Stack · TypeScript · React · Node",
+  // Role, then stack — the two halves a reader would split it into anyway.
+  tagline: ["Software Engineer · Full-Stack", "TypeScript · React · Node"],
   paragraphs: [
     "Six years building production software, most recently shipping a social-proof OS for sales teams at GrowthNation and an AI research platform at Noah Media Group.",
     "Comfortable with the TypeScript stack end-to-end, React/Next on the front, Node + Postgres + BullMQ + multi-provider LLM on the back. Two-year track record of delivering AI-assisted features in production, from a 2023 research tool on GPT-3.5/4 to a 2026 proof engine using the Vercel AI SDK, Anthropic, OpenAI, OpenRouter, and a custom MCP server layer.",

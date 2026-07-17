@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { Fragment } from "react";
 
 import { HeroPrompt } from "@/components/command-palette";
 import { HeroBand } from "@/components/hero-band";
@@ -39,8 +40,19 @@ export function Hero() {
       <h1 className="text-ink mb-2 text-4xl font-semibold tracking-tight sm:text-[44px]">
         {about.name}
       </h1>
-      <div className="text-brand mb-6 font-mono text-[13px]">
-        {about.tagline}
+      {/* Two chunks, two states: one line above 520px, stacked below. Measured
+          rather than guessed — the full line is 453px, so it needs a 501px
+          viewport, and the widest chunk needs only 282px. The separator is its
+          own element that goes with the single-line state, because a "·" is
+          only a separator while there's something beside it; wrapped, it just
+          dangles at the end of a line. */}
+      <div className="text-brand mb-6 flex flex-col font-mono text-[13px] min-[520px]:flex-row min-[520px]:gap-x-2">
+        {about.tagline.map((chunk, i) => (
+          <Fragment key={chunk}>
+            {i > 0 && <span className="hidden min-[520px]:inline">·</span>}
+            <span>{chunk}</span>
+          </Fragment>
+        ))}
       </div>
 
       <p className="text-ink mb-6 max-w-xl text-xl leading-relaxed font-medium text-pretty">

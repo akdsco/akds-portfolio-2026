@@ -132,10 +132,13 @@ export function SiteNav() {
       <nav className="mx-auto flex h-14 w-full max-w-5xl items-center justify-between px-6 md:px-8">
         {/* self-end puts the mark's bottom on the header's bottom border, so the
             border itself is what cuts it. */}
+        {/* rounded-md to match the nav links: the focus ring is an outline, and
+            an outline follows its element's own radius — with none set, the
+            wordmark's ring came out square next to every other rounded one. */}
         <Link
           href="/about"
           aria-label="akds — home"
-          className="-mx-2 self-end px-2"
+          className="-mx-2 self-end rounded-md px-2"
         >
           {/* faint, not ink: softened so the mark sits in the bar rather than
               dominating it. Still a nav link, so it stops well short of the
