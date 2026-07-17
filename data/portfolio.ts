@@ -228,8 +228,8 @@ export const about: AboutCopy = {
   tagline: ["Software Engineer · Full-Stack", "TypeScript · React · Node"],
   paragraphs: [
     "Six years building production software, most recently shipping a social-proof OS for sales teams at GrowthNation and an AI research platform at Noah Media Group.",
-    "Comfortable with the TypeScript stack end-to-end, React/Next on the front, Node + Postgres + BullMQ + multi-provider LLM on the back. Two-year track record of delivering AI-assisted features in production, from a 2023 research tool on GPT-3.5/4 to a 2026 proof engine using the Vercel AI SDK, Anthropic, OpenAI, OpenRouter, and a custom MCP server layer.",
-    "Career-changer. Worked in sales for ten years across Poland and the UK before self-teaching into software via OpenClassrooms and the London Java Community.",
+    "Two-year track record of delivering AI-assisted features in production, from a 2023 research tool on GPT-3.5/4 to a 2026 proof engine using the Vercel AI SDK, Anthropic, OpenAI, OpenRouter, and a custom MCP server layer. Comfortable with the TypeScript stack end-to-end.",
+    "Career-changer. Worked in sales for ten years across Poland and the UK before self-teaching into software via OpenClassrooms, the London Java Community and countless online courses and certifications.",
   ],
 };
 
@@ -575,9 +575,10 @@ export const experience: WorkExperience[] = [
     summary:
       "Founding-team engineer on a social-proof OS for sales teams, through a CEO-driven pivot.",
     highlights: [
-      "Built the Proof Library / Proof Store: ingestion (URL scrape, file upload, AI-vision screenshot extraction), dashboard with coverage matrix, and MCP/agentic access.",
-      "Server-side LLM tagging as an architectural unlock. Every new quote, stat, or case study is tagged against the workspace's ICPs and pain points before save returns, with fan-out re-tag on edits.",
-      "Co-created an autonomous AI bug-triage system that performs root-cause analysis (temporal ordering, source prioritisation, fingerprinting, cascade detection) and opens clean fix PRs on its own.",
+      'Joined during the initial product build for marketing function, helping SME\'s and Agencies streamline their AIO/SEO tactics, I built user auth, custom integrations and setup "code factory" workflow with the CTO to enable build contributions from all team members (product/design)',
+      "Built the Proof Library: ingestion (domain scrape, file upload, AI-vision screenshot extraction), dashboard with coverage matrix, and MCP/agentic access.",
+      "Server-side LLM tagging, every new quote, stat, or case study was tagged against the workspace's ICPs and pain points before save returns, with fan-out re-tag on edits.",
+      "Co-created an autonomous AI bug-triage system that performs root-cause analysis (temporal ordering, source prioritisation, fingerprinting, cascade detection) and opens clean fix PRs with plans and implementations on its own.",
     ],
     stack: {
       lead: [
@@ -618,10 +619,10 @@ export const experience: WorkExperience[] = [
     workType: "Hybrid",
     employmentType: "Full-time",
     summary:
-      "Promoted to lead as the sole remaining technical IC after the CTO's departure, and drove product until the tech arm wound down.",
+      "Promoted to lead as the sole remaining technical IC after the CTO's departure, and iterated on the new product until the tech arm wound down.",
     highlights: [
       "Built the film production tracking platform: database design, problem definition, early prototypes.",
-      "Worked closely with the CEO and Bonamy Grimes on prioritisation and stakeholder framing.",
+      "Worked closely with the CEO and the former Skyscanner CTO, Bonamy Grimes on prioritisation and stakeholder framing.",
     ],
     stack: {
       lead: [
@@ -646,11 +647,11 @@ export const experience: WorkExperience[] = [
     workType: "Hybrid",
     employmentType: "Full-time",
     summary:
-      "Second engineer in NMG's newly-formed tech arm, building three products 0→1 over three years.",
+      "First engineer in NMG's newly formed tech arm, building two products from scratch over three years.",
     highlights: [
       "[SlateIQ](https://slateiq.com/): film success prediction. Combined IMDB, social, piracy, and market data into a comp-matching tool used in pitch decisions.",
       "AI-powered research assistant on GPT-3.5/4 in 2023. Integration tests ran live LLM calls with graded responses to stabilise output, years before this became standard practice.",
-      "Established currying-based dependency injection as a team pattern (carries through to GrowthNation three years later).",
+      "Established currying-based dependency injection as a team pattern, saving us from elaborate testing effort",
     ],
     stack: {
       lead: [
@@ -698,9 +699,9 @@ export const experience: WorkExperience[] = [
     summary:
       "B2B SaaS for online-meeting productivity, and the first of three companies alongside Ben Ritchie, who mentored Akds from junior to mid-level.",
     highlights: [
-      "Ported the Blaze front-end to React without breaking production.",
-      "Built agenda creation with drag-and-drop and recurring meeting templates.",
-      "Internalised unidirectional data flow and reactive DB-driven background refresh patterns.",
+      "Ported the error prone Blaze front-end to React, reducing frontend error rate roughly by 30% and without breaking production.",
+      "Internalised unidirectional data flow and reactive DB-driven background refresh patterns to eliminate backend/frontend data sync issues",
+      "Built agenda creation feature with drag-and-drop and recurring meeting templates.",
     ],
     stack: {
       lead: ["Meteor.js", "Blaze", "React", "WebSockets", "MongoDB"],
@@ -718,9 +719,8 @@ export const experience: WorkExperience[] = [
     employmentType: "Full-time",
     summary: '"Deliveroo for small independent London shops."',
     highlights: [
-      'Refactored the MVP codebase and shipped the first production stores panel (Hevar Abrihem: "still in use in some areas to this day").',
+      "Refactored the MVP codebase and shipped the first production stores panel.",
       "Built order and basket flows with external payment-API integration.",
-      "Promoted from Intern to JavaScript Developer in seven months.",
     ],
     stack: {
       lead: [
