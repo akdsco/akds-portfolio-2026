@@ -439,7 +439,7 @@ export const projects: Project[] = [
     stack: ["React Native", "iOS", "TypeScript"],
     hook: "Solo-shipped an iOS app to test whether cyclists wanted one home for routes scattered across Garmin, Strava, Komoot, and club Google Docs, then killed it when the market said no.",
     featured: true,
-    role: "Solo build",
+    role: "All hats were mine",
     period: "Mar to Jun 2025",
     caseStudy: {
       status: "canned",
@@ -511,7 +511,7 @@ export const projects: Project[] = [
     ],
     hook: "Co-built a documentary research assistant on GPT-3.5/4 in 2023, before AI-assisted tooling was a category: give it a subject, it returned biographical leads and story angles worth chasing.",
     featured: true,
-    role: "Software Engineer (paired with the CTO)",
+    role: "Software Engineer",
     period: "2023",
     caseStudy: {
       status: "sunset",
