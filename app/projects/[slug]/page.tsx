@@ -13,11 +13,11 @@ import { OG_SHARED } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
 const SECTION_ORDER = [
-  { key: "problem", kicker: "the situation", title: "Problem" },
-  { key: "constraints", kicker: "the guardrails", title: "Constraints" },
+  { key: "problem", kicker: "where it started", title: "Problem" },
+  { key: "constraints", kicker: "what made it hard", title: "Constraints" },
   { key: "approach", kicker: "how it was built", title: "Approach" },
   { key: "contribution", kicker: "my lane", title: "Contribution" },
-  { key: "outcome", kicker: "the result", title: "Outcome" },
+  { key: "outcome", kicker: "how it landed", title: "Outcome" },
   { key: "reflection", kicker: "what mattered", title: "Reflection" },
 ] as const;
 
@@ -99,6 +99,17 @@ export default async function CaseStudyPage({
       </HeroBand>
 
       <div className="mx-auto grid max-w-[900px] items-start gap-11 px-6 pt-11 pb-6 md:px-11 lg:grid-cols-[1fr_252px]">
+        {/* Mobile-only meta. The desktop <aside> below is `hidden lg:flex`, so
+            it drops away under lg — where the grid is one column and a sticky
+            sidebar can't exist anyway. This puts the same meta card up top,
+            ahead of the reading column (context before the read, not after it).
+            No TOC here: the case studies are short, so a jump-list earns nothing
+            on mobile. `lg:hidden` removes this from grid flow at lg, so the
+            desktop two-column layout is untouched. */}
+        <div className="lg:hidden">
+          <MetaCard project={project} />
+        </div>
+
         <div className="min-w-0">
           {sections.map((section) => (
             <section
@@ -157,7 +168,7 @@ export default async function CaseStudyPage({
             nothing to follow and stays put. */}
         <aside
           className={cn(
-            "flex flex-col gap-3.5 lg:sticky lg:top-20",
+            "hidden flex-col gap-3.5 lg:sticky lg:top-20 lg:flex",
             "transition-[top] duration-[380ms] ease-out motion-reduce:transition-none",
             "in-data-nav-hidden:duration-300 in-data-nav-hidden:motion-safe:lg:top-6",
           )}

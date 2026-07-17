@@ -5,6 +5,7 @@ import { Wordmark } from "@/components/wordmark";
 import {
   WORDMARK,
   WORDMARK_CLIP_HEIGHT,
+  WORDMARK_HOVER_LIFT,
   WORDMARK_LIFT,
   WORDMARK_VISIBLE,
 } from "@/lib/wordmark";
@@ -73,6 +74,37 @@ describe("Wordmark", () => {
     const box = clipBox(<Wordmark />);
     expect(box.style.height).toBe(WORDMARK_CLIP_HEIGHT);
     expect(box.style.paddingTop).toBe("");
+  });
+
+  // hoverLift opts the mark into the whole-word hover rise: the class the CSS
+  // hangs off, and the variable that caps how far the transform travels.
+  test("opts into the hover lift and caps its travel", () => {
+    const box = clipBox(<Wordmark flare hoverLift />);
+    expect(box).toHaveClass("wordmark-hoverlift");
+    expect(
+      ems(box.style.getPropertyValue("--wordmark-hover-lift")),
+    ).toBeCloseTo(WORDMARK_HOVER_LIFT);
+  });
+
+  // The hover lift and the flare wave can be on at once (hovered, then dwelled
+  // into a flare), so the box must reserve headroom for BOTH — or a waving glyph
+  // on a hovered mark climbs past its clip edge. The cut still lands at the same
+  // depth: it's the SUM that grows upward, the bottom edge never moves.
+  test("stacks headroom for the flare and the hover lift together", () => {
+    const box = clipBox(<Wordmark flare hoverLift />);
+    expect(ems(box.style.paddingTop)).toBeCloseTo(
+      WORDMARK_LIFT + WORDMARK_HOVER_LIFT,
+    );
+    expect(ems(box.style.height) - ems(box.style.paddingTop)).toBeCloseTo(
+      WORDMARK_VISIBLE,
+    );
+  });
+
+  // Without flare there's no wave, but the hover lift still needs its own room.
+  test("reserves headroom for a hover lift even with no flare", () => {
+    const box = clipBox(<Wordmark hoverLift />);
+    expect(ems(box.style.paddingTop)).toBeCloseTo(WORDMARK_HOVER_LIFT);
+    expect(box).not.toHaveAttribute("data-wave");
   });
 
   // Splitting text into spans drops kerning across the boundaries, which would

@@ -162,6 +162,7 @@ export function SiteNav() {
               in both themes, and brightens to ink on hover. */}
           <Wordmark
             flare
+            hoverLift
             runId={flare.runId}
             className="text-faint hover:text-ink font-semibold transition-colors"
             style={{ fontSize: 38 }}

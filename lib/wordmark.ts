@@ -49,6 +49,22 @@ export const WORDMARK_CLIP_HEIGHT = `${WORDMARK_VISIBLE}em`;
 /** CSS length of the flare's lift, for the clip box's headroom and the keyframe. */
 export const WORDMARK_LIFT_HEIGHT = `${WORDMARK_LIFT}em`;
 
+/**
+ * How far the whole word rises on hover (nav mark), as a ratio of font size like
+ * everything else here. This is a UNISON lift of all letters at once — the plain
+ * hover response — distinct from the staggered flare wave above.
+ *
+ * It stacks with the wave: a hovered mark that then dwells long enough to flare
+ * has both lifts on at once. So the clip box reserves headroom for BOTH (this +
+ * the flare lift), or a waving-while-hovered letter would rise past its own clip
+ * edge and lose its top. `Wordmark`'s `hoverLift` adds exactly this much on top
+ * of the flare headroom.
+ */
+export const WORDMARK_HOVER_LIFT = 0.08;
+
+/** CSS length of the hover lift, for the clip box's headroom and the transform. */
+export const WORDMARK_HOVER_LIFT_HEIGHT = `${WORDMARK_HOVER_LIFT}em`;
+
 /** Pixel height of the clip container for a given font size — for Satori, which
  *  needs concrete numbers rather than `em`. */
 export const wordmarkClipPx = (fontSize: number) =>
