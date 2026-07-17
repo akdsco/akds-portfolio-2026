@@ -427,7 +427,7 @@ export const projects: Project[] = [
           "The store, dashboard, and tagging layer shipped and ran for every workspace on the platform. Real customers used it, some of them outside the US. The product was demoed at a conference in June 2026, and the company had earlier reached the top 10% of a YC application round. My twelve-month contract finished on schedule.",
         ],
         reflection: [
-          "What made this work wasn't output speed. It was reading a founder-level ask, breaking it into layers, and making one call, tag on the way in and re-tag on change, that dealt with the empty-library problem and the drift problem together. The other half was staying honest about what the AI produced instead of shipping its guesses. A line from my manager stuck with me: you're allowed to have a conversation with uncertainty as an engineer, but you're not allowed to dress uncertainty up as certainty.",
+          "The engineering that mattered wasn't speed, it was judgement: reading a founder-level ask, splitting it into layers, and making the one call, tag on the way in and re-tag on change, that solved the empty-library and the drift problems at once. On a team shipping fast on heavy AI assistance, the rest of the value was knowing when the AI was wrong. A line from my manager stuck: you're allowed to have a conversation with uncertainty as an engineer, but you're not allowed to dress uncertainty up as certainty.",
         ],
       },
     },
@@ -455,10 +455,10 @@ export const projects: Project[] = [
         ],
         contribution: ["Everything: the concept, design, build and test."],
         outcome: [
-          "The cyclist reaction was weak, exposed to 20 people, only one used and found it insightful, another one struggled to get it going with their odd Strava account, getting them to care enough to install the app was not easy, killed the project on that signal instead of pushing past it.",
+          "I put it in front of about 20 riders from my cycling club. The reaction was weak: one used it and found it genuinely useful, one couldn't get past an unusual Strava account, and most never cared enough to install it at all. The signal was clear, so I killed the project rather than push past it.",
         ],
         reflection: [
-          "This is product judgement under uncertainty. The discipline was validating cheaply and stopping on the evidence, not defending a sunk cost.",
+          'The build was the cheap part. The point of a solo, self-funded project like this is to buy a real answer to "does anyone want this" before spending a year finding out, and the answer was no. Shipping something is easy to be proud of; stopping on the evidence is the harder discipline, and the one I\'d trust more on the next idea.',
         ],
       },
     },
@@ -492,7 +492,7 @@ export const projects: Project[] = [
           "Used in real pitch decisions. The bigger takeaway landed at the org level: documentary funding turned out to be driven by human storytelling, not statistics, which fed a strategic pivot away from data-led greenlighting. The tool did its job; the lesson was about the limits of the data.",
         ],
         reflection: [
-          "Knowing what not to build is the signal here, and it applied at two levels. In the code, skipping the semantic-search layer kept the thing shippable and honest about where the real judgement sat. In the product, the ask that looked smart was answerable: read past data to see what not to do, notice that comparable titles drew a small audience, don't bet that way. That part worked. But underneath it sat a quieter ambition to predict the next film, and no dataset does that. Past performance describes what happened; it doesn't tell you what's coming.",
+          "The lesson is knowing what not to build, and it showed up twice. In the code, skipping the semantic-search layer kept the tool shippable and honest about where the judgement really sat: in a human reading comps, not a model. In the product, the modest version worked, reading past data to see what not to bet on. The ambition underneath it, predicting the next film, never could, because past performance describes what happened and not what's coming.",
         ],
       },
     },
