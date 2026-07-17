@@ -19,11 +19,21 @@ export function ProjectCard({ project }: { project: Project }) {
   const body = (
     <>
       <div>
-        <div className="flex items-baseline justify-between gap-2.5">
-          <div className="text-ink text-[17px] font-semibold tracking-tight">
-            {project.title}
-          </div>
-          {linked && <span className="text-hi font-mono text-sm">→</span>}
+        {/* The title carries the accent, not a corner glyph. An arrow here said
+            nothing the page doesn't already say three times over — the copy
+            ("four have full write-ups"), the layout (linked cards above the
+            divider, the rest behind a toggle), and the lift on hover. Every
+            featured card had one, so within its own group it distinguished
+            nothing. Colouring the title instead spends the accent on the moment
+            it means something: you're about to open this. */}
+        <div
+          className={cn(
+            "text-ink text-[17px] font-semibold tracking-tight",
+            linked &&
+              "group-hover:text-hi transition-colors duration-200 ease-out",
+          )}
+        >
+          {project.title}
         </div>
         <div className="text-faint mt-1 font-mono text-[11.5px]">
           {project.company}
