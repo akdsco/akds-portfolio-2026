@@ -40,7 +40,9 @@ export const WORDMARK_LIFT = 0.08;
 /**
  * CSS height for a clip container: `74%` of its own font size. Requires the
  * container to set `font-size` and `overflow: hidden`, with the text inside at
- * `line-height: 1` so the em box and the line box agree.
+ * `line-height: 1` so the em box and the line box agree. The container must not
+ * shrink below its content width (`shrink-0` when it's a flex item), or the
+ * overflow clip bites the mark sideways instead of only cropping the bottom.
  */
 export const WORDMARK_CLIP_HEIGHT = `${WORDMARK_VISIBLE}em`;
 

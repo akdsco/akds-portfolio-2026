@@ -45,7 +45,10 @@ export function Wordmark({
 }) {
   return (
     <span
-      className={cn("flex overflow-hidden", className)}
+      // shrink-0: this is a flex item, and letting it shrink below the mark's
+      // width means `overflow-hidden` (the crop) clips the last letter sideways.
+      // Kept at content width, the crop only ever bites the bottom, as intended.
+      className={cn("flex shrink-0 overflow-hidden", className)}
       // Absent until a trigger actually fires, so the letters sit still on mount.
       data-wave={flare && (runId > 0 || play) ? "" : undefined}
       style={{
