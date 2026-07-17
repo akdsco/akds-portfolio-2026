@@ -132,17 +132,21 @@ export function SiteNav() {
       <nav className="mx-auto flex h-14 w-full max-w-5xl items-center justify-between px-6 md:px-8">
         {/* self-end puts the mark's bottom on the header's bottom border, so the
             border itself is what cuts it. */}
-        {/* rounded-md to match the nav links: the focus ring is an outline, and
-            an outline follows its element's own radius — with none set, the
-            wordmark's ring came out square next to every other rounded one.
-            The padding bleeds the box past the bar and the negative margin
-            keeps that bleed out of the layout, so the ring runs down with the
-            mark and the border cuts them both. Sized to the bar, not the ring:
-            a smaller value stops short of the border and closes the shape. */}
+        {/* The focus ring is an outline, which follows its element's own radius,
+            so the top corners round to match the nav links. The bottom corners
+            stay square on purpose: the ring's bottom edge sits below the bar and
+            is cut by it, so the sides run off the way the mark does. Rounding
+            them curves them back above the cut and closes the shape into a pill
+            floating over a mark that carries on past it.
+
+            Nothing here may make this box taller than the bar. overflow-hidden
+            makes the header a scroll container, so focus landing on a box that
+            overflows it scrolls the bar to reveal it — lifting the mark and
+            shoving the nav links up, and staying that way. */}
         <Link
           href="/about"
           aria-label="akds — home"
-          className="-mx-2 -mb-6 self-end rounded-md px-2 pb-6"
+          className="-mx-2 self-end rounded-t-md px-2"
         >
           {/* faint, not ink: softened so the mark sits in the bar rather than
               dominating it. Still a nav link, so it stops well short of the

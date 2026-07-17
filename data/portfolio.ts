@@ -99,10 +99,9 @@ export type CompanySite =
  */
 export const companySites: Record<CompanyName, CompanySite> = {
   GrowthNation: "https://growthnation.ai",
-  // www is the canonical host — the bare domain 301s to it.
   "Noah Media Group": "https://www.noahmediagroup.com/",
-  Connect4: "url-no-longer-active", // origin unreachable (523)
-  "Wutzu Technologies": "url-no-longer-active", // domain parked for resale
+  Connect4: "url-no-longer-active",
+  "Wutzu Technologies": "url-no-longer-active",
   "Self-employed": "no-public-url",
   "Self-initiated (iOS)": "no-public-url",
 };
