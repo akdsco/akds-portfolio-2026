@@ -19,18 +19,22 @@ export function ProjectCard({ project }: { project: Project }) {
   const body = (
     <>
       <div>
-        {/* The title carries the accent, not a corner glyph. An arrow here said
-            nothing the page doesn't already say three times over — the copy
-            ("four have full write-ups"), the layout (linked cards above the
-            divider, the rest behind a toggle), and the lift on hover. Every
-            featured card had one, so within its own group it distinguished
-            nothing. Colouring the title instead spends the accent on the moment
-            it means something: you're about to open this. */}
+        {/* The title carries the accent, not a corner glyph: an arrow said
+            nothing the layout and the lift don't already say, so the accent
+            lands on the moment it means something — you're about to open this.
+
+            On touch there is no such moment. Tailwind compiles every hover rule
+            inside `@media (hover: hover)`, so on a phone the lift, the border
+            and this accent don't exist at all, and a card that opens looks
+            exactly like one that doesn't. Where nothing can be revealed, show it
+            at rest instead: coloured text has meant "link" since the web began,
+            and the earlier-work titles stay ink, so the two groups read apart
+            again. */}
         <div
           className={cn(
             "text-ink text-[17px] font-semibold tracking-tight",
             linked &&
-              "group-hover:text-hi transition-colors duration-200 ease-out",
+              "group-hover:text-hi [@media(hover:none)]:text-hi transition-colors duration-200 ease-out",
           )}
         >
           {project.title}

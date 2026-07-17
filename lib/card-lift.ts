@@ -36,4 +36,9 @@ export const cardLift = [
   "after:shadow-[0_16px_34px_-18px_rgba(0,0,0,0.6)]",
   "after:opacity-0 after:transition-opacity after:duration-200 after:ease-out",
   "group-hover:after:opacity-100",
+  // A press answers on every device. Hover rules compile inside
+  // `@media (hover: hover)`, so a phone gets no lift and no shadow — without
+  // this, a tap produces nothing at all until the next page paints. It isn't an
+  // affordance (it lands after you've already decided to tap); it's the receipt.
+  "active:border-hi",
 ].join(" ");
