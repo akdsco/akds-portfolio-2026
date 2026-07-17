@@ -1,36 +1,47 @@
 import { act, render } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
 
-import { FOOTER_SEEN_KEY, FooterWordmark } from "@/components/footer-wordmark";
+import {
+  FOOTER_ENTER_DELAY_MS,
+  FOOTER_SEEN_KEY,
+  FooterWordmark,
+} from "@/components/footer-wordmark";
 
-// Capture the IntersectionObserver so a test can drive an intersection — jsdom's
-// (and vitest.setup's) observer never fires on its own.
-type MockEntry = {
-  isIntersecting: boolean;
-  target: Element;
-};
-const observers: MockObserver[] = [];
-class MockObserver {
-  cb: (entries: MockEntry[]) => void;
-  elements: Element[] = [];
-  disconnected = false;
-  constructor(cb: (entries: MockEntry[]) => void) {
-    this.cb = cb;
-    observers.push(this);
-  }
-  observe(el: Element) {
-    this.elements.push(el);
-  }
-  unobserve() {
-    /* no-op */
-  }
-  disconnect() {
-    this.disconnected = true;
-  }
-  enter() {
-    this.cb(this.elements.map((target) => ({ isIntersecting: true, target })));
-  }
+// The footer plays when the page is scrolled to its bottom, which is pure
+// geometry: viewport height + scroll offset vs document height. jsdom has no
+// layout, so we set those three numbers by hand and fire a scroll event.
+function setScroll({
+  scrollY,
+  innerHeight = 800,
+  scrollHeight = 3000,
+}: {
+  scrollY: number;
+  innerHeight?: number;
+  scrollHeight?: number;
+}) {
+  Object.defineProperty(window, "innerHeight", {
+    value: innerHeight,
+    configurable: true,
+  });
+  Object.defineProperty(window, "scrollY", {
+    value: scrollY,
+    configurable: true,
+  });
+  Object.defineProperty(document.documentElement, "scrollHeight", {
+    value: scrollHeight,
+    configurable: true,
+  });
 }
+
+/** scrollY that puts the viewport bottom flush with the document bottom. */
+const atBottomY = (innerHeight = 800, scrollHeight = 3000) =>
+  scrollHeight - innerHeight;
+
+const scroll = () => {
+  act(() => {
+    window.dispatchEvent(new Event("scroll"));
+  });
+};
 
 function stubReducedMotion(reduce: boolean) {
   vi.stubGlobal(
@@ -52,51 +63,107 @@ const mark = (ui: React.ReactElement) =>
   render(ui).container.firstChild as HTMLElement;
 
 beforeEach(() => {
-  observers.length = 0;
+  vi.useFakeTimers();
   sessionStorage.clear();
   stubReducedMotion(false);
-  vi.stubGlobal("IntersectionObserver", MockObserver);
+  // Start scrolled to the top of a tall page, so nothing fires on mount.
+  setScroll({ scrollY: 0 });
 });
 
 afterEach(() => {
+  vi.useRealTimers();
   sessionStorage.clear();
 });
 
 describe("FooterWordmark", () => {
-  test("renders the mark and waits, unassembled, for it to be seen", () => {
+  test("renders the mark and waits, still, at the top of the page", () => {
     const el = mark(<FooterWordmark />);
     expect(el).toHaveTextContent("akds");
-    expect(el).not.toHaveAttribute("data-assemble");
-    expect(observers).toHaveLength(1);
+    expect(el).not.toHaveAttribute("data-wave");
   });
 
-  test("assembles once the mark scrolls into view, and remembers it", () => {
+  test("stays still while the reader is mid-page", () => {
     const el = mark(<FooterWordmark />);
+    setScroll({ scrollY: 1200 }); // partway down a 3000px page
+    scroll();
     act(() => {
-      observers[0]?.enter();
+      vi.advanceTimersByTime(FOOTER_ENTER_DELAY_MS);
+    });
+    expect(el).not.toHaveAttribute("data-wave");
+  });
+
+  test("holds a beat after the bottom before it plays", () => {
+    const el = mark(<FooterWordmark />);
+    setScroll({ scrollY: atBottomY() });
+    scroll();
+    expect(el).not.toHaveAttribute("data-wave");
+
+    act(() => {
+      vi.advanceTimersByTime(FOOTER_ENTER_DELAY_MS - 1);
+    });
+    expect(el).not.toHaveAttribute("data-wave");
+  });
+
+  test("plays after the beat once the bottom is reached, and remembers it", () => {
+    const el = mark(<FooterWordmark />);
+    setScroll({ scrollY: atBottomY() });
+    scroll();
+    act(() => {
+      vi.advanceTimersByTime(FOOTER_ENTER_DELAY_MS);
     });
 
-    expect(el).toHaveAttribute("data-assemble");
+    expect(el).toHaveAttribute("data-wave");
     expect(sessionStorage.getItem(FOOTER_SEEN_KEY)).toBeTruthy();
-    // Stops watching — it's a one-shot, not a scroll-linked effect.
-    expect(observers[0]?.disconnected).toBe(true);
+  });
+
+  test("plays on a page too short to scroll (already at its bottom)", () => {
+    setScroll({ scrollY: 0, innerHeight: 900, scrollHeight: 850 });
+    const el = mark(<FooterWordmark />);
+    act(() => {
+      vi.advanceTimersByTime(FOOTER_ENTER_DELAY_MS);
+    });
+    expect(el).toHaveAttribute("data-wave");
+  });
+
+  test("drops the pending reveal if the reader leaves before the beat is up", () => {
+    const { container, unmount } = render(<FooterWordmark />);
+    const el = container.firstChild as HTMLElement;
+    setScroll({ scrollY: atBottomY() });
+    scroll();
+    unmount();
+
+    // The timer must not fire into an unmounted tree, and the visit stays
+    // unspent so the next page can still play.
+    expect(() => {
+      act(() => {
+        vi.advanceTimersByTime(FOOTER_ENTER_DELAY_MS);
+      });
+    }).not.toThrow();
+    expect(el).not.toHaveAttribute("data-wave");
+    expect(sessionStorage.getItem(FOOTER_SEEN_KEY)).toBeNull();
   });
 
   test("stays quiet for the rest of the visit once it has played", () => {
     sessionStorage.setItem(FOOTER_SEEN_KEY, "1");
     const el = mark(<FooterWordmark />);
-
-    // Doesn't even bother watching — the visit already had its moment.
-    expect(observers).toHaveLength(0);
-    expect(el).not.toHaveAttribute("data-assemble");
+    setScroll({ scrollY: atBottomY() });
+    scroll();
+    act(() => {
+      vi.advanceTimersByTime(FOOTER_ENTER_DELAY_MS);
+    });
+    expect(el).not.toHaveAttribute("data-wave");
   });
 
-  test("never assembles when reduced motion is asked for", () => {
+  test("never plays when reduced motion is asked for", () => {
     stubReducedMotion(true);
     const el = mark(<FooterWordmark />);
+    setScroll({ scrollY: atBottomY() });
+    scroll();
+    act(() => {
+      vi.advanceTimersByTime(FOOTER_ENTER_DELAY_MS);
+    });
 
-    expect(observers).toHaveLength(0);
-    expect(el).not.toHaveAttribute("data-assemble");
+    expect(el).not.toHaveAttribute("data-wave");
     // The visit isn't spent, so nothing is blocked for later either.
     expect(sessionStorage.getItem(FOOTER_SEEN_KEY)).toBeNull();
   });
