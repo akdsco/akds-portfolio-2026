@@ -333,6 +333,33 @@
   }
 }
 
+/* Footer wordmark assemble: the first time the ghosted mark scrolls into view
+ * in a visit, its letters rise into place left to right — a quiet sign-off at
+ * the foot of the page. Once per visit (a sessionStorage flag in
+ * FooterWordmark), so it reads as a moment rather than nagging on every scroll.
+ *
+ * Rises from BELOW into rest, so unlike the nav flare it needs no headroom: the
+ * letters start lower (further into the bottom crop) and fade up to where they
+ * always sit. `both` holds them at the hidden first frame through their delay,
+ * so the stagger reads as one settle rather than four blinks. */
+@keyframes wordmark-assemble {
+  from {
+    opacity: 0;
+    transform: translateY(0.12em);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  [data-assemble] .wordmark-letter {
+    display: inline-block;
+    animation: wordmark-assemble 0.55s ease-out both;
+    animation-delay: calc(var(--i) * 110ms);
+  }
+}
+
 @layer utilities {
   /* Subtle CRT scanline overlay for hero bands. */
   .scanline {

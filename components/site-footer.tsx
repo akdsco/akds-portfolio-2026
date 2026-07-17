@@ -1,4 +1,4 @@
-import { Wordmark } from "@/components/wordmark";
+import { FooterWordmark } from "@/components/footer-wordmark";
 
 export function SiteFooter() {
   return (
@@ -16,7 +16,7 @@ export function SiteFooter() {
             rather than shouting, and works in both themes because --ink flips
             with them. Nudged right of centre so it reads as a placed mark
             instead of a heading. */}
-        <Wordmark
+        <FooterWordmark
           className="text-ink/10 translate-x-[28%] font-semibold select-none"
           style={{ fontSize: "clamp(104px, 16vw, 208px)" }}
         />
