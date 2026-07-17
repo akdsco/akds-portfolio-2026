@@ -134,11 +134,15 @@ export function SiteNav() {
             border itself is what cuts it. */}
         {/* rounded-md to match the nav links: the focus ring is an outline, and
             an outline follows its element's own radius — with none set, the
-            wordmark's ring came out square next to every other rounded one. */}
+            wordmark's ring came out square next to every other rounded one.
+            The padding bleeds the box past the bar and the negative margin
+            keeps that bleed out of the layout, so the ring runs down with the
+            mark and the border cuts them both. Sized to the bar, not the ring:
+            a smaller value stops short of the border and closes the shape. */}
         <Link
           href="/about"
           aria-label="akds — home"
-          className="-mx-2 self-end rounded-md px-2"
+          className="-mx-2 -mb-6 self-end rounded-md px-2 pb-6"
         >
           {/* faint, not ink: softened so the mark sits in the bar rather than
               dominating it. Still a nav link, so it stops well short of the
