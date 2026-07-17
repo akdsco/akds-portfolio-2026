@@ -1,6 +1,6 @@
 import { describe, expect, test } from "vitest";
 
-import { projects, testimonials } from "@/data/portfolio";
+import { experience, projects, testimonials } from "@/data/portfolio";
 
 // Invariants tsc can't catch: typo'd slugs, dangling testimonial ids, and the
 // featured/caseStudy intent that drives which projects get a detail page. These
@@ -50,5 +50,42 @@ describe("portfolio data invariants", () => {
     const eligible = projects.filter((p) => p.caseStudy).map((p) => p.slug);
     expect(eligible.length).toBeGreaterThan(0);
     expect(new Set(eligible).size).toBe(eligible.length);
+  });
+
+  // The experience rail stacks end-over-start and reads as a timeline, so the
+  // dates have to actually be one. A role that ends before it starts, or a list
+  // out of order, would render as a plausible-looking lie.
+  describe("experience timeline", () => {
+    // "2025 Jul" / "2018" -> sortable. Bare years sit at the start of the year.
+    const MONTHS = "Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec".split(" ");
+    const stamp = (s: string) => {
+      const [year, month] = s.split(" ");
+      const m = month ? MONTHS.indexOf(month) : 0;
+      expect(Number(year), `year in "${s}"`).not.toBeNaN();
+      expect(m, `month in "${s}"`).toBeGreaterThanOrEqual(0);
+      return Number(year) * 12 + m;
+    };
+
+    test("no role ends before it starts", () => {
+      for (const role of experience) {
+        expect(
+          stamp(role.end),
+          `${role.company} (${role.start} – ${role.end})`,
+        ).toBeGreaterThanOrEqual(stamp(role.start));
+      }
+    });
+
+    test("roles are listed newest first", () => {
+      const starts = experience.map((r) => stamp(r.start));
+      expect(starts).toEqual([...starts].sort((a, b) => b - a));
+    });
+  });
+
+  // A tag in both lists would render twice: once leading, once under "+n more".
+  test("a role's lead and rest tags don't overlap", () => {
+    for (const role of experience) {
+      const dupes = role.stack.lead.filter((t) => role.stack.rest.includes(t));
+      expect(dupes, `${role.company} lists these twice`).toEqual([]);
+    }
   });
 });

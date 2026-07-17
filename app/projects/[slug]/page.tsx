@@ -9,6 +9,8 @@ import { Toc } from "@/components/case-study/toc";
 import { Kicker } from "@/components/kicker";
 import { projects, testimonials, type CaseStudy } from "@/data/portfolio";
 import { plainText } from "@/lib/inline-links";
+import { OG_SHARED } from "@/lib/site";
+import { cn } from "@/lib/utils";
 
 const SECTION_ORDER = [
   { key: "problem", kicker: "the situation", title: "Problem" },
@@ -37,7 +39,9 @@ export async function generateMetadata({
   // to its label, or og:description ships "[SlateIQ](https://…)" verbatim.
   const description = plainText(project.hook);
   return {
-    title: `${project.title} — Arkadiusz Ostrowski`,
+    // The slug, so the tab mirrors the URL: "akds : proof-library". og:title
+    // stays the readable name — a shared card is read by people, not walked.
+    title: slug,
     description,
     alternates: { canonical: `/projects/${slug}` },
     // This block REPLACES the layout's openGraph rather than merging into it,
@@ -48,12 +52,11 @@ export async function generateMetadata({
     // declares `images` itself. Setting it here would silently override every
     // case study with the generic card.
     openGraph: {
-      title: `${project.title} — Arkadiusz Ostrowski`,
+      ...OG_SHARED,
+      title: project.title,
       description,
       type: "article",
       url: `/projects/${slug}`,
-      siteName: "Arkadiusz Ostrowski",
-      locale: "en_GB",
     },
   };
 }
@@ -95,7 +98,7 @@ export default async function CaseStudyPage({
         </p>
       </HeroBand>
 
-      <div className="mx-auto grid max-w-[900px] items-start gap-11 px-6 py-11 md:px-11 lg:grid-cols-[1fr_252px]">
+      <div className="mx-auto grid max-w-[900px] items-start gap-11 px-6 pt-11 pb-6 md:px-11 lg:grid-cols-[1fr_252px]">
         <div className="min-w-0">
           {sections.map((section) => (
             <section
@@ -136,7 +139,29 @@ export default async function CaseStudyPage({
           )}
         </div>
 
-        <aside className="flex flex-col gap-3.5 lg:sticky lg:top-20">
+        {/* top-20 is clearance for the sticky nav; when the nav slides away the
+            rail takes that space back, and gives it up when the nav returns —
+            see `data-nav-hidden` in components/site-nav.tsx. It moves rather
+            than hides: the TOC is a scroll-spy, so it earns its place exactly
+            while you're reading down the page.
+
+            `top`, not a transform, and the difference is the whole trick: top
+            does nothing on a sticky element until it actually sticks. A
+            transform moved the rail the moment the nav went, while it was still
+            in flow under the hero — so it jumped up into space it didn't own,
+            before it had a nav to clear. This waits for the section above.
+
+            Gated on motion-safe rather than undone by a motion-reduce override:
+            `in-data-*` compiles after `motion-reduce` and would win the cascade.
+            The nav itself doesn't move under reduced motion, so the rail has
+            nothing to follow and stays put. */}
+        <aside
+          className={cn(
+            "flex flex-col gap-3.5 lg:sticky lg:top-20",
+            "transition-[top] duration-[380ms] ease-out motion-reduce:transition-none",
+            "in-data-nav-hidden:duration-300 in-data-nav-hidden:motion-safe:lg:top-6",
+          )}
+        >
           <MetaCard project={project} />
           {sections.length > 1 && <Toc sections={sections} />}
         </aside>

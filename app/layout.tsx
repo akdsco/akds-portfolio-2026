@@ -7,7 +7,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { PaletteProvider } from "@/components/command-palette";
 import { SiteNav } from "@/components/site-nav";
 import { SiteFooter } from "@/components/site-footer";
-import { SITE_URL } from "@/lib/site";
+import { OG_SHARED, SITE_BRAND, SITE_URL } from "@/lib/site";
 
 import "./globals.css";
 
@@ -25,18 +25,28 @@ export const metadata: Metadata = {
   // Absolute base for OG/Twitter images, canonical URLs, and the sitemap ref.
   // All relative URLs in child metadata resolve against this.
   metadataBase: new URL(SITE_URL),
-  title: "Arkadiusz Ostrowski — Software Engineer",
+  // Tab titles read as the route: "akds : about", "akds : projects". Each page
+  // supplies its own segment; `default` only covers routes that set no title of
+  // their own (not-found, error), which get the bare brand.
+  title: {
+    template: `${SITE_BRAND} : %s`,
+    default: SITE_BRAND,
+  },
   description:
     "London-based software engineer building production AI-native software end-to-end. Selected work, experience, and case studies.",
   openGraph: {
-    // No title/description here, for the same reason as `twitter` below: Next
-    // only falls back to a page's own `title` when openGraph has none of its
-    // own. Pinning one cascades the site title onto every child — which is why
-    // /projects shared an identical card with /about despite declaring its own
-    // title. These now inherit from each page's `title`/`description`.
+    // og:title is pinned; og:description is not. Left unpinned, og:title falls
+    // back to the page's own `title` — which the template has already turned
+    // into "akds : about". The card art is a giant "akds" wordmark, so a title
+    // repeating it says the brand twice and the page not at all. Pages state
+    // their own bare og:title ("about", "Proof Library"); this is only the
+    // floor for anything that doesn't.
+    //
+    // Description stays unpinned: pinning would cascade the site blurb over
+    // each page's own.
+    ...OG_SHARED,
+    title: SITE_BRAND,
     type: "website",
-    siteName: "Arkadiusz Ostrowski",
-    locale: "en_GB",
     // OG image comes from app/opengraph-image.tsx (file convention).
   },
   twitter: {
@@ -53,10 +63,16 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // data-scroll-behavior tells the router it may switch off the
+  // `scroll-behavior: smooth` globals.css sets (for hash jumps) while it scrolls
+  // to the top on a route change. Without it the router's scrollTo(0) inherits
+  // the smooth animation, the incoming page's render cuts it short, and the new
+  // page opens part-scrolled.
   return (
     <html
       lang="en"
       suppressHydrationWarning
+      data-scroll-behavior="smooth"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body suppressHydrationWarning className="flex min-h-full flex-col">

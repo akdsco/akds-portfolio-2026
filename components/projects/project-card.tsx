@@ -2,24 +2,42 @@ import Link from "next/link";
 
 import { StackChips } from "@/components/stack-chips";
 import type { Project } from "@/data/portfolio";
+import { cardLift, cardLiftWrap } from "@/lib/card-lift";
 import { plainText } from "@/lib/inline-links";
 import { cn } from "@/lib/utils";
 
 export function ProjectCard({ project }: { project: Project }) {
   const linked = Boolean(project.caseStudy);
+  // The lift is the site's tell for "this goes somewhere", so only a card that
+  // does gets it. An earlier-work card that rose under the cursor promised a
+  // detail page it doesn't have.
   const className = cn(
-    "border-line bg-panel hover:border-hi flex flex-col gap-3.5 rounded-[11px] border p-5 transition-[transform,box-shadow,border-color] duration-[260ms] ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-1 hover:shadow-[0_16px_34px_-18px_rgba(0,0,0,0.6)] motion-reduce:hover:translate-y-0 motion-reduce:hover:shadow-none",
-    !linked && "opacity-90",
+    "border-line bg-panel relative flex h-full flex-col gap-3.5 rounded-[11px] border p-5",
+    linked ? cn("group-hover:border-hi", cardLift) : "opacity-90",
   );
 
   const body = (
     <>
       <div>
-        <div className="flex items-baseline justify-between gap-2.5">
-          <div className="text-ink text-[17px] font-semibold tracking-tight">
-            {project.title}
-          </div>
-          {linked && <span className="text-hi font-mono text-sm">→</span>}
+        {/* The title carries the accent, not a corner glyph: an arrow said
+            nothing the layout and the lift don't already say, so the accent
+            lands on the moment it means something — you're about to open this.
+
+            On touch there is no such moment. Tailwind compiles every hover rule
+            inside `@media (hover: hover)`, so on a phone the lift, the border
+            and this accent don't exist at all, and a card that opens looks
+            exactly like one that doesn't. Where nothing can be revealed, show it
+            at rest instead: coloured text has meant "link" since the web began,
+            and the earlier-work titles stay ink, so the two groups read apart
+            again. */}
+        <div
+          className={cn(
+            "text-ink text-[17px] font-semibold tracking-tight",
+            linked &&
+              "group-hover:text-hi [@media(hover:none)]:text-hi transition-colors duration-200 ease-out",
+          )}
+        >
+          {project.title}
         </div>
         <div className="text-faint mt-1 font-mono text-[11.5px]">
           {project.company}
@@ -36,12 +54,17 @@ export function ProjectCard({ project }: { project: Project }) {
     </>
   );
 
-  if (linked) {
-    return (
-      <Link href={`/projects/${project.slug}`} className={className}>
-        {body}
-      </Link>
-    );
-  }
-  return <div className={className}>{body}</div>;
+  // The wrapper is the hover target and keeps the card's resting footprint, so
+  // the lift can't pull the card out from under the cursor. See lib/card-lift.
+  return (
+    <div className={cn("h-full", linked && cardLiftWrap)}>
+      {linked ? (
+        <Link href={`/projects/${project.slug}`} className={className}>
+          {body}
+        </Link>
+      ) : (
+        <div className={className}>{body}</div>
+      )}
+    </div>
+  );
 }

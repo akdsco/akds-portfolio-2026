@@ -44,13 +44,31 @@ vi.mock("motion/react", async () => {
     for (const k in props) if (!MOTION_PROPS.has(k)) out[k] = props[k];
     return out;
   };
+  // Memoised per tag. Returning a fresh component from the proxy on every
+  // access gives React a new element type each render, so it unmounts and
+  // remounts the subtree — which silently drops focus from the input between
+  // keystrokes, and makes anything that types read as "the app ignored me".
+  const makeTag = (tag: string) => {
+    const Tag = function MotionTag(
+      props: { children?: React.ReactNode } & Record<string, unknown>,
+    ) {
+      return React.createElement(tag, clean(props), props.children);
+    };
+    Tag.displayName = `m.${tag}`;
+    return Tag;
+  };
+  const tags = new Map<string, ReturnType<typeof makeTag>>();
   const m = new Proxy(
     {},
     {
-      get:
-        (_t, tag: string) =>
-        (props: { children?: React.ReactNode } & Record<string, unknown>) =>
-          React.createElement(tag, clean(props), props.children),
+      get: (_t, tag: string) => {
+        let Tag = tags.get(tag);
+        if (!Tag) {
+          Tag = makeTag(tag);
+          tags.set(tag, Tag);
+        }
+        return Tag;
+      },
     },
   );
   const Passthrough = ({ children }: { children: React.ReactNode }) => children;
@@ -67,6 +85,7 @@ vi.mock("motion/react", async () => {
 beforeEach(() => {
   push.mockClear();
   setTheme.mockClear();
+  vi.mocked(window.scrollTo).mockClear();
 });
 
 function renderPalette() {
@@ -95,9 +114,10 @@ describe("command palette keyboard + a11y", () => {
 
     expect(screen.getByRole("dialog")).toBeInTheDocument();
     expect(input()).toHaveFocus();
-    // First command is selected by default.
-    expect(selectedOption()).toHaveTextContent("/projects");
-    expect(input()).toHaveAttribute("aria-activedescendant", "cmd-projects");
+    // First command is selected by default; the list leads with the nav's own
+    // order, so that's /about.
+    expect(selectedOption()).toHaveTextContent("/about");
+    expect(input()).toHaveAttribute("aria-activedescendant", "cmd-about");
   });
 
   test("ArrowDown moves the active option", async () => {
@@ -107,8 +127,8 @@ describe("command palette keyboard + a11y", () => {
 
     await user.keyboard("{ArrowDown}");
 
-    expect(selectedOption()).toHaveTextContent("/skills");
-    expect(input()).toHaveAttribute("aria-activedescendant", "cmd-skills");
+    expect(selectedOption()).toHaveTextContent("/projects");
+    expect(input()).toHaveAttribute("aria-activedescendant", "cmd-projects");
   });
 
   test("Enter runs the highlighted command via the router", async () => {
@@ -116,10 +136,26 @@ describe("command palette keyboard + a11y", () => {
     renderPalette();
     await user.click(trigger());
 
-    // Default highlight is /projects, whose run() calls router.push.
+    // Default highlight is /about, whose run() calls router.push.
     await user.keyboard("{Enter}");
 
-    expect(push).toHaveBeenCalledWith("/projects");
+    expect(push).toHaveBeenCalledWith("/about");
+  });
+
+  // "Back to the top" used to mean "go to /about" from anywhere that wasn't
+  // /about, so on /projects it walked you off the page instead of scrolling it.
+  // usePathname is mocked to "/" above — not /about — which is exactly the case
+  // that was wrong.
+  test("/top scrolls the page you're on, and doesn't navigate", async () => {
+    const user = userEvent.setup();
+    renderPalette();
+    await user.click(trigger());
+
+    await user.type(input(), "top");
+    await user.keyboard("{Enter}");
+
+    expect(window.scrollTo).toHaveBeenCalledWith({ top: 0 });
+    expect(push).not.toHaveBeenCalled();
   });
 
   test("Escape closes the palette and restores focus to the trigger", async () => {

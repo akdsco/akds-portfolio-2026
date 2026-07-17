@@ -1,0 +1,44 @@
+// The hover-lift shared by testimonial and project cards.
+//
+// Two things this gets right that a plain `hover:-translate-y-1` on the card
+// does not:
+//
+// 1. The hover target is the wrapper, which never moves. Hovering the card
+//    itself lifts it out from under the cursor, which un-hovers it, which drops
+//    it back onto the cursor — it oscillates for as long as you rest in the
+//    bottom few px. The wrapper keeps the card's resting footprint, so the
+//    hover state is stable wherever the cursor sits.
+// 2. The shadow fades a pseudo-element's opacity instead of animating
+//    box-shadow. Animating a 34px blur repaints it every frame; opacity
+//    composites. border-color is still paint, but it's a 1px edge — the
+//    composite-only rule is there to keep the blur off the paint path.
+//
+// Reduced motion keeps the shadow fade (opacity is not travel) and drops the
+// lift.
+//
+// The transition names `translate`, not `transform`: Tailwind v4 emits
+// `-translate-y-1` as the standalone `translate` property. Listing `transform`
+// (as this did before) transitions a property nothing is animating, so the lift
+// snapped 4px instantly while the shadow eased — which is what read as "jumpy".
+
+/** Goes on the static wrapper — the element the cursor actually hovers. */
+export const cardLiftWrap = "group";
+
+/**
+ * Goes on the card inside that wrapper. The card must establish its own
+ * containing block (`relative`) and set its own radius — the shadow inherits it.
+ */
+export const cardLift = [
+  "transition-[translate,border-color] duration-200 ease-out",
+  "group-hover:-translate-y-1",
+  "motion-reduce:transition-none motion-reduce:group-hover:translate-y-0",
+  "after:pointer-events-none after:absolute after:inset-0 after:rounded-[inherit]",
+  "after:shadow-[0_16px_34px_-18px_rgba(0,0,0,0.6)]",
+  "after:opacity-0 after:transition-opacity after:duration-200 after:ease-out",
+  "group-hover:after:opacity-100",
+  // A press answers on every device. Hover rules compile inside
+  // `@media (hover: hover)`, so a phone gets no lift and no shadow — without
+  // this, a tap produces nothing at all until the next page paints. It isn't an
+  // affordance (it lands after you've already decided to tap); it's the receipt.
+  "active:border-hi",
+].join(" ");
