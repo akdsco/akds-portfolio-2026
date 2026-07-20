@@ -89,7 +89,7 @@ export function AboutMore({ children }: { children: ReactNode }) {
             aria-controls={PANEL_ID}
             className="border-line bg-chip text-dim hover:text-ink hover:border-hi inline-flex cursor-pointer items-center gap-2 rounded-[7px] border px-3.5 py-1.5 font-mono text-xs transition-colors"
           >
-            Show more
+            Experience / Skills
             <ChevronDown className="size-3.5" />
           </button>
           <div className="border-line flex-1 border-t border-dashed" />

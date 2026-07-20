@@ -126,9 +126,11 @@ Two patterns that work, in order of preference:
   to a URL *or* an explicit sentinel (`url-no-longer-active`, `no-public-url`).
   It's a `Record`, so adding a company without deciding won't compile.
 - **Prose fields support inline `[text](url)`**: `summary`, `highlights`, the
-  case-study `hook` and body paragraphs. Only `https://` linkifies; anything else
-  stays literal text, which is what keeps `javascript:` inert. Titles, company
-  names and chip labels are not prose, so don't parse them.
+  case-study `hook` and body paragraphs, and the About bio `about.paragraphs`
+  (rendered through `LinkedText` in `components/landing/hero.tsx`). Only
+  `https://` linkifies; anything else stays literal text, which is what keeps
+  `javascript:` inert. Titles, company names and chip labels are not prose, so
+  don't parse them.
 - **Where a link can't render, use `plainText()`**: inside another anchor
   (`ProjectCard` wraps its body in a `<Link>`) and in `<meta>` content
   (`generateMetadata`). Both would otherwise leak raw `[x](https://…)`.

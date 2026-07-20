@@ -39,9 +39,10 @@ export async function generateMetadata({
   // to its label, or og:description ships "[SlateIQ](https://…)" verbatim.
   const description = plainText(project.hook);
   return {
-    // The slug, so the tab mirrors the URL: "akds : proof-library". og:title
-    // stays the readable name — a shared card is read by people, not walked.
-    title: slug,
+    // The readable project name, so the tab reads "akds : AI-powered research
+    // assistant" rather than the slug. og:title is pinned to the same name just
+    // below, independent of this, so the shared card is unaffected either way.
+    title: project.title,
     description,
     alternates: { canonical: `/projects/${slug}` },
     // This block REPLACES the layout's openGraph rather than merging into it,

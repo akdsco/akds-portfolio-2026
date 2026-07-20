@@ -3,6 +3,7 @@ import { Fragment } from "react";
 
 import { HeroPrompt } from "@/components/command-palette";
 import { HeroBand } from "@/components/hero-band";
+import { LinkedText } from "@/components/linked-text";
 import { PulseDot } from "@/components/pulse-dot";
 import { about, hero, profile } from "@/data/portfolio";
 
@@ -61,12 +62,14 @@ export function Hero() {
         {ledeAfter}
       </p>
 
-      {about.paragraphs.map((para) => (
+      {/* Keyed by index: a prose prefix is no longer a safe key now that a
+          paragraph may carry `[label](url)` link markup. */}
+      {about.paragraphs.map((para, index) => (
         <p
-          key={para.slice(0, 24)}
+          key={index}
           className="text-dim mb-3.5 max-w-2xl text-base leading-7 text-pretty"
         >
-          {para}
+          <LinkedText text={para} />
         </p>
       ))}
 

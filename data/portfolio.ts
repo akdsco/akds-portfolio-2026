@@ -227,9 +227,9 @@ export const about: AboutCopy = {
   // Role, then stack — the two halves a reader would split it into anyway.
   tagline: ["Software Engineer · Full-Stack", "TypeScript · React · Node"],
   paragraphs: [
-    "Six years building production software, most recently shipping a social-proof OS for sales teams at GrowthNation and an AI research platform at Noah Media Group.",
-    "Two-year track record of delivering AI-assisted features in production, from a 2023 research tool on GPT-3.5/4 to a 2026 proof engine using the Vercel AI SDK, Anthropic, OpenAI, OpenRouter, and a custom MCP server layer. Comfortable with the TypeScript stack end-to-end.",
-    "Career-changer. Worked in sales for ten years across Poland and the UK before self-teaching into software via OpenClassrooms, the London Java Community and countless online courses and certifications.",
+    "Six years building production software, the last two shipping AI features: a research tool at [Noah Media Group](https://www.noahmediagroup.com/) in 2023 (GPT-3.5/4) and a social-proof engine at [GrowthNation](https://growthnation.ai) in 2026 (Vercel AI SDK, Anthropic, OpenAI, a custom MCP layer).",
+    "The most recent build I'm proudest of is the code factory, co-built with the CTO: a pipeline of skills, plans, worktrees and automated gates that let a designer and a junior dev pick up tickets and ship straight to production. It cut engineering costs by more than 30%.",
+    "Career-changer: ten years in sales across Poland and the UK before self-teaching into software.",
   ],
 };
 
@@ -395,7 +395,7 @@ export const projects: Project[] = [
       "custom MCP servers",
       "BullMQ",
     ],
-    hook: "Owned the proof store behind a sales-AI product: ingestion, a user-facing dashboard with search, and a tagging layer that kept every customer's library organized on its own.",
+    hook: "Owned the proof store behind a sales-AI product: ingestion, a user-facing dashboard with search, and a tagging layer that kept every customer's library organised on its own.",
     featured: true,
     role: "Product Engineer",
     period: "Jul 2025 to Jun 2026",
@@ -404,30 +404,29 @@ export const projects: Project[] = [
       testimonialId: 1,
       sections: {
         problem: [
-          'GrowthNation was a stealth startup still looking for product-market fit, and it looked by pivoting. It started in AI content marketing. About three months before my contract ended, the CEO moved the whole product to a "social proof OS for sales teams." (After I left it pivoted again, toward AI-driven org optimization: interviewing employees with AI to surface improvements people used to find by hand.) Shipping real product across those swings was the actual job.',
+          'GrowthNation was a stealth startup still looking for product-market fit, and it looked by pivoting. It started in AI content marketing. About three months before my contract ended, the CEO moved the whole product to a "social proof OS for sales teams." (After I left it pivoted again, towards AI-driven org optimisation: interviewing employees with AI to surface improvements people used to find by hand.) Shipping real product across those swings was the actual job.',
           "The sales pivot needed one place to hold a company's proof: case studies, customers, testimonials, stats. Other parts of the product would read from it to assemble tailored pitches. It didn't exist yet, and the two surfaces that would consume it, proof delivery and proof collection, were being built at the same time by other engineers. Someone had to own the store in the middle and make it real. That was me.",
         ],
         constraints: [
           "The scope came from the founder, who judged the work on business impact rather than implementation detail. Every major delivery went out with a written summary he could read in a couple of minutes. The skill there was being a reliable human in the loop, not producing more words.",
           "The team was small and shipped fast on heavy AI assistance, which also meant tech debt stacking up quickly. What I was paid for was direction, judgement, and knowing when the AI output was wrong.",
-          "An empty proof store is useless, so onboarding a new customer had to produce a usable, organized library straight away.",
+          "An empty proof store is useless, so onboarding a new customer had to produce a usable, organised library straight away.",
         ],
         approach: [
           "I split the store into three layers and built each one with AI assistance under my own review.",
-          "Ingestion came first. The public-scrape lane runs end to end: paste a URL, it extracts, you preview, you save, it appears in the dashboard. On top of that, uploads of any kind (docs, PDFs, plain text) plus screenshots run through AI vision to pull quotes and testimonials straight out of images.",
-          "Presentation was a user-facing dashboard that had to work for every workspace on real data, and the CEO wanted it front and center. It ran as two tabs. The Dashboard tab gave the overview: coverage percentage, total items, gaps, and last contribution across the top, then a coverage matrix broken down by ICP with a bar per pain point, rows you can expand to the underlying quotes and stats with their source, a consented-only filter, and a sidebar of live contributions. The Explore tab was for digging into the store itself, so a user could find a specific piece of proof by filtering, sorting, and fuzzy-searching across the whole database.",
+          "Ingestion came first. The public-scrape lane runs end to end: paste a URL, it extracts, and appears in the dashboard. On top of that, uploads of any kind (docs, PDFs, plain text) plus screenshots run through AI vision to pull quotes and testimonials straight out of images.",
+          "Presentation was a user-facing dashboard that had to work for every workspace on real data, and the CEO wanted it front and centre. It ran as two tabs. The Dashboard tab gave the overview: coverage percentage, total items, gaps, and last contribution across the top, then a coverage matrix broken down by ICP with a bar per pain point, rows you can expand to the underlying quotes and stats with their source, a consented-only filter, and a sidebar of live contributions. The Explore tab was for digging into the store itself, so a user could find a specific piece of proof by filtering, sorting, and fuzzy-searching across the whole database.",
           "The tagging layer was the decision that mattered most. Every new quote, stat, or case study gets tagged against the workspace's ICPs and pain points before the save call even returns, and when a workspace edits its ICPs or pain points, everything already stored gets re-tagged. That is what let a brand-new customer have a useful library on day one, and what kept it accurate as their positioning shifted.",
           "Alongside the store I took over an autonomous bug-triage system the CTO had started. It does root-cause analysis (ordering events in time, trusting server logs over client, fingerprinting errors, catching cascades) and opens its own fix PRs, so a triage points at the cause instead of whichever symptom surfaced first.",
         ],
         contribution: [
           "I owned the store, its ingestion, and its presentation, and exposed all of it over a custom MCP layer so agents could read it too. I wrote the delivery summaries that went out with each milestone, including what got left out on purpose: the first dashboard shipped behind a feature flag for every workspace, with the deferred items named openly rather than dropped without a word.",
-          "To be accurate about scope: proof delivery and proof collection belonged to other engineers. My lane was the store they both read from. Where the work was shared, I've said so.",
         ],
         outcome: [
-          "The store, dashboard, and tagging layer shipped and ran for every workspace on the platform. Real customers used it, some of them outside the US. The product was demoed at a conference in June 2026, and the company had earlier reached the top 10% of a YC application round. My twelve-month contract finished on schedule.",
+          "The store, dashboard, and tagging layer shipped and ran for every workspace on the platform. The product was demoed at a conference in June 2026, and the company had earlier reached the top 10% of a YC application round.",
         ],
         reflection: [
-          "The engineering that mattered wasn't speed, it was judgement: reading a founder-level ask, splitting it into layers, and making the one call, tag on the way in and re-tag on change, that solved the empty-library and the drift problems at once. On a team shipping fast on heavy AI assistance, the rest of the value was knowing when the AI was wrong. A line from my manager stuck: you're allowed to have a conversation with uncertainty as an engineer, but you're not allowed to dress uncertainty up as certainty.",
+          "The lasting lesson here was about altitude, not code. The technical side was hard in its own right: the dashboard was a blank-page design problem, and getting to a working prototype inside a week leaned on skilful use of AI. What I grew most, though, was operating at the founder's level, reporting in business outcomes he could act on rather than implementation detail he didn't need.",
         ],
       },
     },
@@ -455,44 +454,10 @@ export const projects: Project[] = [
         ],
         contribution: ["Everything: the concept, design, build and test."],
         outcome: [
-          "I put it in front of about 20 riders from my cycling club. The reaction was weak: one used it and found it genuinely useful, one couldn't get past an unusual Strava account, and most never cared enough to install it at all. The signal was clear, so I killed the project rather than push past it.",
+          "I put it in front of 12 riders from my cycling club. The reaction was weak: one used it and found it useful, one couldn't get past Strava account limitations, and most never cared enough to install it at all. The signal was clear, so I killed the project rather than push past it.",
         ],
         reflection: [
-          'The build was the cheap part. The point of a solo, self-funded project like this is to buy a real answer to "does anyone want this" before spending a year finding out, and the answer was no. Shipping something is easy to be proud of; stopping on the evidence is the harder discipline, and the one I\'d trust more on the next idea.',
-        ],
-      },
-    },
-  },
-  {
-    slug: "slate-iq",
-    title: "SlateIQ",
-    company: "Noah Media Group",
-    stack: ["TypeScript", "React", "Node", "MongoDB", "BullMQ", "OpenAI"],
-    hook: "Built a film-success predictor that pulled IMDB, social, piracy, and market data into one comp-matching tool the studio used in real pitch decisions.",
-    featured: true,
-    role: "Software Engineer",
-    period: "2022 to 2025",
-    caseStudy: {
-      status: "shipped",
-      sections: {
-        problem: [
-          'The studio wanted to gauge a film\'s potential the way the industry actually thinks about it: by comparison to past titles ("comps"). The signals for that lived in a dozen different places, from IMDB to social audience data to piracy numbers. Nobody had them in one view.',
-        ],
-        constraints: [
-          "Internal-only tool, second engineer on a small team. No auth by design, since the CTO chose not to invest in it before there was external traction. The interesting call was what not to build: comp-matching is a human judgement in film, so we deliberately skipped a vector database or semantic-search layer we did not need.",
-        ],
-        approach: [
-          "Pulled five-plus third-party sources into one pipeline: IMDB via its GraphQL API, Muso for piracy data, Audiense and SocialBlade and DemographicsPRO for social and audience, and bespoke Cheerio and Puppeteer scraping for the rest. Combined those into a comp view an analyst could read, and kept the actual comparison human-driven rather than dressing it up as an ML prediction.",
-        ],
-        contribution: [
-          "Built the integrations and the tool end to end, and shipped a working prototype with one other engineer and a CTO who was only partially hands-on.",
-          "The part that stuck with me wasn't mine. The senior engineer brought BullMQ in, and pairing with him on it is where I learned what a job queue is actually for: every third-party pull and Puppeteer scrape is slow, rate-limited, and fails on someone else's schedule, so none of it belongs on the request path. Getting the why and the where from someone who had already made those calls, rather than just the how, is what I took off this project. BullMQ has been on my stack ever since, GrowthNation included.",
-        ],
-        outcome: [
-          "Used in real pitch decisions. The bigger takeaway landed at the org level: documentary funding turned out to be driven by human storytelling, not statistics, which fed a strategic pivot away from data-led greenlighting. The tool did its job; the lesson was about the limits of the data.",
-        ],
-        reflection: [
-          "The lesson is knowing what not to build, and it showed up twice. In the code, skipping the semantic-search layer kept the tool shippable and honest about where the judgement really sat: in a human reading comps, not a model. In the product, the modest version worked, reading past data to see what not to bet on. The ambition underneath it, predicting the next film, never could, because past performance describes what happened and not what's coming.",
+          'The build was the cheap part. The point of a solo, self-funded project like this is to buy a real answer to "does anyone want this" before spending a year finding out, and the answer was no. Shipping something is easy to be proud of; stopping on the evidence is the harder discipline.',
         ],
       },
     },
@@ -505,35 +470,69 @@ export const projects: Project[] = [
       "TypeScript",
       "React",
       "Node",
-      "OpenAI (GPT-3.5 + GPT-4)",
+      "OpenAI (GPT-4)",
       "Cheerio",
       "Puppeteer",
     ],
-    hook: "Co-built a documentary research assistant on GPT-3.5/4 in 2023, before AI-assisted tooling was a category: give it a subject, it returned biographical leads and story angles worth chasing.",
+    hook: "Co-built a documentary research assistant on GPT-4 in 2024 that turned a subject into biographical leads and story angles worth chasing.",
     featured: true,
     role: "Software Engineer",
-    period: "2023",
+    period: "2024 to 2025",
     caseStudy: {
       status: "sunset",
       sections: {
         problem: [
-          "Documentary research is slow by nature: a new subject means days of reading before anyone knows whether there is a story in it, and that time caps how many subjects ever get looked at. The obvious question was whether an early LLM could shorten it. The better one was whether it could widen it, surfacing angles a researcher would not have thought to go looking for. The target was not a faster researcher. It was a researcher with a wider net.",
+          "Documentary research is slow by nature. A new subject means days of reading before anyone knows whether there is a story in it, and that time caps how many subjects ever get looked at. The obvious question was whether an LLM could shorten it. The better one was whether it could widen it, surfacing angles a researcher would not have thought to go looking for. The target was a researcher with a wider net, not a faster one.",
         ],
         constraints: [
-          "This was 2023, on GPT-3.5 and GPT-4, before there were patterns to copy. Early models were unreliable, and an internal creative team has a high bar for what it will trust. Getting output stable enough to be useful was the hard part.",
+          "This was 2024. We ran on GPT-4 with function calling for structured output, but it still muddied answers and dropped structure often enough to need retries, and an internal creative team has a high bar for what it will trust. Getting responses reliable and structured enough to depend on was the hard part.",
         ],
         approach: [
-          "Input a subject name, get back biographical leads, story angles, and threads to pull. Built integration tests that run live OpenAI calls with graded responses, keeping output inside tolerance bands. That harness came years before checking LLMs in CI was standard, and the same pattern carried through to GrowthNation three years later.",
+          "Input a subject name, get back biographical leads, story angles, and threads to pull. Built integration tests that run live OpenAI calls with graded responses, keeping output inside tolerance bands. That harness came before checking LLMs in CI was common practice.",
         ],
         contribution: [
-          "The CTO drove the project and we paired on architecture and prompt strategy. The build was mine: the frontend, the data ingestion, the API connections, and the prompting layer, which refused to sit still. It started as prompt engineering and became tool calling when OpenAI shipped it partway through the build, with the model pulling the specific facts we needed out of what the pipeline fetched. Every research run went out and got fresh data.",
-          "Stabilising it is where the engineering was. The graded-LLM test harness came out of that, and canned data feeds alongside it: a prompt change can only be judged against a fixed input, or you cannot tell whether the output moved because you improved something or because the web did.",
+          "The CTO drove the project and we paired on architecture and prompt strategy. The build was mine. I owned the frontend, the data ingestion, the API connections, and the prompting layer, which refused to sit still. It moved from prompt engineering to function calling, with the model pulling the specific facts we needed out of what the pipeline fetched. Every research run went out and got fresh data.",
+          "Stabilising it is where the engineering was. The graded-LLM test harness came out of that, and canned data feeds alongside it. A prompt change can only be judged against a fixed input, or you cannot tell whether the output moved because you improved something or because the web did.",
         ],
         outcome: [
-          'A capable, working tool that went unused. The research team preferred its traditional workflow and the head of research objected to "AI slop". Underneath the objection sat a positioning problem: a studio built on high-end, long-form documentary had no appetite for stories mined and told at volume, so the thing the tool was good at was the thing they did not want. The tech worked; adoption was blocked by preference, not capability.',
+          'A capable, working tool that went unused. The research team preferred its traditional workflow and the head of research objected to "AI slop". Underneath the objection sat a positioning problem. A studio built on high-end, long-form documentary had no appetite for stories mined and told at volume, so the thing the tool was good at was the thing they did not want. The tech worked, but adoption was blocked by preference, not capability.',
         ],
         reflection: [
-          "The part that outlived the tool is the graded-LLM test harness, and the fact of shipping production LLM work in 2023 at all. That is the transferable engineering. The tool itself I file under timing: it did what a wave of YouTube channels turned into a format three years later, and it still died in-house, because being right too early is hard to tell apart from being wrong.",
+          "The part that outlived the tool is the graded-LLM test harness, holding output to a fixed bar with integration tests when the model would not hold it on its own. That discipline is the transferable engineering, and it carried into later work. The tool worked and still died in-house, because the studio did not want what it was good at, which is a lesson in fit over capability.",
+        ],
+      },
+    },
+  },
+  {
+    slug: "slate-iq",
+    title: "SlateIQ",
+    company: "Noah Media Group",
+    stack: ["TypeScript", "React", "Node", "MongoDB", "BullMQ", "OpenAI"],
+    hook: "Built a film-success predictor that pulled IMDB, social, piracy, and market data into one tool that matched a film against comparable past titles, used by the studio in real pitch decisions.",
+    featured: true,
+    role: "Software Engineer",
+    period: "2022 to 2025",
+    caseStudy: {
+      status: "shipped",
+      sections: {
+        problem: [
+          'The studio wanted to gauge a film\'s potential the way the industry actually thinks about it: by comparison to past titles ("comps"). The signals for that lived in a dozen different places, from IMDB to social audience data to piracy numbers. Nobody had them in one view.',
+        ],
+        constraints: [
+          "An internal-only tool, two engineers on a small team. No auth, by design: not worth building before the product had traction. The more interesting constraint was self-imposed, knowing what not to build. Judging a film against comparable titles is human work, so we deliberately skipped a vector database and semantic-search layer we did not need.",
+        ],
+        approach: [
+          "We pulled third-party sources into one pipeline: IMDB via its GraphQL API, Muso for piracy data, Audiense and SocialBlade and DemographicsPRO for social and audience, and bespoke Cheerio and Puppeteer scraping for the rest. Combined those into a set of views/charts directly into Google Presentation, and kept the actual comparison human-driven rather than dressing it up as an ML prediction.",
+        ],
+        contribution: [
+          "Built the integrations and the tool end to end, and shipped a working prototype with one other engineer and a CTO who was only partially hands-on.",
+          "The part that stuck with me wasn't mine. The other engineer brought BullMQ in to help us manage long running jobs, and pairing with him on it is where I learned what a job queue is actually for: every third-party pull and Puppeteer scrape is slow, rate-limited, and fails on someone else's schedule, so none of it belongs on the request path. Getting the why and the where from someone who had already made those calls, rather than just the how, is what I took off this project.",
+        ],
+        outcome: [
+          "Used in real pitch decisions. The bigger takeaway landed at the org level: documentary funding turned out to be driven by human storytelling, not statistics, which fed a strategic pivot away from data-led greenlighting. The tool did its job; the lesson was about the limits of the data.",
+        ],
+        reflection: [
+          "The lesson was knowing what not to build, and it showed up twice. In the code, skipping the semantic-search layer kept the tool shippable and honest about where the judgement sat, with a human reading the comparables rather than a model. In the product, the modest version worked because it read past data to see what not to bet on. The grander ambition underneath, predicting the next film, never could. Past performance tells you what happened, not what is coming.",
         ],
       },
     },
@@ -628,7 +627,7 @@ export const experience: WorkExperience[] = [
       "First engineer in NMG's newly formed tech arm, building two products from scratch over three years.",
     highlights: [
       "[SlateIQ](https://slateiq.com/): film success prediction. Combined IMDB, social, piracy, and market data into a comp-matching tool used in pitch decisions.",
-      "AI-powered research assistant on GPT-3.5/4 in 2023. Integration tests ran live LLM calls with graded responses to stabilise output, years before this became standard practice.",
+      "AI-powered research assistant on GPT-4 in 2024. Integration tests ran live LLM calls with graded responses to hold output to a bar, before checking LLMs in CI was common.",
       "Established currying-based dependency injection as a team pattern, saving us from elaborate testing effort",
     ],
     stack: {

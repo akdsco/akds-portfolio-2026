@@ -1,7 +1,7 @@
 import { act, renderHook } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
 
-import { DWELL_MS, useDwellFlare } from "@/lib/use-dwell-flare";
+import { DWELL_MS, FLARE_HOLD_MS, useDwellFlare } from "@/lib/use-dwell-flare";
 
 /**
  * The hook reads the environment at event time, never at render — markup keyed
@@ -74,7 +74,9 @@ describe("useDwellFlare", () => {
     expect(result.current.runId).toBe(0);
   });
 
-  test("leaving mid-sweep cuts it short", () => {
+  // Once a flare has fired, leaving no longer cuts it: it holds for the wave's
+  // own length so the sweep plays out, then releases back to rest on its own.
+  test("a flare under way survives the pointer leaving, then releases on the hold", () => {
     const { result } = renderHook(() => useDwellFlare());
     act(() => {
       result.current.handlers.onPointerEnter();
@@ -85,13 +87,30 @@ describe("useDwellFlare", () => {
     act(() => {
       result.current.handlers.onPointerLeave();
     });
+    advance(FLARE_HOLD_MS - 1);
+    expect(result.current.runId).toBe(1); // still holding, wave not done
+
+    advance(1);
+    expect(result.current.runId).toBe(0); // released
+  });
+
+  // Even with the pointer parked the whole time, the flare is a one-shot: it
+  // releases once its hold elapses rather than latching lit.
+  test("releases on its own once the hold elapses, pointer still parked", () => {
+    const { result } = renderHook(() => useDwellFlare());
+    act(() => {
+      result.current.handlers.onPointerEnter();
+    });
+    advance(DWELL_MS);
+    expect(result.current.runId).toBe(1);
+
+    advance(FLARE_HOLD_MS);
     expect(result.current.runId).toBe(0);
   });
 
-  // The flare doesn't latch: leaving and coming back arms it afresh. The run
-  // passing back through 0 on the way out is also what re-keys the letters, so
-  // the second sweep actually replays rather than sitting finished.
-  test("re-dwelling runs it again", () => {
+  // Re-dwelling replays: a fresh dwell bumps the run again (which re-keys the
+  // letters so the wave actually restarts) and replaces the pending hold.
+  test("re-dwelling replays the flare", () => {
     const { result } = renderHook(() => useDwellFlare());
     const dwell = () => {
       act(() => {
@@ -101,13 +120,15 @@ describe("useDwellFlare", () => {
     };
 
     dwell();
+    expect(result.current.runId).toBe(1);
     act(() => {
       result.current.handlers.onPointerLeave();
     });
-    expect(result.current.runId).toBe(0);
+    // Leaving no longer resets it; the flare is still holding.
+    expect(result.current.runId).toBe(1);
 
     dwell();
-    expect(result.current.runId).toBeGreaterThan(0);
+    expect(result.current.runId).toBe(2);
   });
 
   // A press on a phone fires pointerenter too; the flare is a hover easter
