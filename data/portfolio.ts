@@ -463,40 +463,6 @@ export const projects: Project[] = [
     },
   },
   {
-    slug: "slate-iq",
-    title: "SlateIQ",
-    company: "Noah Media Group",
-    stack: ["TypeScript", "React", "Node", "MongoDB", "BullMQ", "OpenAI"],
-    hook: "Built a film-success predictor that pulled IMDB, social, piracy, and market data into one tool that matched a film against comparable past titles, used by the studio in real pitch decisions.",
-    featured: true,
-    role: "Software Engineer",
-    period: "2022 to 2025",
-    caseStudy: {
-      status: "shipped",
-      sections: {
-        problem: [
-          'The studio wanted to gauge a film\'s potential the way the industry actually thinks about it: by comparison to past titles ("comps"). The signals for that lived in a dozen different places, from IMDB to social audience data to piracy numbers. Nobody had them in one view.',
-        ],
-        constraints: [
-          "An internal-only tool, two engineers on a small team. No auth, by design: not worth building before the product had traction. The more interesting constraint was self-imposed, knowing what not to build. Judging a film against comparable titles is human work, so we deliberately skipped a vector database and semantic-search layer we did not need.",
-        ],
-        approach: [
-          "We pulled third-party sources into one pipeline: IMDB via its GraphQL API, Muso for piracy data, Audiense and SocialBlade and DemographicsPRO for social and audience, and bespoke Cheerio and Puppeteer scraping for the rest. Combined those into a set of views/charts directly into Google Presentation, and kept the actual comparison human-driven rather than dressing it up as an ML prediction.",
-        ],
-        contribution: [
-          "Built the integrations and the tool end to end, and shipped a working prototype with one other engineer and a CTO who was only partially hands-on.",
-          "The part that stuck with me wasn't mine. The other engineer brought BullMQ in to help us manage long running jobs, and pairing with him on it is where I learned what a job queue is actually for: every third-party pull and Puppeteer scrape is slow, rate-limited, and fails on someone else's schedule, so none of it belongs on the request path. Getting the why and the where from someone who had already made those calls, rather than just the how, is what I took off this project.",
-        ],
-        outcome: [
-          "Used in real pitch decisions. The bigger takeaway landed at the org level: documentary funding turned out to be driven by human storytelling, not statistics, which fed a strategic pivot away from data-led greenlighting. The tool did its job; the lesson was about the limits of the data.",
-        ],
-        reflection: [
-          "The lesson was knowing what not to build, and it showed up twice. In the code, skipping the semantic-search layer kept the tool shippable and honest about where the judgement sat, with a human reading the comparables rather than a model. In the product, the modest version worked because it read past data to see what not to bet on. The grander ambition underneath, predicting the next film, never could. Past performance tells you what happened, not what is coming.",
-        ],
-      },
-    },
-  },
-  {
     slug: "ai-research-assistant",
     title: "AI-powered research assistant",
     company: "Noah Media Group",
@@ -533,6 +499,40 @@ export const projects: Project[] = [
         ],
         reflection: [
           "The part that outlived the tool is the graded-LLM test harness, holding output to a fixed bar with integration tests when the model would not hold it on its own. That discipline is the transferable engineering, and it carried into later work. The tool worked and still died in-house, because the studio did not want what it was good at, which is a lesson in fit over capability.",
+        ],
+      },
+    },
+  },
+  {
+    slug: "slate-iq",
+    title: "SlateIQ",
+    company: "Noah Media Group",
+    stack: ["TypeScript", "React", "Node", "MongoDB", "BullMQ", "OpenAI"],
+    hook: "Built a film-success predictor that pulled IMDB, social, piracy, and market data into one tool that matched a film against comparable past titles, used by the studio in real pitch decisions.",
+    featured: true,
+    role: "Software Engineer",
+    period: "2022 to 2025",
+    caseStudy: {
+      status: "shipped",
+      sections: {
+        problem: [
+          'The studio wanted to gauge a film\'s potential the way the industry actually thinks about it: by comparison to past titles ("comps"). The signals for that lived in a dozen different places, from IMDB to social audience data to piracy numbers. Nobody had them in one view.',
+        ],
+        constraints: [
+          "An internal-only tool, two engineers on a small team. No auth, by design: not worth building before the product had traction. The more interesting constraint was self-imposed, knowing what not to build. Judging a film against comparable titles is human work, so we deliberately skipped a vector database and semantic-search layer we did not need.",
+        ],
+        approach: [
+          "We pulled third-party sources into one pipeline: IMDB via its GraphQL API, Muso for piracy data, Audiense and SocialBlade and DemographicsPRO for social and audience, and bespoke Cheerio and Puppeteer scraping for the rest. Combined those into a set of views/charts directly into Google Presentation, and kept the actual comparison human-driven rather than dressing it up as an ML prediction.",
+        ],
+        contribution: [
+          "Built the integrations and the tool end to end, and shipped a working prototype with one other engineer and a CTO who was only partially hands-on.",
+          "The part that stuck with me wasn't mine. The other engineer brought BullMQ in to help us manage long running jobs, and pairing with him on it is where I learned what a job queue is actually for: every third-party pull and Puppeteer scrape is slow, rate-limited, and fails on someone else's schedule, so none of it belongs on the request path. Getting the why and the where from someone who had already made those calls, rather than just the how, is what I took off this project.",
+        ],
+        outcome: [
+          "Used in real pitch decisions. The bigger takeaway landed at the org level: documentary funding turned out to be driven by human storytelling, not statistics, which fed a strategic pivot away from data-led greenlighting. The tool did its job; the lesson was about the limits of the data.",
+        ],
+        reflection: [
+          "The lesson was knowing what not to build, and it showed up twice. In the code, skipping the semantic-search layer kept the tool shippable and honest about where the judgement sat, with a human reading the comparables rather than a model. In the product, the modest version worked because it read past data to see what not to bet on. The grander ambition underneath, predicting the next film, never could. Past performance tells you what happened, not what is coming.",
         ],
       },
     },
