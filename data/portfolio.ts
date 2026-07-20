@@ -395,7 +395,7 @@ export const projects: Project[] = [
       "custom MCP servers",
       "BullMQ",
     ],
-    hook: "Owned the proof store behind a sales-AI product: ingestion, a user-facing dashboard with search, and a tagging layer that kept every customer's library organized on its own.",
+    hook: "Owned the proof store behind a sales-AI product: ingestion, a user-facing dashboard with search, and a tagging layer that kept every customer's library organised on its own.",
     featured: true,
     role: "Product Engineer",
     period: "Jul 2025 to Jun 2026",
@@ -404,18 +404,18 @@ export const projects: Project[] = [
       testimonialId: 1,
       sections: {
         problem: [
-          'GrowthNation was a stealth startup still looking for product-market fit, and it looked by pivoting. It started in AI content marketing. About three months before my contract ended, the CEO moved the whole product to a "social proof OS for sales teams." (After I left it pivoted again, toward AI-driven org optimization: interviewing employees with AI to surface improvements people used to find by hand.) Shipping real product across those swings was the actual job.',
+          'GrowthNation was a stealth startup still looking for product-market fit, and it looked by pivoting. It started in AI content marketing. About three months before my contract ended, the CEO moved the whole product to a "social proof OS for sales teams." (After I left it pivoted again, towards AI-driven org optimisation: interviewing employees with AI to surface improvements people used to find by hand.) Shipping real product across those swings was the actual job.',
           "The sales pivot needed one place to hold a company's proof: case studies, customers, testimonials, stats. Other parts of the product would read from it to assemble tailored pitches. It didn't exist yet, and the two surfaces that would consume it, proof delivery and proof collection, were being built at the same time by other engineers. Someone had to own the store in the middle and make it real. That was me.",
         ],
         constraints: [
           "The scope came from the founder, who judged the work on business impact rather than implementation detail. Every major delivery went out with a written summary he could read in a couple of minutes. The skill there was being a reliable human in the loop, not producing more words.",
           "The team was small and shipped fast on heavy AI assistance, which also meant tech debt stacking up quickly. What I was paid for was direction, judgement, and knowing when the AI output was wrong.",
-          "An empty proof store is useless, so onboarding a new customer had to produce a usable, organized library straight away.",
+          "An empty proof store is useless, so onboarding a new customer had to produce a usable, organised library straight away.",
         ],
         approach: [
           "I split the store into three layers and built each one with AI assistance under my own review.",
           "Ingestion came first. The public-scrape lane runs end to end: paste a URL, it extracts, and appears in the dashboard. On top of that, uploads of any kind (docs, PDFs, plain text) plus screenshots run through AI vision to pull quotes and testimonials straight out of images.",
-          "Presentation was a user-facing dashboard that had to work for every workspace on real data, and the CEO wanted it front and center. It ran as two tabs. The Dashboard tab gave the overview: coverage percentage, total items, gaps, and last contribution across the top, then a coverage matrix broken down by ICP with a bar per pain point, rows you can expand to the underlying quotes and stats with their source, a consented-only filter, and a sidebar of live contributions. The Explore tab was for digging into the store itself, so a user could find a specific piece of proof by filtering, sorting, and fuzzy-searching across the whole database.",
+          "Presentation was a user-facing dashboard that had to work for every workspace on real data, and the CEO wanted it front and centre. It ran as two tabs. The Dashboard tab gave the overview: coverage percentage, total items, gaps, and last contribution across the top, then a coverage matrix broken down by ICP with a bar per pain point, rows you can expand to the underlying quotes and stats with their source, a consented-only filter, and a sidebar of live contributions. The Explore tab was for digging into the store itself, so a user could find a specific piece of proof by filtering, sorting, and fuzzy-searching across the whole database.",
           "The tagging layer was the decision that mattered most. Every new quote, stat, or case study gets tagged against the workspace's ICPs and pain points before the save call even returns, and when a workspace edits its ICPs or pain points, everything already stored gets re-tagged. That is what let a brand-new customer have a useful library on day one, and what kept it accurate as their positioning shifted.",
           "Alongside the store I took over an autonomous bug-triage system the CTO had started. It does root-cause analysis (ordering events in time, trusting server logs over client, fingerprinting errors, catching cascades) and opens its own fix PRs, so a triage points at the cause instead of whichever symptom surfaced first.",
         ],
@@ -454,7 +454,7 @@ export const projects: Project[] = [
         ],
         contribution: ["Everything: the concept, design, build and test."],
         outcome: [
-          "I put it in front of 12 riders from my cycling club. The reaction was weak: one used it and found it genuinely useful, one couldn't get past Strava account limitations, and most never cared enough to install it at all. The signal was clear, so I killed the project rather than push past it.",
+          "I put it in front of 12 riders from my cycling club. The reaction was weak: one used it and found it useful, one couldn't get past Strava account limitations, and most never cared enough to install it at all. The signal was clear, so I killed the project rather than push past it.",
         ],
         reflection: [
           'The build was the cheap part. The point of a solo, self-funded project like this is to buy a real answer to "does anyone want this" before spending a year finding out, and the answer was no. Shipping something is easy to be proud of; stopping on the evidence is the harder discipline.',
@@ -482,7 +482,7 @@ export const projects: Project[] = [
       status: "sunset",
       sections: {
         problem: [
-          "Documentary research is slow by nature. A new subject means days of reading before anyone knows whether there is a story in it, and that time caps how many subjects ever get looked at. The obvious question was whether an LLM could shorten it. The better one was whether it could widen it, surfacing angles a researcher would not have thought to go looking for. The target was not a faster researcher. It was a researcher with a wider net.",
+          "Documentary research is slow by nature. A new subject means days of reading before anyone knows whether there is a story in it, and that time caps how many subjects ever get looked at. The obvious question was whether an LLM could shorten it. The better one was whether it could widen it, surfacing angles a researcher would not have thought to go looking for. The target was a researcher with a wider net, not a faster one.",
         ],
         constraints: [
           "This was 2024. We ran on GPT-4 with function calling for structured output, but it still muddied answers and dropped structure often enough to need retries, and an internal creative team has a high bar for what it will trust. Getting responses reliable and structured enough to depend on was the hard part.",
