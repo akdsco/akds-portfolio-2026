@@ -10,10 +10,9 @@ export const DWELL_MS = 500;
 /** How long to hold the flare once it has started, before releasing it. Tracks
  *  the nav wave's own length: four letters at the CSS defaults (360ms each,
  *  180ms apart) finish ~900ms after the first. Holding for this whole span is
- *  what lets a triggered flare play out even after the pointer has left — then
- *  the mark releases (data-wave drops, colour and lift fade together) as if let
- *  go at that moment. Keep in sync with --flare-duration / --flare-stagger in
- *  globals.css. */
+ *  what lets a triggered flare play out even after the pointer has left, then
+ *  the flare releases (data-wave drops and the wave settles back to rest). Keep
+ *  in sync with --flare-duration / --flare-stagger in globals.css. */
 export const FLARE_HOLD_MS = 900;
 
 /**
