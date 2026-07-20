@@ -227,9 +227,9 @@ export const about: AboutCopy = {
   // Role, then stack — the two halves a reader would split it into anyway.
   tagline: ["Software Engineer · Full-Stack", "TypeScript · React · Node"],
   paragraphs: [
-    "Six years building production software, most recently shipping a social-proof OS for sales teams at GrowthNation and an AI research platform at Noah Media Group.",
-    "Two-year track record of delivering AI-assisted features in production, from a 2023 research tool on GPT-3.5/4 to a 2026 proof engine using the Vercel AI SDK, Anthropic, OpenAI, OpenRouter, and a custom MCP server layer. Comfortable with the TypeScript stack end-to-end.",
-    "Career-changer. Worked in sales for ten years across Poland and the UK before self-teaching into software via OpenClassrooms, the London Java Community and countless online courses and certifications.",
+    "Six years building production software, the last two shipping AI features: a research tool at [Noah Media Group](https://www.noahmediagroup.com/) in 2023 (GPT-3.5/4) and a social-proof engine at [GrowthNation](https://growthnation.ai) in 2026 (Vercel AI SDK, Anthropic, OpenAI, a custom MCP layer).",
+    "The most recent build I'm proudest of is the code factory, co-built with the CTO: a pipeline of skills, plans, worktrees and automated gates that let a designer and a junior dev pick up tickets and ship straight to production. It cut engineering costs by more than 30%.",
+    "Career-changer: ten years in sales across Poland and the UK before self-teaching into software.",
   ],
 };
 
@@ -414,20 +414,19 @@ export const projects: Project[] = [
         ],
         approach: [
           "I split the store into three layers and built each one with AI assistance under my own review.",
-          "Ingestion came first. The public-scrape lane runs end to end: paste a URL, it extracts, you preview, you save, it appears in the dashboard. On top of that, uploads of any kind (docs, PDFs, plain text) plus screenshots run through AI vision to pull quotes and testimonials straight out of images.",
+          "Ingestion came first. The public-scrape lane runs end to end: paste a URL, it extracts, and appears in the dashboard. On top of that, uploads of any kind (docs, PDFs, plain text) plus screenshots run through AI vision to pull quotes and testimonials straight out of images.",
           "Presentation was a user-facing dashboard that had to work for every workspace on real data, and the CEO wanted it front and center. It ran as two tabs. The Dashboard tab gave the overview: coverage percentage, total items, gaps, and last contribution across the top, then a coverage matrix broken down by ICP with a bar per pain point, rows you can expand to the underlying quotes and stats with their source, a consented-only filter, and a sidebar of live contributions. The Explore tab was for digging into the store itself, so a user could find a specific piece of proof by filtering, sorting, and fuzzy-searching across the whole database.",
           "The tagging layer was the decision that mattered most. Every new quote, stat, or case study gets tagged against the workspace's ICPs and pain points before the save call even returns, and when a workspace edits its ICPs or pain points, everything already stored gets re-tagged. That is what let a brand-new customer have a useful library on day one, and what kept it accurate as their positioning shifted.",
           "Alongside the store I took over an autonomous bug-triage system the CTO had started. It does root-cause analysis (ordering events in time, trusting server logs over client, fingerprinting errors, catching cascades) and opens its own fix PRs, so a triage points at the cause instead of whichever symptom surfaced first.",
         ],
         contribution: [
           "I owned the store, its ingestion, and its presentation, and exposed all of it over a custom MCP layer so agents could read it too. I wrote the delivery summaries that went out with each milestone, including what got left out on purpose: the first dashboard shipped behind a feature flag for every workspace, with the deferred items named openly rather than dropped without a word.",
-          "To be accurate about scope: proof delivery and proof collection belonged to other engineers. My lane was the store they both read from. Where the work was shared, I've said so.",
         ],
         outcome: [
-          "The store, dashboard, and tagging layer shipped and ran for every workspace on the platform. Real customers used it, some of them outside the US. The product was demoed at a conference in June 2026, and the company had earlier reached the top 10% of a YC application round. My twelve-month contract finished on schedule.",
+          "The store, dashboard, and tagging layer shipped and ran for every workspace on the platform. The product was demoed at a conference in June 2026, and the company had earlier reached the top 10% of a YC application round.",
         ],
         reflection: [
-          "The engineering that mattered wasn't speed, it was judgement: reading a founder-level ask, splitting it into layers, and making the one call, tag on the way in and re-tag on change, that solved the empty-library and the drift problems at once. On a team shipping fast on heavy AI assistance, the rest of the value was knowing when the AI was wrong. A line from my manager stuck: you're allowed to have a conversation with uncertainty as an engineer, but you're not allowed to dress uncertainty up as certainty.",
+          "The lasting lesson here was about altitude, not code. The technical side was hard in its own right: the dashboard was a blank-page design problem, and getting to a working prototype inside a week leaned on skilful use of AI. What I grew most, though, was operating at the founder's level, reporting in business outcomes he could act on rather than implementation detail he didn't need.",
         ],
       },
     },
@@ -455,10 +454,10 @@ export const projects: Project[] = [
         ],
         contribution: ["Everything: the concept, design, build and test."],
         outcome: [
-          "I put it in front of about 20 riders from my cycling club. The reaction was weak: one used it and found it genuinely useful, one couldn't get past an unusual Strava account, and most never cared enough to install it at all. The signal was clear, so I killed the project rather than push past it.",
+          "I put it in front of 12 riders from my cycling club. The reaction was weak: one used it and found it genuinely useful, one couldn't get past Strava account limitations, and most never cared enough to install it at all. The signal was clear, so I killed the project rather than push past it.",
         ],
         reflection: [
-          'The build was the cheap part. The point of a solo, self-funded project like this is to buy a real answer to "does anyone want this" before spending a year finding out, and the answer was no. Shipping something is easy to be proud of; stopping on the evidence is the harder discipline, and the one I\'d trust more on the next idea.',
+          'The build was the cheap part. The point of a solo, self-funded project like this is to buy a real answer to "does anyone want this" before spending a year finding out, and the answer was no. Shipping something is easy to be proud of; stopping on the evidence is the harder discipline.',
         ],
       },
     },
@@ -468,7 +467,7 @@ export const projects: Project[] = [
     title: "SlateIQ",
     company: "Noah Media Group",
     stack: ["TypeScript", "React", "Node", "MongoDB", "BullMQ", "OpenAI"],
-    hook: "Built a film-success predictor that pulled IMDB, social, piracy, and market data into one comp-matching tool the studio used in real pitch decisions.",
+    hook: "Built a film-success predictor that pulled IMDB, social, piracy, and market data into one tool that matched a film against comparable past titles, used by the studio in real pitch decisions.",
     featured: true,
     role: "Software Engineer",
     period: "2022 to 2025",
@@ -479,20 +478,20 @@ export const projects: Project[] = [
           'The studio wanted to gauge a film\'s potential the way the industry actually thinks about it: by comparison to past titles ("comps"). The signals for that lived in a dozen different places, from IMDB to social audience data to piracy numbers. Nobody had them in one view.',
         ],
         constraints: [
-          "Internal-only tool, second engineer on a small team. No auth by design, since the CTO chose not to invest in it before there was external traction. The interesting call was what not to build: comp-matching is a human judgement in film, so we deliberately skipped a vector database or semantic-search layer we did not need.",
+          "An internal-only tool, two engineers on a small team. No auth, by design: not worth building before the product had traction. The more interesting constraint was self-imposed, knowing what not to build. Judging a film against comparable titles is human work, so we deliberately skipped a vector database and semantic-search layer we did not need.",
         ],
         approach: [
-          "Pulled five-plus third-party sources into one pipeline: IMDB via its GraphQL API, Muso for piracy data, Audiense and SocialBlade and DemographicsPRO for social and audience, and bespoke Cheerio and Puppeteer scraping for the rest. Combined those into a comp view an analyst could read, and kept the actual comparison human-driven rather than dressing it up as an ML prediction.",
+          "We pulled third-party sources into one pipeline: IMDB via its GraphQL API, Muso for piracy data, Audiense and SocialBlade and DemographicsPRO for social and audience, and bespoke Cheerio and Puppeteer scraping for the rest. Combined those into a set of views/charts directly into Google Presentation, and kept the actual comparison human-driven rather than dressing it up as an ML prediction.",
         ],
         contribution: [
           "Built the integrations and the tool end to end, and shipped a working prototype with one other engineer and a CTO who was only partially hands-on.",
-          "The part that stuck with me wasn't mine. The senior engineer brought BullMQ in, and pairing with him on it is where I learned what a job queue is actually for: every third-party pull and Puppeteer scrape is slow, rate-limited, and fails on someone else's schedule, so none of it belongs on the request path. Getting the why and the where from someone who had already made those calls, rather than just the how, is what I took off this project. BullMQ has been on my stack ever since, GrowthNation included.",
+          "The part that stuck with me wasn't mine. The other engineer brought BullMQ in to help us manage long running jobs, and pairing with him on it is where I learned what a job queue is actually for: every third-party pull and Puppeteer scrape is slow, rate-limited, and fails on someone else's schedule, so none of it belongs on the request path. Getting the why and the where from someone who had already made those calls, rather than just the how, is what I took off this project.",
         ],
         outcome: [
           "Used in real pitch decisions. The bigger takeaway landed at the org level: documentary funding turned out to be driven by human storytelling, not statistics, which fed a strategic pivot away from data-led greenlighting. The tool did its job; the lesson was about the limits of the data.",
         ],
         reflection: [
-          "The lesson is knowing what not to build, and it showed up twice. In the code, skipping the semantic-search layer kept the tool shippable and honest about where the judgement really sat: in a human reading comps, not a model. In the product, the modest version worked, reading past data to see what not to bet on. The ambition underneath it, predicting the next film, never could, because past performance describes what happened and not what's coming.",
+          "The lesson was knowing what not to build, and it showed up twice. In the code, skipping the semantic-search layer kept the tool shippable and honest about where the judgement sat, with a human reading the comparables rather than a model. In the product, the modest version worked because it read past data to see what not to bet on. The grander ambition underneath, predicting the next film, never could. Past performance tells you what happened, not what is coming.",
         ],
       },
     },
