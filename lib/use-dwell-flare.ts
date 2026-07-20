@@ -5,7 +5,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 /** How long the pointer has to sit still on the mark before it flares. Long
  *  enough that a pointer passing through the nav doesn't trip it, short enough
  *  that a deliberate pause is quickly rewarded. */
-export const DWELL_MS = 1000;
+export const DWELL_MS = 500;
 
 /**
  * "Has the pointer been parked on this thing for a while?" — the trigger for the
