@@ -3,7 +3,7 @@ import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
 
 import { PaletteProvider } from "@/components/command-palette";
 import { SiteNav } from "@/components/site-nav";
-import { DWELL_MS } from "@/lib/use-dwell-flare";
+import { DWELL_MS, FLARE_HOLD_MS } from "@/lib/use-dwell-flare";
 
 vi.mock("next/navigation", () => ({
   usePathname: () => "/about",
@@ -68,7 +68,7 @@ describe("SiteNav wordmark flare", () => {
     expect(mark()).not.toHaveAttribute("data-wave");
   });
 
-  test("flares once the pointer has dwelled, and stops when it leaves", () => {
+  test("flares once dwelled, holds through the pointer leaving, then releases", () => {
     renderNav();
     act(() => {
       logo().dispatchEvent(new PointerEvent("pointerover", { bubbles: true }));
@@ -76,9 +76,15 @@ describe("SiteNav wordmark flare", () => {
     advance(DWELL_MS);
     expect(mark()).toHaveAttribute("data-wave");
 
+    // Leaving mid-flare no longer cuts it: the wave keeps playing (data-wave
+    // stays, holding the lit + lifted look) until its own hold elapses.
     act(() => {
       logo().dispatchEvent(new PointerEvent("pointerout", { bubbles: true }));
     });
+    advance(FLARE_HOLD_MS - 1);
+    expect(mark()).toHaveAttribute("data-wave");
+
+    advance(1);
     expect(mark()).not.toHaveAttribute("data-wave");
   });
 });

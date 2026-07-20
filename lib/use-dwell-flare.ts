@@ -7,6 +7,15 @@ import { useCallback, useEffect, useRef, useState } from "react";
  *  that a deliberate pause is quickly rewarded. */
 export const DWELL_MS = 500;
 
+/** How long to hold the flare once it has started, before releasing it. Tracks
+ *  the nav wave's own length: four letters at the CSS defaults (360ms each,
+ *  180ms apart) finish ~900ms after the first. Holding for this whole span is
+ *  what lets a triggered flare play out even after the pointer has left — then
+ *  the mark releases (data-wave drops, colour and lift fade together) as if let
+ *  go at that moment. Keep in sync with --flare-duration / --flare-stagger in
+ *  globals.css. */
+export const FLARE_HOLD_MS = 900;
+
 /**
  * "Has the pointer been parked on this thing for a while?" — the trigger for the
  * nav wordmark's flare.
@@ -15,18 +24,30 @@ export const DWELL_MS = 500;
  * flare. It's an id rather than a boolean because CSS won't replay a keyframe on
  * a live element, so the letters key off this to force the remount that does.
  *
+ * Once a flare fires it runs to completion on its own timer, not the pointer's
+ * presence: leaving mid-wave no longer cuts it short. `runId` stays non-zero for
+ * the whole hold, so `data-wave` stays set and the letter keyframe plays all the
+ * way through even after the pointer has gone, then drops back to 0 at rest.
+ *
  * Both environment checks happen at event time, never at render. They read
  * matchMedia, which is browser-only and `undefined` during SSR, so anything
  * rendered from them mismatches on hydration (see CLAUDE.md).
  */
 export function useDwellFlare() {
   const [runId, setRunId] = useState(0);
-  const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const dwell = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const release = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const clear = useCallback(() => {
-    if (timer.current === null) return;
-    clearTimeout(timer.current);
-    timer.current = null;
+  const clearDwell = useCallback(() => {
+    if (dwell.current === null) return;
+    clearTimeout(dwell.current);
+    dwell.current = null;
+  }, []);
+
+  const clearRelease = useCallback(() => {
+    if (release.current === null) return;
+    clearTimeout(release.current);
+    release.current = null;
   }, []);
 
   const onPointerEnter = useCallback(() => {
@@ -36,21 +57,33 @@ export function useDwellFlare() {
       return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-    clear();
-    timer.current = setTimeout(() => {
+    clearDwell();
+    dwell.current = setTimeout(() => {
+      // Flare starts: bump the run to replay the wave, then hold it for the
+      // wave's own length on a release timer. From here the pointer is
+      // irrelevant — leaving won't cut it, and re-dwelling replaces the hold.
       setRunId((n) => n + 1);
+      clearRelease();
+      release.current = setTimeout(() => {
+        setRunId(0);
+      }, FLARE_HOLD_MS);
     }, DWELL_MS);
-  }, [clear]);
+  }, [clearDwell, clearRelease]);
 
   const onPointerLeave = useCallback(() => {
-    clear();
-    // Back to 0 mid-sweep drops the animation with the letters, so the mark
-    // follows the pointer out rather than finishing to an empty nav.
-    setRunId(0);
-  }, [clear]);
+    // Only cancel a dwell that hasn't fired yet — a pointer passing through. A
+    // flare already under way keeps its own release timer, so it finishes and
+    // then fades rather than snapping off with the pointer.
+    clearDwell();
+  }, [clearDwell]);
 
-  // A pending dwell firing into an unmounted tree sets state on nothing.
-  useEffect(() => clear, [clear]);
+  // Pending timers firing into an unmounted tree set state on nothing.
+  useEffect(() => {
+    return () => {
+      clearDwell();
+      clearRelease();
+    };
+  }, [clearDwell, clearRelease]);
 
   return {
     runId,
