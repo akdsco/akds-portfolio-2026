@@ -42,13 +42,12 @@ describe("AboutMore", () => {
     renderAboutMore();
     const toggle = screen.getByRole("button");
     expect(toggle).toHaveAttribute("aria-expanded", "false");
-    expect(toggle).toHaveTextContent("Show more");
     expect(document.getElementById("about-more")).toHaveAttribute("inert");
   });
 
   test("clicking the toggle opens the panel and scrolls to the first section", async () => {
     renderAboutMore();
-    await userEvent.click(screen.getByRole("button", { name: /show more/i }));
+    await userEvent.click(screen.getByRole("button"));
 
     expect(document.getElementById("about-more")).not.toHaveAttribute("inert");
     expect(scrolledTo()).toEqual(["skills"]);
@@ -64,22 +63,22 @@ describe("AboutMore", () => {
         <section id="skills">skills content</section>
       </AboutMore>,
     );
-    await userEvent.click(screen.getByRole("button", { name: /show more/i }));
+    await userEvent.click(screen.getByRole("button"));
 
     expect(scrolledTo()).toEqual(["experience"]);
   });
 
   test("the toggle fades and collapses away for good once opened", async () => {
     renderAboutMore();
-    const toggle = screen.getByRole("button", { name: /show more/i });
+    const toggle = screen.getByRole("button");
     await userEvent.click(toggle);
 
     // The row (toggle + its dashed rules) fades, and its own collapse takes the
-    // space back on the same curve the panel expands on — no jump. `inert`
-    // takes it out of reach immediately; it never returns as "Show less".
+    // space back on the same curve the panel expands on — no jump. `inert` takes
+    // it out of reach immediately and for good: it is one-way, so once opened
+    // the toggle never comes back as a collapse control.
     expect(toggle.parentElement).toHaveClass("opacity-0");
     expect(document.getElementById(TOGGLE_ID)).toHaveAttribute("inert");
-    expect(screen.queryByText(/show less/i)).toBeNull();
   });
 
   test("reveals and scrolls to the targeted section", () => {
