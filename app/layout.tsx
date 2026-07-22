@@ -3,11 +3,13 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
+import { JsonLd } from "@/components/json-ld";
 import { ThemeProvider } from "@/components/theme-provider";
 import { PaletteProvider } from "@/components/command-palette";
 import { SiteNav } from "@/components/site-nav";
 import { SiteFooter } from "@/components/site-footer";
 import { OG_SHARED, SITE_BRAND, SITE_URL } from "@/lib/site";
+import { webSiteLd } from "@/lib/structured-data";
 
 import "./globals.css";
 
@@ -79,6 +81,7 @@ export default function RootLayout({
         suppressHydrationWarning
         className="border-ink/10 flex min-h-full flex-col border-b"
       >
+        <JsonLd data={webSiteLd()} />
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

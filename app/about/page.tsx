@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
 
+import { JsonLd } from "@/components/json-ld";
 import { AboutMore } from "@/components/landing/about-more";
 import { Experience } from "@/components/landing/experience";
 import { Hero } from "@/components/landing/hero";
 import { Skills } from "@/components/landing/skills";
 import { Testimonials } from "@/components/landing/testimonials";
 import { OG_SHARED } from "@/lib/site";
+import { profilePageLd } from "@/lib/structured-data";
 
 // `/` redirects here, so /about is the canonical landing page. Description is
 // inherited from the root layout; the title feeds its "akds : %s" template.
@@ -27,6 +29,7 @@ export const metadata: Metadata = {
 export default function AboutPage() {
   return (
     <>
+      <JsonLd data={profilePageLd()} />
       <Hero />
       <AboutMore>
         <Experience />

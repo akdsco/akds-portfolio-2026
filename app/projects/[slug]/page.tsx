@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 
 import { HeroPrompt } from "@/components/command-palette";
 import { HeroBand } from "@/components/hero-band";
+import { JsonLd } from "@/components/json-ld";
 import { LinkedText } from "@/components/linked-text";
 import { MetaCard } from "@/components/case-study/meta-card";
 import { Toc } from "@/components/case-study/toc";
@@ -10,6 +11,7 @@ import { Kicker } from "@/components/kicker";
 import { projects, testimonials, type CaseStudy } from "@/data/portfolio";
 import { plainText } from "@/lib/inline-links";
 import { OG_SHARED } from "@/lib/site";
+import { breadcrumbLd } from "@/lib/structured-data";
 import { cn } from "@/lib/utils";
 
 const SECTION_ORDER = [
@@ -87,6 +89,12 @@ export default async function CaseStudyPage({
 
   return (
     <>
+      <JsonLd
+        data={breadcrumbLd([
+          { name: "Projects", path: "/projects" },
+          { name: project.title, path: `/projects/${slug}` },
+        ])}
+      />
       <HeroBand className="max-w-[900px] py-10 md:px-11">
         <div className="mb-6">
           <HeroPrompt command={`cat ~/projects/${slug}.md`} />
