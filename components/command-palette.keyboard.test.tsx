@@ -96,8 +96,9 @@ function renderPalette() {
   );
 }
 
-const trigger = () =>
-  screen.getByRole("button", { name: "Open command palette" });
+// Match by role + the stable part of the name, not the full copy: the visible
+// command leads the accessible name, so pin only "command palette".
+const trigger = () => screen.getByRole("button", { name: /command palette/i });
 const input = () => screen.getByRole("combobox", { name: "Type a command" });
 const selectedOption = () =>
   screen
@@ -105,6 +106,22 @@ const selectedOption = () =>
     .find((o) => o.getAttribute("aria-selected") === "true");
 
 describe("command palette keyboard + a11y", () => {
+  // WCAG 2.5.3 (Label in Name): the accessible name must contain the visible
+  // label so a voice-control user can activate the control by what they read.
+  // The trigger's visible label IS its terminal command.
+  test("trigger's accessible name includes its visible command", () => {
+    renderPalette();
+    // getByRole computes the accessible name; a regex on the visible command
+    // proves the name is not divorced from what's on screen.
+    expect(
+      screen.getByRole("button", { name: /cat ~\/about\.md/i }),
+    ).toBeInTheDocument();
+    // ...and it still says what the control does.
+    expect(
+      screen.getByRole("button", { name: /command palette/i }),
+    ).toBeInTheDocument();
+  });
+
   test("opens from the trigger and focuses the input", async () => {
     const user = userEvent.setup();
     renderPalette();
