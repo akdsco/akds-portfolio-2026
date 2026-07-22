@@ -37,6 +37,21 @@ stay untouched.
 2. impl: apply in `generateMetadata`. Existing `page.prose.test.ts` stays green
    (link-leak + og/meta-in-step invariants unaffected).
 
+## Update — hand-written descriptions (owner feedback)
+
+Truncation alone left a dangling `…` that reads machine-cut. Better: a purpose-
+written, self-contained description per case study, with truncation kept only as
+the fallback.
+
+- `Project.metaDescription?: string` — optional SEO/social description for the
+  detail page, distinct from the on-page `hook`.
+- `generateMetadata`: `project.metaDescription ?? truncateForMeta(plainText(hook))`.
+- Owner-approved copy added for `proof-library` (151), `slate-iq` (148),
+  `routes-wallet` (144); `ai-research-assistant` (136) and `/about` (126) already
+  fit and fall back to the hook.
+- `page.prose.test.ts` gains a ≤155 invariant across ALL case studies, so a
+  future over-long metaDescription can't silently reintroduce the mid-word cut.
+
 ## Notes
 
 - `max = 155`: fits Google's ~155–160 SERP window; social still clips to ~125

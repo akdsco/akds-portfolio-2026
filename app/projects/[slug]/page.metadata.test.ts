@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest";
 import { projects } from "@/data/portfolio";
 import { plainText } from "@/lib/inline-links";
 import { SITE_BRAND } from "@/lib/site";
+import { truncateForMeta } from "@/lib/truncate";
 
 import { generateMetadata } from "./page";
 
@@ -42,12 +43,12 @@ describe("case-study generateMetadata", () => {
     const meta = await metadataFor(slug);
 
     expect(meta.openGraph?.title).toContain(project.title);
-    // The description is the hook, plain-texted and length-capped so a long hook
-    // isn't cut mid-word downstream — still a prefix of the (full) hook.
+    // Description resolves to the hand-written metaDescription, else the hook
+    // plain-texted and length-capped. Either way it fits the SERP window.
     const desc = meta.openGraph?.description ?? "";
     expect(desc.length).toBeLessThanOrEqual(155);
-    expect(plainText(project.hook).startsWith(desc.replace(/…$/u, ""))).toBe(
-      true,
+    expect(desc).toBe(
+      project.metaDescription ?? truncateForMeta(plainText(project.hook)),
     );
   });
 
