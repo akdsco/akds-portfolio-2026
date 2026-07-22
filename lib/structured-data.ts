@@ -2,7 +2,7 @@
 // comes from `data/portfolio.ts` / `lib/site.ts`, so structured data can never
 // drift from (or invent beyond) what the site actually says. Rendered via
 // `components/json-ld.tsx`; see docs/plans for the mount points.
-import { profile } from "@/data/portfolio";
+import { profile, publicSocials } from "@/data/portfolio";
 import { SITE_URL } from "@/lib/site";
 
 // Site-relative path -> absolute URL. Google drops relative URLs in structured
@@ -34,10 +34,10 @@ export function profilePageLd() {
       jobTitle,
       url: SITE_URL,
       image: abs(profile.brandImage),
-      // Every verified profile the owner lists — this is exactly what `sameAs`
-      // is for (entity disambiguation), and drawing it from the source means it
-      // stays truthful and in sync.
-      sameAs: profile.socials.map((s) => s.url),
+      // The surfaced public-identity profiles (GitHub + LinkedIn) — what `sameAs`
+      // is for (entity disambiguation). Shares `publicSocials` with the nav so
+      // the two never disagree; reference-only profiles stay out.
+      sameAs: publicSocials.map((s) => s.url),
     },
   } as const;
 }

@@ -10,7 +10,7 @@ import { ExternalLink } from "@/components/external-link";
 import { GithubIcon, LinkedinIcon } from "@/components/icons";
 import { ModeToggle } from "@/components/mode-toggle";
 import { Wordmark } from "@/components/wordmark";
-import { profile } from "@/data/portfolio";
+import { publicSocials } from "@/data/portfolio";
 import { useDwellFlare } from "@/lib/use-dwell-flare";
 import { cn } from "@/lib/utils";
 
@@ -86,14 +86,13 @@ function useScrollingDown() {
   return down;
 }
 
-// Nav shows only GitHub + LinkedIn (the no-contact rule); the rest of
-// profile.socials is data only.
-const navSocials = profile.socials
-  .filter((s) => s.label === "GitHub" || s.label === "LinkedIn")
-  .map((s) => ({
-    ...s,
-    Icon: s.label === "GitHub" ? GithubIcon : LinkedinIcon,
-  }));
+// Nav shows only GitHub + LinkedIn (the no-contact rule) — the same surfaced
+// set as the `sameAs` structured data, sourced from `publicSocials` so they
+// can't drift.
+const navSocials = publicSocials.map((s) => ({
+  ...s,
+  Icon: s.label === "GitHub" ? GithubIcon : LinkedinIcon,
+}));
 
 export function SiteNav() {
   const pathname = usePathname();

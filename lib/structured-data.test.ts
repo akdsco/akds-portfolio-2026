@@ -1,6 +1,6 @@
 import { describe, expect, test } from "vitest";
 
-import { profile } from "@/data/portfolio";
+import { profile, publicSocials } from "@/data/portfolio";
 import { SITE_URL } from "@/lib/site";
 import { breadcrumbLd, profilePageLd, webSiteLd } from "@/lib/structured-data";
 
@@ -54,11 +54,18 @@ describe("profilePageLd", () => {
     expect(person.image.startsWith(SITE_URL)).toBe(true);
   });
 
-  test("sameAs is exactly the owner's own profile links — nothing invented", () => {
-    expect(person.sameAs).toEqual(profile.socials.map((s) => s.url));
-    // The two the recruiter path relies on are present.
+  test("sameAs is exactly the surfaced GitHub + LinkedIn profiles", () => {
+    expect(person.sameAs).toEqual(publicSocials.map((s) => s.url));
+    // The two the recruiter path relies on are present...
     expect(person.sameAs).toContain("https://github.com/akdsco");
     expect(person.sameAs).toContain("https://www.linkedin.com/in/akds/");
+    // ...and the reference-only profiles are NOT emitted as identity.
+    expect(person.sameAs).not.toContain(
+      "https://stackoverflow.com/users/8598252/akds",
+    );
+    expect(person.sameAs).not.toContain(
+      "https://app.pluralsight.com/profile/akds",
+    );
   });
 });
 
