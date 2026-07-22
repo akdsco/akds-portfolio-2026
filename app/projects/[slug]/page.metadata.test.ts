@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import { projects } from "@/data/portfolio";
+import { plainText } from "@/lib/inline-links";
 import { SITE_BRAND } from "@/lib/site";
 
 import { generateMetadata } from "./page";
@@ -36,12 +37,18 @@ describe("case-study generateMetadata", () => {
     });
   });
 
-  it("titles and describes the specific project", async () => {
+  it("titles and describes the specific project, capped for the SERP", async () => {
     const project = projects.find((p) => p.slug === slug)!;
     const meta = await metadataFor(slug);
 
     expect(meta.openGraph?.title).toContain(project.title);
-    expect(meta.openGraph?.description).toBe(project.hook);
+    // The description is the hook, plain-texted and length-capped so a long hook
+    // isn't cut mid-word downstream — still a prefix of the (full) hook.
+    const desc = meta.openGraph?.description ?? "";
+    expect(desc.length).toBeLessThanOrEqual(155);
+    expect(plainText(project.hook).startsWith(desc.replace(/…$/u, ""))).toBe(
+      true,
+    );
   });
 
   it("returns empty metadata for a project with no case study", async () => {
