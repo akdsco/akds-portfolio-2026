@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest";
 import { projects } from "@/data/portfolio";
 import { plainText } from "@/lib/inline-links";
 import { SITE_BRAND } from "@/lib/site";
-import { truncateForMeta } from "@/lib/truncate";
+import { META_DESCRIPTION_MAX, truncateForMeta } from "@/lib/truncate";
 
 import { generateMetadata } from "./page";
 
@@ -46,7 +46,7 @@ describe("case-study generateMetadata", () => {
     // Description resolves to the hand-written metaDescription, else the hook
     // plain-texted and length-capped. Either way it fits the SERP window.
     const desc = meta.openGraph?.description ?? "";
-    expect(desc.length).toBeLessThanOrEqual(155);
+    expect(desc.length).toBeLessThanOrEqual(META_DESCRIPTION_MAX);
     expect(desc).toBe(
       project.metaDescription ?? truncateForMeta(plainText(project.hook)),
     );

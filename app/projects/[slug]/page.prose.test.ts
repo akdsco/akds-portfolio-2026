@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import { projects } from "@/data/portfolio";
+import { META_DESCRIPTION_MAX } from "@/lib/truncate";
 
 import { generateMetadata } from "./page";
 
@@ -39,7 +40,7 @@ describe("case-study metadata prose", () => {
       });
 
       expect((meta.openGraph?.description ?? "").length).toBeLessThanOrEqual(
-        155,
+        META_DESCRIPTION_MAX,
       );
     }
   });
