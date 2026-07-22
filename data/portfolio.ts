@@ -212,6 +212,13 @@ export const profile: Profile = {
   ],
 };
 
+// The surfaced public-identity profiles: the subset of `profile.socials` shown
+// in the nav AND emitted as schema.org `sameAs`. Defined once so the nav and the
+// structured data can't drift; Stack Overflow / Pluralsight stay reference-only.
+export const publicSocials = profile.socials.filter(
+  (s) => s.label === "GitHub" || s.label === "LinkedIn",
+);
+
 export const hero: HeroCopy = {
   name: "Arkadiusz Ostrowski",
   tagline: "I build production AI-native software end-to-end.",
