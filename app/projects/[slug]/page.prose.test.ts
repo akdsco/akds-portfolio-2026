@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import { projects } from "@/data/portfolio";
+import { META_DESCRIPTION_MAX } from "@/lib/truncate";
 
 import { generateMetadata } from "./page";
 
@@ -27,5 +28,20 @@ describe("case-study metadata prose", () => {
     });
 
     expect(meta.openGraph?.description).toBe(meta.description);
+  });
+
+  // Every case-study description must fit the SERP/social window, whether it's a
+  // hand-written metaDescription or the length-capped hook fallback. Guards a
+  // future metaDescription from being written too long and reintroducing the cut.
+  it("keeps every case-study description within the cap", async () => {
+    for (const project of projects.filter((p) => p.caseStudy)) {
+      const meta = await generateMetadata({
+        params: Promise.resolve({ slug: project.slug }),
+      });
+
+      expect((meta.openGraph?.description ?? "").length).toBeLessThanOrEqual(
+        META_DESCRIPTION_MAX,
+      );
+    }
   });
 });

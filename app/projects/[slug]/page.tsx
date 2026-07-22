@@ -11,6 +11,7 @@ import { Kicker } from "@/components/kicker";
 import { projects, testimonials, type CaseStudy } from "@/data/portfolio";
 import { plainText } from "@/lib/inline-links";
 import { OG_SHARED } from "@/lib/site";
+import { truncateForMeta } from "@/lib/truncate";
 import { breadcrumbLd } from "@/lib/structured-data";
 import { cn } from "@/lib/utils";
 
@@ -37,9 +38,12 @@ export async function generateMetadata({
   const { slug } = await params;
   const project = caseStudies.find((p) => p.slug === slug);
   if (!project) return {};
-  // Meta tags are plain text: any inline-link markup in the hook has to collapse
-  // to its label, or og:description ships "[SlateIQ](https://…)" verbatim.
-  const description = plainText(project.hook);
+  // Prefer a hand-written, self-contained meta description; else fall back to
+  // the hook, plain-texted (inline-link markup collapses to its label so
+  // og:description never ships "[SlateIQ](https://…)") and length-capped so a
+  // long hook isn't cut mid-word. The on-page hook (the lede) keeps its full copy.
+  const description =
+    project.metaDescription ?? truncateForMeta(plainText(project.hook));
   return {
     // The readable project name, so the tab reads "akds : AI-powered research
     // assistant" rather than the slug. og:title is pinned to the same name just

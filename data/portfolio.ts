@@ -134,6 +134,13 @@ export type Project = {
    * written it; no marketing fluff.
    */
   hook: string;
+  /**
+   * Optional SEO/social description for the detail page's <meta>/og:description
+   * — a self-contained, ≤155-char sentence for the SERP and share cards, which
+   * is a different job from the on-page `hook` (the lede). When absent, the
+   * description falls back to the hook, length-capped (see `truncateForMeta`).
+   */
+  metaDescription?: string;
   featured: boolean; // true = top card on /projects; false = "earlier work" toggle
   role?: string; // detail meta row (job title)
   period?: string; // detail meta row
@@ -403,6 +410,8 @@ export const projects: Project[] = [
       "BullMQ",
     ],
     hook: "Owned the proof store behind a sales-AI product: ingestion, a user-facing dashboard with search, and a tagging layer that kept every customer's library organised on its own.",
+    metaDescription:
+      "Owned the proof store behind a sales-AI product: ingestion, a searchable dashboard, and auto-tagging that organised each customer's library on its own.",
     featured: true,
     role: "Product Engineer",
     period: "Jul 2025 to Jun 2026",
@@ -444,6 +453,8 @@ export const projects: Project[] = [
     company: "Self-initiated (iOS)",
     stack: ["React Native", "iOS", "TypeScript"],
     hook: "Solo-shipped an iOS app to test whether cyclists wanted one home for routes scattered across Garmin, Strava, Komoot, and club Google Docs, then killed it when the market said no.",
+    metaDescription:
+      "Solo-shipped an iOS app to test if cyclists wanted one home for routes across Garmin, Strava and Komoot, then killed it when the market said no.",
     featured: true,
     role: "All hats were mine",
     period: "Mar to Jun 2025",
@@ -516,6 +527,8 @@ export const projects: Project[] = [
     company: "Noah Media Group",
     stack: ["TypeScript", "React", "Node", "MongoDB", "BullMQ", "OpenAI"],
     hook: "Built a film-success predictor that pulled IMDB, social, piracy, and market data into one tool that matched a film against comparable past titles, used by the studio in real pitch decisions.",
+    metaDescription:
+      "Built a film-success predictor that scored a film against comparable titles using IMDB, social, piracy and market data, used in real studio pitches.",
     featured: true,
     role: "Software Engineer",
     period: "2022 to 2025",
