@@ -352,18 +352,31 @@ export function HeroPrompt({ command }: { command: string }) {
       onClick={open}
       aria-haspopup="dialog"
       aria-keyshortcuts="/ Meta+K Control+K"
-      aria-label="Open command palette"
+      // Lead the accessible name with the visible command, then state the
+      // action. WCAG 2.5.3 (Label in Name): the name must contain the visible
+      // label, so a voice-control user can activate it by what they read. The
+      // decorative prompt, cursor and hint below are aria-hidden so they don't
+      // count as visible label text in that comparison.
+      aria-label={`${command}, open command palette`}
       className="text-dim focus-visible:outline-hi inline-flex cursor-pointer items-center gap-2 rounded-[5px] font-mono text-[12.5px] focus-visible:outline-2 focus-visible:outline-offset-4"
     >
-      <span className="text-brand">$</span>
+      <span className="text-brand" aria-hidden="true">
+        $
+      </span>
       <span
         className="type-in"
         style={{ "--tw": `${command.length}ch` } as CSSProperties}
       >
         {command}
       </span>
-      <span className="bg-brand animate-blink inline-block h-[14px] w-2" />
-      <span className="ml-2 hidden items-center gap-2 sm:flex">
+      <span
+        aria-hidden="true"
+        className="bg-brand animate-blink inline-block h-[14px] w-2"
+      />
+      <span
+        aria-hidden="true"
+        className="ml-2 hidden items-center gap-2 sm:flex"
+      >
         <span className="text-faint">try</span>
         <kbd className="border-line text-dim rounded-[5px] border px-1.5 py-px text-[11px]">
           /
