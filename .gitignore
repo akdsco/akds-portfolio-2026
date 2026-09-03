@@ -43,3 +43,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# ship: per-branch review ledger + CI playbook — ephemeral, local, never committed
+docs/ship-reviews/
+docs/ship-playbook.md
