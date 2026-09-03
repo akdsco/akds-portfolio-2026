@@ -22,7 +22,7 @@ export function webSiteLd() {
 }
 
 export function profilePageLd() {
-  // Lead segment of the stated title ("AI Engineer · FDE · …"), not a second
+  // Lead segment of the stated title ("AI Engineer · …"), not a second
   // hand-kept string — keeps jobTitle tied to the source.
   const jobTitle = profile.title.split("·")[0]?.trim() ?? profile.title;
   return {

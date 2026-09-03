@@ -106,7 +106,7 @@ describe("portfolio data invariants", () => {
 // the hero, meta and social card all read from; lock them here so a drift back
 // to the old label fails loudly rather than shipping silently.
 describe("identity positioning (AI Engineer)", () => {
-  const TITLE = "AI Engineer · FDE · Python · TypeScript";
+  const TITLE = "AI Engineer · Python · TypeScript";
   // The lede is owner-chosen copy (kept over the ticket's suggested headline);
   // the label surfaces carry the AI-Engineer identity, the lede stays AI-forward.
   const HEADLINE = "I build production AI-native software end-to-end.";
@@ -133,9 +133,9 @@ describe("identity positioning (AI Engineer)", () => {
   });
 
   // The availability line renders directly under the identity in the hero, so it
-  // has to speak the same language — the CV says "senior AI-engineering /
-  // forward-deployed", not a generic "senior engineering roles".
-  test("availability points at AI-engineering / forward-deployed roles", () => {
+  // has to speak the same language — AI-engineering, not a generic "senior
+  // engineering roles".
+  test("availability points at AI-engineering roles", () => {
     expect(profile.availability).toMatch(/AI-engineering/i);
     expect(profile.availability).not.toMatch(FULL_STACK);
   });

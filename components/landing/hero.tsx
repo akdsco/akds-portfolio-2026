@@ -46,7 +46,7 @@ export function Hero() {
         {about.name}
       </h1>
       {/* Two chunks, two states: one line above 520px, stacked below. The
-          identity line ("AI Engineer · FDE · Python · TypeScript") is shorter
+          identity line ("AI Engineer · Python · TypeScript") is shorter
           than the 520px breakpoint's single-line budget, so it sits on one line
           there and stacks below. The separator is its own element that goes
           with the single-line state, because a "·" is only a separator while
