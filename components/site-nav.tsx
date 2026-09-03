@@ -130,7 +130,12 @@ export function SiteNav() {
         "motion-reduce:translate-y-0",
       )}
     >
-      <nav className="mx-auto flex h-14 w-full max-w-5xl items-center justify-between px-6 md:px-8">
+      {/* 3-column grid, not flex+justify-between: with equal 1fr side columns
+          the centre (auto) column sits on the bar's true centre axis regardless
+          of how wide the logo or icon cluster are, so the links line up with the
+          page-centred content below. justify-between only centres the middle
+          group when the sides are equal width — here they aren't. */}
+      <nav className="mx-auto grid h-14 w-full max-w-5xl grid-cols-[1fr_auto_1fr] items-center px-6 md:px-8">
         {/* self-end lands the mark's crop on the bar's bottom border, so the two
             coincide and the border reads as what cuts it. It isn't: Wordmark
             crops itself, and the glyphs carry on below the box either way.
@@ -152,7 +157,7 @@ export function SiteNav() {
         <Link
           href="/about"
           aria-label="akds — home"
-          className="-mx-2 self-end rounded-t-md px-2"
+          className="-mx-2 self-end justify-self-start rounded-t-md px-2"
           {...flare.handlers}
         >
           {/* faint, not ink: softened so the mark sits in the bar rather than
@@ -168,7 +173,7 @@ export function SiteNav() {
           />
         </Link>
 
-        <ul className="flex items-center gap-1 text-[13.5px]">
+        <ul className="flex items-center gap-1 justify-self-center text-[13.5px]">
           {links.map(({ href, label }) => (
             <li key={href}>
               <Link
@@ -191,7 +196,7 @@ export function SiteNav() {
           ))}
         </ul>
 
-        <div className="flex items-center gap-0.5">
+        <div className="flex items-center gap-0.5 justify-self-end">
           {/* Under 500px these three don't fit beside the wordmark and the two
               nav links — the bar overflowed and the wordmark ran under "About".
               They fold into the command palette, which already carries all
