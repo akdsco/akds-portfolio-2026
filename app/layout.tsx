@@ -35,7 +35,7 @@ export const metadata: Metadata = {
     default: SITE_BRAND,
   },
   description:
-    "London-based software engineer building production AI-native software end-to-end. Selected work, experience, and case studies.",
+    "London-based AI engineer building production AI-native software end-to-end. Selected work, experience, and case studies.",
   openGraph: {
     // og:title is pinned; og:description is not. Left unpinned, og:title falls
     // back to the page's own `title` — which the template has already turned

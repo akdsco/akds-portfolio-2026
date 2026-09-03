@@ -57,4 +57,11 @@ describe("root layout metadata", () => {
   it("pins no og:description, leaving each page's own to win", () => {
     expect(metadata.openGraph).not.toHaveProperty("description");
   });
+
+  // TB-131: the meta description is a recruiter-facing surface, so it must not
+  // carry the retired full-stack identity.
+  it("describes an AI engineer, never full-stack", () => {
+    expect(metadata.description).not.toMatch(/full[-\s]?stack/i);
+    expect(metadata.description).toMatch(/AI engineer/i);
+  });
 });
