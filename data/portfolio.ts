@@ -202,7 +202,7 @@ export const profile: Profile = {
   fullName: "Arkadiusz Ostrowski",
   title: "AI Engineer · FDE · Python · TypeScript",
   location: "London, UK",
-  availability: "Open to senior engineering roles",
+  availability: "Open to senior AI-engineering / forward-deployed roles",
   publicEmail: "hire-arkadiusz@pm.me",
   cvEmail: "arkadiusz.ostrowski@protonmail.com",
   brandImage: "/images/brand-image.webp",

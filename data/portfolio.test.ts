@@ -131,6 +131,14 @@ describe("identity positioning (AI Engineer)", () => {
     expect(hero.tagline).not.toMatch(FULL_STACK);
   });
 
+  // The availability line renders directly under the identity in the hero, so it
+  // has to speak the same language — the CV says "senior AI-engineering /
+  // forward-deployed", not a generic "senior engineering roles".
+  test("availability points at AI-engineering / forward-deployed roles", () => {
+    expect(profile.availability).toMatch(/AI-engineering/i);
+    expect(profile.availability).not.toMatch(FULL_STACK);
+  });
+
   // AC 3: full-stack survives only as past-role history. The data layer is the
   // whole content source, so a source scan is the honest check — zero mentions
   // anywhere in it (the surviving past-role label is "Software Engineer" as a
