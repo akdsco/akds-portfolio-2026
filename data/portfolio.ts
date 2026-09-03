@@ -200,7 +200,7 @@ export type Testimonial = {
 export const profile: Profile = {
   name: "Arkadiusz",
   fullName: "Arkadiusz Ostrowski",
-  title: "Software Engineer · Full-Stack · TypeScript · React · Node",
+  title: "AI Engineer · FDE · Python · TypeScript",
   location: "London, UK",
   availability: "Open to senior engineering roles",
   publicEmail: "hire-arkadiusz@pm.me",
@@ -228,7 +228,8 @@ export const publicSocials = profile.socials.filter(
 
 export const hero: HeroCopy = {
   name: "Arkadiusz Ostrowski",
-  tagline: "I build production AI-native software end-to-end.",
+  tagline:
+    "AI Engineer. I solve the hard problems at the root and build what moves the business.",
   paragraphs: [
     "London-based. TypeScript, React, Node, Postgres, BullMQ, Vercel AI SDK. Recently wrapped a 12-month contract at GrowthNation, a stealth sales-AI startup, where I ran the proof-library product, built the server-side LLM tagging architecture, and wrote CEO-facing delivery summaries.",
     'Previously: three years at a documentary studio shipping AI-assisted research tools on GPT-3.5/4 in 2023, before "AI-assisted coding" was a phrase.',
@@ -239,7 +240,9 @@ export const hero: HeroCopy = {
 export const about: AboutCopy = {
   name: "Arkadiusz Ostrowski",
   // Role, then stack — the two halves a reader would split it into anyway.
-  tagline: ["Software Engineer · Full-Stack", "TypeScript · React · Node"],
+  // Joined with " · ", these reconstruct profile.title exactly (locked in
+  // data/portfolio.test.ts), so the visible line can't drift from the title.
+  tagline: ["AI Engineer · FDE", "Python · TypeScript"],
   paragraphs: [
     "Six years building production software, the last two shipping AI features: a research tool at [Noah Media Group](https://www.noahmediagroup.com/) in 2023 (GPT-3.5/4) and a social-proof engine at [GrowthNation](https://growthnation.ai) in 2026 (Vercel AI SDK, Anthropic, OpenAI, a custom MCP layer).",
     "The most recent build I'm proudest of is the code factory, co-built with the CTO: a pipeline of skills, plans, worktrees and automated gates that let a designer and a junior dev pick up tickets and ship straight to production. It cut engineering costs by more than 30%.",
