@@ -50,6 +50,13 @@ describe("profilePageLd", () => {
     expect(person.jobTitle).toBeTruthy();
   });
 
+  // TB-131: the lead segment now IS the identity — schema.org must advertise
+  // "AI Engineer", not the old full-stack label. Pinned explicitly so a title
+  // edit that reintroduces the old lead trips here too.
+  test("job title advertises the AI Engineer identity", () => {
+    expect(person.jobTitle).toBe("AI Engineer");
+  });
+
   test("image is absolute", () => {
     expect(person.image.startsWith(SITE_URL)).toBe(true);
   });
