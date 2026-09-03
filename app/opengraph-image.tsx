@@ -8,5 +8,5 @@ export const contentType = CONTENT_TYPE;
 export const alt = ALT;
 
 export default function OpengraphImage() {
-  return renderOgCard("Software Engineer · London");
+  return renderOgCard("AI Engineer · London");
 }

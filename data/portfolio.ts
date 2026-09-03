@@ -200,9 +200,9 @@ export type Testimonial = {
 export const profile: Profile = {
   name: "Arkadiusz",
   fullName: "Arkadiusz Ostrowski",
-  title: "Software Engineer · Full-Stack · TypeScript · React · Node",
+  title: "AI Engineer · Python · TypeScript",
   location: "London, UK",
-  availability: "Open to senior engineering roles",
+  availability: "Open to senior AI-engineering roles",
   publicEmail: "hire-arkadiusz@pm.me",
   cvEmail: "arkadiusz.ostrowski@protonmail.com",
   brandImage: "/images/brand-image.webp",
@@ -239,11 +239,12 @@ export const hero: HeroCopy = {
 export const about: AboutCopy = {
   name: "Arkadiusz Ostrowski",
   // Role, then stack — the two halves a reader would split it into anyway.
-  tagline: ["Software Engineer · Full-Stack", "TypeScript · React · Node"],
+  // Joined with " · ", these reconstruct profile.title exactly (locked in
+  // data/portfolio.test.ts), so the visible line can't drift from the title.
+  tagline: ["AI Engineer", "Python · TypeScript"],
   paragraphs: [
     "Six years building production software, the last two shipping AI features: a research tool at [Noah Media Group](https://www.noahmediagroup.com/) in 2023 (GPT-3.5/4) and a social-proof engine at [GrowthNation](https://growthnation.ai) in 2026 (Vercel AI SDK, Anthropic, OpenAI, a custom MCP layer).",
     "The most recent build I'm proudest of is the code factory, co-built with the CTO: a pipeline of skills, plans, worktrees and automated gates that let a designer and a junior dev pick up tickets and ship straight to production. It cut engineering costs by more than 30%.",
-    "Career-changer: ten years in sales across Poland and the UK before self-teaching into software.",
   ],
 };
 

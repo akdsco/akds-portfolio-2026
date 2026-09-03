@@ -6,9 +6,13 @@ import { HeroBand } from "@/components/hero-band";
 import { LinkedText } from "@/components/linked-text";
 import { PulseDot } from "@/components/pulse-dot";
 import { about, hero, profile } from "@/data/portfolio";
+import { splitLede } from "@/lib/hero-lede";
 
-const HIGHLIGHT = "AI-native software";
-const [ledeBefore, ledeAfter] = hero.tagline.split(HIGHLIGHT);
+const {
+  before: ledeBefore,
+  highlight: ledeHighlight,
+  after: ledeAfter,
+} = splitLede(hero.tagline);
 
 export function Hero() {
   return (
@@ -41,12 +45,13 @@ export function Hero() {
       <h1 className="text-ink mb-2 text-4xl font-semibold tracking-tight sm:text-[44px]">
         {about.name}
       </h1>
-      {/* Two chunks, two states: one line above 520px, stacked below. Measured
-          rather than guessed — the full line is 453px, so it needs a 501px
-          viewport, and the widest chunk needs only 282px. The separator is its
-          own element that goes with the single-line state, because a "·" is
-          only a separator while there's something beside it; wrapped, it just
-          dangles at the end of a line. */}
+      {/* Two chunks, two states: one line above 520px, stacked below. The
+          identity line ("AI Engineer · Python · TypeScript") is shorter
+          than the 520px breakpoint's single-line budget, so it sits on one line
+          there and stacks below. The separator is its own element that goes
+          with the single-line state, because a "·" is only a separator while
+          there's something beside it; wrapped, it just dangles at the end of a
+          line. */}
       <div className="text-brand mb-6 flex flex-col font-mono text-[13px] min-[520px]:flex-row min-[520px]:gap-x-2">
         {about.tagline.map((chunk, i) => (
           <Fragment key={chunk}>
@@ -58,7 +63,7 @@ export function Hero() {
 
       <p className="text-ink mb-6 max-w-xl text-xl leading-relaxed font-medium text-pretty">
         {ledeBefore}
-        <span className="text-hi">{HIGHLIGHT}</span>
+        <span className="text-hi">{ledeHighlight}</span>
         {ledeAfter}
       </p>
 
