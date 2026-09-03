@@ -5,7 +5,7 @@
 //
 // HIGHLIGHT is the phrase to accent; it must be a literal substring of
 // `hero.tagline` in data/portfolio.ts. Change one, check the other.
-export const HIGHLIGHT = "hard problems";
+export const HIGHLIGHT = "AI-native software";
 
 export type Lede = { before: string; highlight: string; after: string };
 

@@ -228,8 +228,7 @@ export const publicSocials = profile.socials.filter(
 
 export const hero: HeroCopy = {
   name: "Arkadiusz Ostrowski",
-  tagline:
-    "AI Engineer. I solve the hard problems at the root and build what moves the business.",
+  tagline: "I build production AI-native software end-to-end.",
   paragraphs: [
     "London-based. TypeScript, React, Node, Postgres, BullMQ, Vercel AI SDK. Recently wrapped a 12-month contract at GrowthNation, a stealth sales-AI startup, where I ran the proof-library product, built the server-side LLM tagging architecture, and wrote CEO-facing delivery summaries.",
     'Previously: three years at a documentary studio shipping AI-assisted research tools on GPT-3.5/4 in 2023, before "AI-assisted coding" was a phrase.',

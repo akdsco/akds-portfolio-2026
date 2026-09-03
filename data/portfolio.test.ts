@@ -107,8 +107,9 @@ describe("portfolio data invariants", () => {
 // to the old label fails loudly rather than shipping silently.
 describe("identity positioning (AI Engineer)", () => {
   const TITLE = "AI Engineer · FDE · Python · TypeScript";
-  const HEADLINE =
-    "AI Engineer. I solve the hard problems at the root and build what moves the business.";
+  // The lede is owner-chosen copy (kept over the ticket's suggested headline);
+  // the label surfaces carry the AI-Engineer identity, the lede stays AI-forward.
+  const HEADLINE = "I build production AI-native software end-to-end.";
   const FULL_STACK = /full[-\s]?stack/i;
 
   test("profile.title is the canonical AI-Engineer title", () => {
@@ -121,7 +122,7 @@ describe("identity positioning (AI Engineer)", () => {
     expect(about.tagline.join(" · ")).toBe(TITLE);
   });
 
-  test("hero.tagline is the canonical headline", () => {
+  test("hero.tagline is the owner-chosen AI-forward lede", () => {
     expect(hero.tagline).toBe(HEADLINE);
   });
 
