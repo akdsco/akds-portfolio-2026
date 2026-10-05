@@ -7,6 +7,9 @@ import { ALT, CONTENT_TYPE, SIZE, renderOgCard } from "@/lib/og-card";
 // this segment also means Next injects it automatically — the file-convention
 // image only applies to the segment that owns the file, which is exactly why
 // case studies used to ship with no og:image at all.
+// Baked at build time — `output: export` has no server to render it on request.
+// generateStaticParams below enumerates the slugs to bake.
+export const dynamic = "force-static";
 export const size = SIZE;
 export const contentType = CONTENT_TYPE;
 export const alt = ALT;

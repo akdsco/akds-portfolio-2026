@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import { Analytics } from "@vercel/analytics/next";
-import { SpeedInsights } from "@vercel/speed-insights/next";
 
+import { CloudflareAnalytics } from "@/components/cloudflare-analytics";
 import { JsonLd } from "@/components/json-ld";
 import { ThemeProvider } from "@/components/theme-provider";
 import { PaletteProvider } from "@/components/command-palette";
@@ -94,13 +93,10 @@ export default function RootLayout({
             <SiteFooter />
           </PaletteProvider>
         </ThemeProvider>
-        {/* Analytics + Speed Insights only in production — keeps dev quiet. */}
-        {process.env.NODE_ENV === "production" && (
-          <>
-            <Analytics />
-            <SpeedInsights />
-          </>
-        )}
+        {/* Cloudflare Web Analytics — renders only when the beacon token is set
+            (production builds on Cloudflare), so dev and token-less builds stay
+            quiet. */}
+        {process.env.NODE_ENV === "production" && <CloudflareAnalytics />}
       </body>
     </html>
   );

@@ -1,0 +1,5 @@
+# Cloudflare Pages redirects. Shipped verbatim to out/_redirects on export.
+# The site lands on /about (there is no separate home). Under static export the
+# Next redirect() in app/page.tsx only redirects client-side, so this edge 301
+# is what actually sends `/` to `/about` for crawlers and no-JS clients.
+/ /about 301
