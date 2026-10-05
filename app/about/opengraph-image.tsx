@@ -7,4 +7,7 @@
 // layout's rather than merging into it — which drops the image /about would
 // otherwise inherit from app/opengraph-image.tsx, and ships the page with no
 // card at all.
+// `dynamic` can't be re-exported — Next must parse it directly in each route
+// file — so it's declared here and the rest come from the single source.
+export const dynamic = "force-static";
 export { default, size, contentType, alt } from "../opengraph-image";

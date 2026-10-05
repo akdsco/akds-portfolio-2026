@@ -3,6 +3,9 @@ import type { MetadataRoute } from "next";
 import { projects } from "@/data/portfolio";
 import { SITE_URL } from "@/lib/site";
 
+// Emitted as a static sitemap.xml at build time — `output: export` has no server.
+export const dynamic = "force-static";
+
 // Static routes worth indexing. `/` only redirects to `/about`, so `/about` is
 // the canonical landing entry and `/` is deliberately omitted.
 const staticRoutes = ["/about", "/projects"] as const;
