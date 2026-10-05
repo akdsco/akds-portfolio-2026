@@ -127,3 +127,25 @@ Next-16 static-export facts that drive the plan (from the official guide):
 - Owner does the Cloudflare dashboard clicks + DNS (akds.dev already in
   Cloudflare, so attaching it is one step). Documented at hand-off; never merged
   by the assistant.
+
+### Findings from the real export build (increment 1)
+
+- **`redirect()` in `app/page.tsx` does NOT break the export** — it emits an
+  essentially-empty `out/index.html` whose only redirect is a client-JS
+  `NEXT_REDIRECT` RSC payload (no HTTP status, nothing for a crawler/no-JS
+  client). So `public/_redirects` is load-bearing, not a nicety; page.tsx is left
+  as-is and the edge 301 shadows the broken index.html (Cloudflare: "Redirects
+  are always followed, regardless of whether or not an asset matches").
+- **Every metadata/OG route needs `export const dynamic = "force-static"`** under
+  export, and the build aborts (one route at a time) without it. `robots.ts` and
+  `sitemap.ts` need it too. `dynamic` **cannot be re-exported** — Next must parse
+  it in each source file — so each `twitter-image.tsx` re-exporter declares it
+  directly rather than re-exporting it.
+- **OG/Twitter images export as EXTENSIONLESS files** (`out/opengraph-image`,
+  not `.png`). Handled with `public/_headers` pinning `image/png`. Unverifiable
+  locally — the one post-deploy check the owner must do (`curl -I`).
+- `build:static` script dropped as redundant: `npm run build` already produces
+  the static export, so the Cloudflare build command is just `npm run build`.
+- Verified against `out/`: no `arkadiusz.tech` anywhere; canonical/og:url/og:image
+  all `https://akds.dev/...`; all route HTML + per-segment OG images emitted;
+  `_redirects` + `_headers` shipped; no `*.test.*` leaked.
