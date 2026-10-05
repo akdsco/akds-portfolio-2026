@@ -1,0 +1,23 @@
+# Cloudflare Pages headers. Shipped verbatim to out/_headers on export.
+#
+# Next writes metadata OG/Twitter card images as extensionless files (e.g.
+# out/opengraph-image, which is PNG bytes with no .png). Cloudflare types static
+# files by extension and documents no default for extensionless ones, so pin
+# image/png explicitly or strict social scrapers may reject the card. Fixed
+# segments are listed explicitly; the per-case-study slug is matched by splat.
+/opengraph-image
+  Content-Type: image/png
+/twitter-image
+  Content-Type: image/png
+/about/opengraph-image
+  Content-Type: image/png
+/about/twitter-image
+  Content-Type: image/png
+/projects/opengraph-image
+  Content-Type: image/png
+/projects/twitter-image
+  Content-Type: image/png
+/projects/*/opengraph-image
+  Content-Type: image/png
+/projects/*/twitter-image
+  Content-Type: image/png
