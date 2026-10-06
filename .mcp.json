@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "cloudflare-docs": {
+      "command": "npx",
+      "args": ["-y", "mcp-remote@latest", "https://docs.mcp.cloudflare.com/mcp"]
+    },
+    "cloudflare-graphql": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "mcp-remote@latest",
+        "https://graphql.mcp.cloudflare.com/mcp"
+      ]
+    }
+  }
+}
