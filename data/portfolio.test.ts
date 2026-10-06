@@ -106,7 +106,7 @@ describe("portfolio data invariants", () => {
 // the hero, meta and social card all read from; lock them here so a drift back
 // to the old label fails loudly rather than shipping silently.
 describe("identity positioning (AI Engineer)", () => {
-  const TITLE = "AI Engineer · Python · TypeScript";
+  const TITLE = "AI Engineer · TypeScript · Python";
   // The lede is owner-chosen copy (kept over the ticket's suggested headline);
   // the label surfaces carry the AI-Engineer identity, the lede stays AI-forward.
   const HEADLINE = "I build production AI-native software end-to-end.";

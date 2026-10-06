@@ -28,12 +28,12 @@ Design is intentionally deferred. The home page is a working placeholder using s
 - **shadcn/ui** v4 CLI, `base-nova` preset, **Base UI primitives** (`@base-ui/react`, not Radix — shadcn's current default)
 - **next-themes** with `attribute="class"`, `defaultTheme="system"`
 - **Lucide** for icons (brand glyphs inlined in `components/icons.tsx` — lucide v1.x dropped them)
-- **@vercel/analytics**
+- **Cloudflare Web Analytics** (token-gated beacon — see Deployment)
 - **ESLint** (flat config, **strict + type-aware**: `typescript-eslint`
   `strictTypeChecked` + `stylisticTypeChecked` over `eslint-config-next`;
   `--max-warnings=0`) + **Prettier** with `prettier-plugin-tailwindcss`
 - **npm**, no `src/` directory, `@/*` import alias
-- **Node 24 LTS** (pinned via `.nvmrc` for Vercel parity)
+- **Node 24 LTS** (pinned via `.nvmrc`; mirrored by `NODE_VERSION=24` in the Cloudflare Pages build)
 
 ## Commands
 
@@ -46,6 +46,30 @@ npm run typecheck  # tsc --noEmit
 npm run test       # vitest run (Tier 1 unit/component tests)
 npm run test:watch # vitest (watch mode)
 ```
+
+## Deployment
+
+Deployed on **Cloudflare Pages** at **akds.dev** (the canonical domain). The old
+Vercel deploy on arkadiusz.tech is retired — do not assume Vercel.
+
+- **Static export.** `next.config.ts` sets `output: 'export'` + `images.unoptimized`;
+  `npm run build` emits static files to `out/`. The site is 100% statically
+  renderable (every dynamic route has `generateStaticParams`; no API routes,
+  Server Actions, ISR or cookies). **Every metadata/OG route carries
+  `export const dynamic = "force-static"`** or the export build aborts — `dynamic`
+  can't be re-exported, so each `twitter-image.tsx` re-exporter declares it
+  directly. `app/static-export-routes.test.ts` guards this.
+- **Cloudflare Pages build:** Git-connected to `akdsco/akds-portfolio-2026`
+  (project `akds-portfolio-2026`). Build command `npm run build`, output dir
+  `out`, env `NODE_VERSION=24`, and `NEXT_PUBLIC_CF_ANALYTICS_TOKEN` for the
+  Cloudflare Web Analytics beacon (`components/cloudflare-analytics.tsx` renders
+  nothing without it).
+- **Routing at the edge:** `public/_redirects` does the `301 / → /about` (under
+  export, `app/page.tsx`'s `redirect()` only fires client-side). `public/_headers`
+  pins `image/png` on the extensionless OG card files. `www.akds.dev` → apex via a
+  Cloudflare Redirect Rule. These files live in `public/` and ship verbatim to
+  `out/` — do NOT put a `*.test.ts` in `public/`, it would ship too (tests for
+  these live at the repo root, e.g. `cloudflare-deploy.test.ts`).
 
 ## Testing
 
@@ -163,8 +187,9 @@ source, and have each shipped as a bug here:
 Unit tests guard these (`app/layout.metadata.test.ts`,
 `app/projects/[slug]/page.metadata.test.ts` — note they assert an *absence*, so
 don't "tidy them up"). The real check is a build plus a grep of the emitted HTML
-in `.next/server/app/`: Next's own resolution is where every one of these bugs
-lived, and the metadata objects can look correct while the rendered tags aren't.
+in `out/` (the static export output): Next's own resolution is where every one of
+these bugs lived, and the metadata objects can look correct while the rendered
+tags aren't.
 
 ## Wordmark
 
@@ -192,7 +217,7 @@ The cropped "akds" mark appears in the nav, the footer and the social cards.
 - **Data layer:** `data/portfolio.ts` — typed TS objects only (no MDX/CMS). One `Project` type drives both `/projects` cards and `/projects/[slug]` detail pages (a project with a `caseStudy` gets a detail page).
 - **Theme:** the colour palette lives in `app/theme.css` (one swap-a-file, cool "tasteful dev-coded" scheme, light + dark), mapped into `app/globals.css` via `@theme inline`. Semantic tokens: `base/panel/ink/dim/faint/line/chip/brand/hi`.
 - **No contact form, no mailto, no CV download.** GitHub + LinkedIn are the only surfaced links; the site is the expansion of the CV the owner sends directly.
-- **Icons:** `app/icon.png` (256px) + `app/apple-icon.png` (180px) are derived from the owner-supplied `public/images/brand-image.webp`; Next 16 auto-serves them by file convention (there is no `app/favicon.ico` — don't re-add one).
+- **Icons:** `app/icon.png` (256px) + `app/apple-icon.png` (180px) are derived from the owner-supplied `public/images/brand-image-2026.webp`; Next 16 auto-serves them by file convention (there is no `app/favicon.ico` — don't re-add one).
 
 Work that's pending rather than settled belongs in `docs/TODO.md`, not here — this
 file is loaded into every session, so it's for rules that stay true, not state
