@@ -27,7 +27,7 @@ export function Hero() {
               width={116}
               height={132}
               priority
-              className="h-full w-full scale-[1.24] object-cover object-[50%_34%]"
+              className="h-full w-full scale-[1.04] object-cover object-[50%_38%]"
             />
           </div>
           <span className="border-hi absolute -top-[5px] -left-[5px] size-3 border-t border-l" />

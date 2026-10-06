@@ -23,7 +23,7 @@
   --faint: oklch(0.57 0.01 248);
   --line: oklch(0.2 0.02 248 / 0.13);
   --chip: oklch(0.2 0.02 248 / 0.045);
-  --brand: oklch(0.5 0.11 195);
+  --brand: oklch(0.52 0.15 242);
   --hi: oklch(0.52 0.21 31);
   --hi-soft: oklch(0.52 0.21 31 / 0.22);
 }
@@ -36,7 +36,7 @@
   --faint: oklch(0.54 0.012 248);
   --line: oklch(1 0 0 / 0.1);
   --chip: oklch(1 0 0 / 0.05);
-  --brand: oklch(0.8 0.12 178.122);
+  --brand: oklch(0.78 0.14 242);
   --hi: oklch(0.6 0.2 33);
   --hi-soft: oklch(0.6 0.2 33 / 0.2);
 }

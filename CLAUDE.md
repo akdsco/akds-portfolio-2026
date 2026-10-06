@@ -217,7 +217,7 @@ The cropped "akds" mark appears in the nav, the footer and the social cards.
 - **Data layer:** `data/portfolio.ts` — typed TS objects only (no MDX/CMS). One `Project` type drives both `/projects` cards and `/projects/[slug]` detail pages (a project with a `caseStudy` gets a detail page).
 - **Theme:** the colour palette lives in `app/theme.css` (one swap-a-file, cool "tasteful dev-coded" scheme, light + dark), mapped into `app/globals.css` via `@theme inline`. Semantic tokens: `base/panel/ink/dim/faint/line/chip/brand/hi`.
 - **No contact form, no mailto, no CV download.** GitHub + LinkedIn are the only surfaced links; the site is the expansion of the CV the owner sends directly.
-- **Icons:** `app/icon.png` (256px) + `app/apple-icon.png` (180px) are derived from the owner-supplied `public/images/brand-image.webp`; Next 16 auto-serves them by file convention (there is no `app/favicon.ico` — don't re-add one).
+- **Icons:** `app/icon.png` (256px) + `app/apple-icon.png` (180px) are derived from the owner-supplied `public/images/brand-image-2026.webp`; Next 16 auto-serves them by file convention (there is no `app/favicon.ico` — don't re-add one).
 
 Work that's pending rather than settled belongs in `docs/TODO.md`, not here — this
 file is loaded into every session, so it's for rules that stay true, not state
