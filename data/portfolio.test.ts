@@ -117,8 +117,11 @@ describe("identity positioning (AI Engineer)", () => {
   });
 
   // The visible mono role line under the name must be the same title, split into
-  // its wrap chunks — joined back with the separator the renderer inserts.
+  // its wrap chunks — joined back with the separator the renderer inserts. The
+  // chunks are the three individual segments so the renderer can glue every "·"
+  // to its preceding chunk identically (see components/landing/hero.tsx).
   test("about.tagline is the title, chunked for wrapping", () => {
+    expect(about.tagline).toEqual(["AI Engineer", "TypeScript", "Python"]);
     expect(about.tagline.join(" · ")).toBe(TITLE);
   });
 
