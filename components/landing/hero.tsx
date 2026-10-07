@@ -45,18 +45,21 @@ export function Hero() {
       <h1 className="text-ink mb-2 text-4xl font-semibold tracking-tight sm:text-[44px]">
         {about.name}
       </h1>
-      {/* Two chunks, two states: one line above 520px, stacked below. The
-          identity line ("AI Engineer · Python · TypeScript") is shorter
-          than the 520px breakpoint's single-line budget, so it sits on one line
-          there and stacks below. The separator is its own element that goes
-          with the single-line state, because a "·" is only a separator while
-          there's something beside it; wrapped, it just dangles at the end of a
-          line. */}
-      <div className="text-brand mb-6 flex flex-col font-mono text-[13px] min-[520px]:flex-row min-[520px]:gap-x-2">
+      {/* "AI Engineer · TypeScript · Python" on one line, held there down to the
+          375px target (the whole string is ~255px at 13px mono, and the content
+          box is ~327px at 375px). It only wraps below that, and when it does each
+          "·" stays glued to the chunk before it: every non-last chunk carries its
+          trailing separator *inside* the same `whitespace-nowrap` group, and the
+          only break opportunity is the ordinary space between groups. So a "·"
+          can never lead a line or jump down with the chunk that follows it. */}
+      <div className="text-brand mb-6 font-mono text-[13px]">
         {about.tagline.map((chunk, i) => (
           <Fragment key={chunk}>
-            {i > 0 && <span className="hidden min-[520px]:inline">·</span>}
-            <span>{chunk}</span>
+            {i > 0 && " "}
+            <span className="whitespace-nowrap">
+              <span>{chunk}</span>
+              {i < about.tagline.length - 1 && <span> ·</span>}
+            </span>
           </Fragment>
         ))}
       </div>
